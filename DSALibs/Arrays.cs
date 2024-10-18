@@ -86,4 +86,54 @@ public class Arrays
 
     }
 
+    public static int[] ReArrangeWithMaxMinAlternate(int[] arr)
+    {
+        int i=0;
+        int j = arr.Length-1;
+        int m = 0;
+
+        int[] outputArr = new int[arr.Length];
+
+        while(i<=j)
+        {
+            outputArr[m++] = arr[j--];
+            outputArr[m++] = arr[i++];
+        }
+
+        return outputArr;
+    }
+
+    public static int FindKthMergedElement(int[] arr1, int[] arr2, int k)
+    {   
+        int i=0;
+        int j=0;
+
+        while(i<=arr1.Length-1 && j<=arr2.Length-1)
+        {
+            if(i+j == k-1) return Math.Min(arr1[i], arr2[j]);
+            if(arr1[i] < arr2[j])
+            {
+                i++;
+            }
+            else
+            {
+                j++;
+            }
+        }
+
+        while(i<arr1.Length-1)
+        {
+            if(i == k-1) return arr1[i];
+            i++;
+        }
+
+        while(j<arr2.Length-1)
+        {
+            if(j == k-1) return arr2[j];
+        }
+
+        return -1;
+
+    }
+
 }

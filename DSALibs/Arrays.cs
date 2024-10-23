@@ -1,4 +1,6 @@
-﻿namespace DSALibs;
+﻿using System.Runtime.CompilerServices;
+
+namespace DSALibs;
 
 public class Arrays
 {
@@ -136,4 +138,34 @@ public class Arrays
 
     }
 
+    public static int MinimumNoOfPlatforms(int[] arrivalTimes, int[] departureTimes)
+    {
+        List<int> departureListOfTrainsPresent = new List<int>();
+        int minPlatforms = int.MinValue;
+
+        for(int i=0; i<arrivalTimes.Length; i++)
+        {
+            if(departureListOfTrainsPresent.Count == 0)
+            {
+                departureListOfTrainsPresent.Add(departureTimes[i]);
+            }
+            else
+            {
+                List<int> itemsToBeRemoved = new List<int>();
+                foreach(var item in departureListOfTrainsPresent)
+                {
+                    if(arrivalTimes[i]>item)
+                    {
+                        itemsToBeRemoved.Add(item);
+                    }
+                }
+                departureListOfTrainsPresent.RemoveAll(x=>itemsToBeRemoved.Contains(x));
+                departureListOfTrainsPresent.Add(departureTimes[i]);
+            }
+
+            minPlatforms = Math.Max(minPlatforms, departureListOfTrainsPresent.Count);
+        }
+
+        return minPlatforms;
+    }
 }

@@ -41,4 +41,16 @@ public class Tests
         Assert.That(output,Is.EqualTo(6));
 
     }
+
+    [Test]
+    public void TestMinimumPlatforms()
+    {
+        int[] arr1 = {900, 940, 950, 1100, 1500, 1800} ;
+        int[] arr2 = {910, 1200, 1120, 1130, 1900, 2000};
+
+        int minPlatforms = Arrays.MinimumNoOfPlatforms(arr1, arr2);
+
+        Assert.That(minPlatforms, Is.EqualTo(3));
+
+    }
 }

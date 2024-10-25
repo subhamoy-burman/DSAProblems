@@ -168,4 +168,39 @@ public class Arrays
 
         return minPlatforms;
     }
+
+    public static string ArrangeMaximumSum(string[] stringOfNumbers)
+    {
+        List<Number> numbers = new List<Number>();
+        foreach (var number in stringOfNumbers)
+        {
+            numbers.Add(new Number(number));
+        }
+
+        numbers.Sort();
+        return string.Join("",numbers);
+    }
+
+    public class Number : IComparable<Number>
+    {
+        public string Value { get; set; }
+
+        public Number(string value)
+        {
+            Value = value;
+        }
+
+        public int CompareTo(Number? other)
+        {
+            string first = this.Value + other.Value;
+            string second = other.Value + this.Value;
+            return second.CompareTo(first);
+        }
+
+        public override string ToString()
+        {
+            return Value;
+        }
+    }
+
 }

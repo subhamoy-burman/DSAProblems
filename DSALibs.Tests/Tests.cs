@@ -53,4 +53,13 @@ public class Tests
         Assert.That(minPlatforms, Is.EqualTo(3));
 
     }
+
+    [Test]
+    public void TestGetMaxReArrangeSum()
+    {
+        string[] arr = {"3", "30", "34", "5", "9" };
+        string output = Arrays.ArrangeMaximumSum(arr);
+
+        Assert.That(output, Is.EqualTo("9534330"));
+    }
 }

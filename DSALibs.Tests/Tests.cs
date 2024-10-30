@@ -62,4 +62,15 @@ public class Tests
 
         Assert.That(output, Is.EqualTo("9534330"));
     }
+
+    [Test]
+    public void TestQuickSort()
+    {
+        int[] arr = { 4,3,1,2,5,9,7,10,6 };
+        var output = SortingSearching.PerformQuickSort(arr);
+
+        Assert.That(output.SequenceEqual([1, 2, 3, 4, 5, 6, 7, 9, 10]));
+    }
+
+
 }

@@ -72,5 +72,14 @@ public class Tests
         Assert.That(output.SequenceEqual([1, 2, 3, 4, 5, 6, 7, 9, 10]));
     }
 
+    [Test]
+    public void TestFindKthSmallestElement()
+    {
+        int[] arr = { 7, 10, 4, 3, 20, 15 };
+        int k = 3;
+
+        Assert.That(SortingSearching.FindKthSmallestElement(arr,k), Is.EqualTo(7));
+    }
+
 
 }

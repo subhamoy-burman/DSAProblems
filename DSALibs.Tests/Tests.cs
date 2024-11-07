@@ -81,5 +81,23 @@ public class Tests
         Assert.That(SortingSearching.FindKthSmallestElement(arr,k), Is.EqualTo(7));
     }
 
+    [Test]
+    public void TestFindPowerPairsCount()
+    {
+        int[] arr1 = { 2, 1, 6 };
+        int[] arr2 = { 1, 5 };
+
+        Assert.That(HashingGFG.CountPowerPairs(arr1,arr2), Is.EqualTo(3));
+
+
+
+        int[] arr3 = { 10, 19, 18 };
+        int[] arr4 = { 11, 15, 9 };
+
+        Assert.That(HashingGFG.CountPowerPairs(arr3, arr4), Is.EqualTo(2));
+
+
+    }
+
 
 }

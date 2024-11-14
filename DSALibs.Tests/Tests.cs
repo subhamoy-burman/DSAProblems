@@ -99,5 +99,19 @@ public class Tests
 
     }
 
+    [Test]
+    public void TestFindDistinctElementsInKSizedWindows()
+    {
+        int[] arr1 = { 1, 2, 1, 3, 4, 2, 3 };
+        int[] arr2 = { 1, 2, 4, 4 };
+
+        Assert.That(HashingGFG.FindDistinctElementsInKSizedWindows(arr1, 4).SequenceEqual(new List<int> { 3,4,4,3}), Is.True );
+
+
+        Assert.That(HashingGFG.FindDistinctElementsInKSizedWindows(arr2, 2).SequenceEqual(new List<int> { 2,2,1}), Is.True);
+
+
+    }
+
 
 }

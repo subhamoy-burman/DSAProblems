@@ -2,6 +2,7 @@
 using System.Collections.Generic;
 using System.Diagnostics.CodeAnalysis;
 using System.Linq;
+using System.Reflection;
 using System.Text;
 using System.Threading.Tasks;
 
@@ -79,6 +80,23 @@ namespace DSALibs
                               First window is {2, 4}, count of distinct numbers is 2
                               First window is {4, 4}, count of distinct numbers is 1*/
 
+
+        /// <summary>
+        /// Given an array of integers and a number k, write a function that returns true if the given array can be divided 
+        /// into pairs such that the sum of every pair is divisible by k.
+        /// Input: arr[] = {9, 7, 5, 3}, k = 6 
+        ///Output: Truee the array into(9, 3) and(7, 5). Sum of both of these pairs is a multiple of 6.
+        ///Input: arr[] = {92, 75, 65, 48, 45, 35}, k = 10 
+        ///Output: True
+        ///We can divide the array into(92, 48), (75, 65) and(45, 35). The sum of all these pairs are multiples of 10.
+
+
+        /// Input: arr[] = {91, 74, 66, 48}, k = 10 
+        /// Output: False
+        /// </summary>
+        /// <param name="inputArray"></param>
+        /// <param name="k"></param>
+        /// <returns></returns>
         public static List<int> FindDistinctElementsInKSizedWindows(int[] inputArray, int k)
         {
             Dictionary<int,int> elements = new Dictionary<int, int>();
@@ -130,6 +148,30 @@ namespace DSALibs
             return result;
 
 
+        }
+
+
+        public static bool CheckIfArrayPairSumDivisibleByK(int[] inputArray, int k)
+        {
+            Dictionary<int,int> result = new Dictionary<int,int>();
+            int index = 1;
+            foreach (var item in inputArray)
+            {
+                if (!result.ContainsKey(k - item % k))
+                {
+                    result.Add(k - item % k, index++);
+                }
+            }
+
+            for(int i = 0; i<inputArray.Length; i++)
+            {
+                if (!result.ContainsKey(inputArray[i] %k) && result[inputArray[i]]!= i)
+                {
+                    return false;    
+                }
+            }
+
+            return true;
         }
 
         public class EqualList<T> : List<T>, IComparable<T>

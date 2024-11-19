@@ -113,5 +113,14 @@ public class Tests
 
     }
 
+    [Test]
+    public void TestCheckIfAnyArrayPairElement()
+    {
+        int[] arr1 = { 9, 7, 5, 3 };
+
+        Assert.That(HashingGFG.CheckIfArrayPairSumDivisibleByK(arr1, 6), Is.True);
+
+    }
+
 
 }

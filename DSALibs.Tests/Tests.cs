@@ -114,6 +114,14 @@ public class Tests
     }
 
     [Test]
+    public void CountSubArraysWithSumZero()
+    {
+        int[] arr1 = { 6, 3, -1, -3, 4, -2, 2, 4, 6, -12, -7 };
+
+        Assert.That(HashingGFG.CountSubArraysWithSumZero(arr1).Equals(5));
+    }
+
+    [Test]
     public void TestCheckIfAnyArrayPairElement()
     {
         int[] arr1 = { 9, 7, 5, 3 };

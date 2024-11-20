@@ -174,6 +174,56 @@ namespace DSALibs
             return true;
         }
 
+
+        /*Given an array arr[] of size n, the task is to print all subarrays in the array which has sum 0.
+
+            Examples: 
+
+            Input: arr = [6, 3, -1, -3, 4, -2, 2, 4, 6, -12, -7]
+            Output:
+
+
+            Subarray found from Index 2 to 4
+            Subarray found from Index 2 to 6
+            Subarray found from Index 5 to 6
+            Subarray found from Index 6 to 9
+            Subarray found from Index 0 to 10
+            Input: arr = [1, 2, -3, 3, -1, -1]
+            Output:
+
+
+            Subarray found from Index 0 to 2
+            Subarray found from Index 2 to 3
+            Subarray found from Index 3 to 5
+        */
+
+        public static int CountSubArraysWithSumZero(int[] inputArray)
+        {
+
+            Dictionary<int,int> keyCounts = new Dictionary<int,int>();
+
+            int totalCount = 0;
+
+            keyCounts.Add(0, 1);
+            int sumSoFar = 0;
+
+            for (int i = 0; i < inputArray.Length; i++) {
+
+                sumSoFar += inputArray[i];
+                if (keyCounts.ContainsKey(sumSoFar))
+                {
+                    totalCount = totalCount + keyCounts[sumSoFar];
+                    keyCounts[sumSoFar] = keyCounts[sumSoFar] + 1;
+                }
+                else
+                {
+                    keyCounts.Add(sumSoFar, 1);
+                }
+            } 
+
+            return totalCount;
+        }
+
         public class EqualList<T> : List<T>, IComparable<T>
         {
             public int CompareTo(T? other)

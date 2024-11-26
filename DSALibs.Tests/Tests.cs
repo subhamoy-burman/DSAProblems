@@ -131,4 +131,23 @@ public class Tests
     }
 
 
+    [Test]
+    public void SpiralTraversal_ShouldReturnCorrectSequence()
+    {
+        // Arrange
+        int[,] inputMatrix = {
+            { 1, 2, 3 },
+            { 4, 5, 6 },
+            { 7, 8, 9 }
+        };
+        List<int> expected = new List<int> { 1, 2, 3, 6, 9, 8, 7, 4, 5 };
+
+        // Act
+        List<int> result = MatrixSets.SpiralTraversal(inputMatrix);
+
+        // Assert
+        Assert.That(result, Is.EqualTo(expected));
+    }
+
+
 }

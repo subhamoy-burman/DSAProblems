@@ -1,3 +1,5 @@
+using Microsoft.VisualStudio.TestPlatform.TestHost;
+
 namespace DSALibs.Tests;
 
 public class Tests
@@ -149,5 +151,56 @@ public class Tests
         Assert.That(result, Is.EqualTo(expected));
     }
 
+    [Test]
+    public void TestElementExistsInFirstRow()
+    {
+        int[,] matrix = {
+            {1, 2, 3},
+            {4, 5, 6},
+            {7, 8, 9}
+        };
+        int element = 2;
+        bool result = MatrixSets.IsElementExistsIn2DMatrix(matrix, element);
+        Assert.That(result, Is.True);
+    }
+
+    [Test]
+    public void TestElementExistsInMiddleRow()
+    {
+        int[,] matrix = {
+            {1, 2, 3},
+            {4, 5, 6},
+            {7, 8, 9}
+        };
+        int element = 5;
+        bool result = MatrixSets.IsElementExistsIn2DMatrix(matrix, element);
+        Assert.That(result, Is.True);
+    }
+
+    [Test]
+    public void TestElementExistsInLastRow()
+    {
+        int[,] matrix = {
+            {1, 2, 3},
+            {4, 5, 6},
+            {7, 8, 9}
+        };
+        int element = 9;
+        bool result = MatrixSets.IsElementExistsIn2DMatrix(matrix, element);
+        Assert.That(result, Is.True);
+    }
+
+    [Test]
+    public void TestElementDoesNotExist()
+    {
+        int[,] matrix = {
+            {1, 2, 3},
+            {4, 5, 6},
+            {7, 8, 9}
+        };
+        int element = 10;
+        bool result = MatrixSets.IsElementExistsIn2DMatrix(matrix, element);
+        Assert.That(result, Is.False);
+    }
 
 }

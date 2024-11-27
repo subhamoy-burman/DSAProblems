@@ -63,5 +63,66 @@ namespace DSALibs
             return result;
 
         }
+
+        public static bool IsElementExistsIn2DMatrix(int[,] matrix, int element)
+        {
+            int dimension = matrix.GetLength(0);
+
+            int low = 0;
+            int high = dimension - 1;
+            int rowIndex = -1;
+
+            while (low <= high)
+            {
+                int mid = (low + high) / 2;
+
+                if (matrix[0, mid] == element)
+                {
+                    return true;
+                }
+
+                if (matrix[0, mid] > element)
+                {
+                    high = mid - 1;
+                }
+                else { 
+                    rowIndex = mid;
+                    low = mid + 1;
+                }
+            }
+
+            low = 0;
+            high = dimension - 1;
+            int colIndex = -1;
+
+            while (low <= high) {
+
+                int mid = (low + high) / 2;
+
+                if(matrix[mid, 0] == element)
+                {
+                    return true;
+                }
+
+                if(matrix[mid, 0] > element)
+                {
+                    high = mid - 1;
+                }
+                else
+                {
+                    colIndex = mid;
+                    low = mid + 1;
+                }
+
+            }
+
+            if (matrix[rowIndex,colIndex] == element)
+            {
+                return true;
+            }
+
+
+            return false;
+        }
     }
 }

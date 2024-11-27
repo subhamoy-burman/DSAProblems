@@ -64,6 +64,14 @@ namespace DSALibs
 
         }
 
+        /// <summary>
+        /// This logic won't work
+        /// Unit TC are failing
+        /// </summary>
+        /// <param name="matrix"></param>
+        /// <param name="element"></param>
+        /// <returns></returns>
+
         public static bool IsElementExistsIn2DMatrix(int[,] matrix, int element)
         {
             int dimension = matrix.GetLength(0);

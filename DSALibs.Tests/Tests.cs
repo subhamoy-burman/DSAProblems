@@ -1,4 +1,5 @@
 using Microsoft.VisualStudio.TestPlatform.TestHost;
+using NUnit.Framework.Legacy;
 
 namespace DSALibs.Tests;
 
@@ -201,6 +202,33 @@ public class Tests
         int element = 10;
         bool result = MatrixSets.IsElementExistsIn2DMatrix(matrix, element);
         Assert.That(result, Is.False);
+    }
+
+
+    [Test]
+    public void TestGetAllPathFromTopToBottomIn2dMatrix()
+    {
+        // Arrange
+        char[,] matrix = {
+            { 'A', 'B', 'C' },
+            { 'D', 'E', 'F' },
+            { 'G', 'H', 'I' }
+        };
+        var expectedPaths = new List<List<char>>
+        {
+            new List<char> { 'A', 'B', 'C', 'F', 'I' },
+            new List<char> { 'A', 'B', 'E', 'F', 'I' },
+            new List<char> { 'A', 'B', 'E', 'H', 'I' },
+            new List<char> { 'A', 'D', 'E', 'F', 'I' },
+            new List<char> { 'A', 'D', 'E', 'H', 'I' },
+            new List<char> { 'A', 'D', 'G', 'H', 'I' }
+        };
+
+        // Act
+        var result = MatrixSets.GetAllPathFromTopToBottomIn2dMatrix(matrix);
+
+        // Assert
+        Assert.That(expectedPaths.Count == result.Count);
     }
 
 }

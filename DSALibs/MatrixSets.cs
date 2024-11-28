@@ -129,8 +129,41 @@ namespace DSALibs
                 return true;
             }
 
-
             return false;
+        }
+
+        public static List<List<char>> GetAllPathFromTopToBottomIn2dMatrix(char[,] matrix)
+        {
+            List<List<char>> endResult = new List<List<char>>();
+
+            List<char> localList = new List<char>();
+
+            GetAllPathFunc(0,0,matrix, localList, endResult);
+
+            return endResult;
+        }
+
+        private static void GetAllPathFunc(int i, int j, char[,] matrix, List<char> localList, List<List<char>> endResult)
+        {
+            if(i>=matrix.GetLength(0) || j>=matrix.GetLength(0))
+            {
+                return;
+            }
+
+            localList.Add(matrix[i,j]);
+
+            if (i == matrix.GetLength(0) - 1 && j == matrix.GetLength(1) - 1)
+            {
+                endResult.Add(new List<char>(localList));
+            }
+            else 
+            {
+                GetAllPathFunc(i + 1, j, matrix, localList, endResult);
+                GetAllPathFunc(i, j + 1, matrix, localList, endResult);
+            }
+
+            localList.RemoveAt(localList.Count - 1);
+
         }
     }
 }

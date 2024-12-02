@@ -231,4 +231,24 @@ public class Tests
         Assert.That(expectedPaths.Count == result.Count);
     }
 
+
+    [Test]
+    public void Test_Rotation_AntiClockwise()
+    {
+        string str1 = "amazon";
+        string str2 = "azonam";
+        bool result = StringGFG.IsRotatedByTwoPlaces(str1, str2);
+        Assert.That(result == true);
+    }
+
+    [Test]
+    public void Test_Rotation_Clockwise()
+    {
+        string str1 = "amazon";
+        string str2 = "onamaz";
+        bool result = StringGFG.IsRotatedByTwoPlaces(str1, str2);
+        Assert.That(result == true);
+    }
+
+
 }

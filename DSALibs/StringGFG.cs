@@ -40,8 +40,72 @@ namespace DSALibs
 
             }
 
+            return isLastTwoCharacterRotated || isFirstTwoCharacterRotated;
+        }
 
-             return isLastTwoCharacterRotated || isFirstTwoCharacterRotated;
+
+        /// <summary>
+        /// Converting Roman to Numeric
+        /// Not working right now
+        /// </summary>
+        /// <param name="str"></param>
+        /// <returns></returns>
+        public static int ConvertRomanNumberStringToNumeric(string str)
+        {
+
+            Dictionary<string, int> characterNumeralkeyValuePairs = new Dictionary<string, int>()
+            {
+                { "I", 1 },
+                { "II",2 },
+                { "III",3},
+                { "IV", 4 },
+                { "V", 5 },
+                { "VI", 6 },
+                { "VII", 7 },
+                { "VIII", 8 },
+                { "IX", 9 },
+                { "X", 10 },
+                { "L", 50},
+                { "C", 100 },
+                { "D", 500 },
+                { "M", 1000 }
+
+            };
+
+            int previousNumer = int.MinValue;
+            int result = 0;
+
+            if(str.Length == 1)
+            {
+                return characterNumeralkeyValuePairs[str];
+            }
+
+            for(int i = 0; i <str.Length; i++)
+            {
+                int currentNumber = characterNumeralkeyValuePairs[str[i].ToString()];
+
+                if(previousNumer!= int.MinValue)
+                {
+                    if (previousNumer >= currentNumber)
+                    {
+                        result = result + currentNumber;
+                        previousNumer = currentNumber;
+                        continue;
+                    }
+                    else 
+                    { 
+                        result = result - currentNumber;
+                        previousNumer = currentNumber;
+                        continue;
+                    }
+                }
+                result = currentNumber;
+                previousNumer = currentNumber;
+            }
+
+            return result;
         }
     }
+
+    
 }

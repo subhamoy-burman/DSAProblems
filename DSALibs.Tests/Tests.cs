@@ -250,5 +250,26 @@ public class Tests
         Assert.That(result == true);
     }
 
+    [Test]
+    public void ConvertRomanNumberStringToNumeric_SingleRomanNumeral_ReturnsCorrectValue_1()
+    {
+        int result = StringGFG.ConvertRomanNumberStringToNumeric("V");
+        Assert.That(5 == result);
+    }
+
+    [Test]
+    public void ConvertRomanNumberStringToNumeric_SingleRomanNumeral_ReturnsCorrectValue_2()
+    {
+        int result = StringGFG.ConvertRomanNumberStringToNumeric("XII");
+        Assert.That(12 == result);
+    }
+
+    [Test]
+    public void ConvertRomanNumberStringToNumeric_SingleRomanNumeral_ReturnsCorrectValue_3()
+    {
+        int result = StringGFG.ConvertRomanNumberStringToNumeric("MCMIV");
+        Assert.That(1904 == result);
+    }
+
 
 }

@@ -3,6 +3,7 @@ using System.Collections.Generic;
 using System.Linq;
 using System.Text;
 using System.Threading.Tasks;
+using static System.Collections.Specialized.BitVector32;
 
 namespace DSALibs
 {
@@ -46,61 +47,61 @@ namespace DSALibs
 
         /// <summary>
         /// Converting Roman to Numeric
-        /// Not working right now
         /// </summary>
         /// <param name="str"></param>
         /// <returns></returns>
         public static int ConvertRomanNumberStringToNumeric(string str)
         {
 
-            Dictionary<string, int> characterNumeralkeyValuePairs = new Dictionary<string, int>()
+            Dictionary<char, int> characterNumeralkeyValuePairs = new Dictionary<char, int>()
             {
-                { "I", 1 },
-                { "II",2 },
-                { "III",3},
-                { "IV", 4 },
-                { "V", 5 },
-                { "VI", 6 },
-                { "VII", 7 },
-                { "VIII", 8 },
-                { "IX", 9 },
-                { "X", 10 },
-                { "L", 50},
-                { "C", 100 },
-                { "D", 500 },
-                { "M", 1000 }
-
+                { 'I', 1 },
+                { 'V', 5 },
+                { 'X', 10 },
+                { 'L', 50 },
+                { 'C', 100 },
+                { 'D', 500 },
+                { 'M', 1000 }
             };
 
-            int previousNumer = int.MinValue;
             int result = 0;
 
             if(str.Length == 1)
             {
-                return characterNumeralkeyValuePairs[str];
+                return characterNumeralkeyValuePairs[str.ToCharArray()[0]];
             }
-
-            for(int i = 0; i <str.Length; i++)
+            /*
+             *  M (1000) - No pair yet, so add 1000.
+                CM (1000 - 100 = 900) - Subtract 100 from 1000.
+                MCM (1000 + 900 = 1900) - Add the result of CM to M.
+                IV (5 - 1 = 4) - Subtract 1 from 5.
+                MCMIV (1900 + 4 = 1904) - Add the result of IV to MCM.
+            */
+            int index = 0;
+            while(index <str.Length)
             {
-                int currentNumber = characterNumeralkeyValuePairs[str[i].ToString()];
-
-                if(previousNumer!= int.MinValue)
+                int firstLetterValue = characterNumeralkeyValuePairs[str[index]];
+                if (index + 1 < str.Length)
                 {
-                    if (previousNumer >= currentNumber)
+                    int secondLetterValue = characterNumeralkeyValuePairs[str[index + 1]];
+                    if (secondLetterValue > firstLetterValue)
                     {
-                        result = result + currentNumber;
-                        previousNumer = currentNumber;
-                        continue;
+                        result = result + (secondLetterValue - firstLetterValue);
+                        index = index + 2;
                     }
-                    else 
-                    { 
-                        result = result - currentNumber;
-                        previousNumer = currentNumber;
-                        continue;
+                    else
+                    {
+                        result = result + firstLetterValue;
+                        index = index + 1;
+
                     }
+                    
                 }
-                result = currentNumber;
-                previousNumer = currentNumber;
+                else
+                {
+                    result = result + firstLetterValue;
+                    index =  index + 1;
+                }
             }
 
             return result;

@@ -271,5 +271,60 @@ public class Tests
         Assert.That(1904 == result);
     }
 
+    [Test]
+    public void Test_ABCBC()
+    {
+        string input = "ABCBC";
+        int expectedOutput = 3;
+        int actualOutput = StringGFG.FindLongestSubstringWithoutRepeatingCharacter(input);
+        Assert.That(actualOutput, Is.EqualTo(expectedOutput));
+    }
+
+    [Test]
+    public void Test_AAA()
+    {
+        string input = "AAA";
+        int expectedOutput = 1;
+        int actualOutput = StringGFG.FindLongestSubstringWithoutRepeatingCharacter(input);
+        Assert.That(actualOutput, Is.EqualTo(expectedOutput));
+    }
+
+    [Test]
+    public void Test_GEEKSFORGEEKS()
+    {
+        string input = "GEEKSFORGEEKS";
+        int expectedOutput = 7;
+        int actualOutput = StringGFG.FindLongestSubstringWithoutRepeatingCharacter(input);
+        Assert.That(actualOutput, Is.EqualTo(expectedOutput));
+    }
+
+    // Additional test cases
+    [Test]
+    public void Test_EmptyString()
+    {
+        string input = "";
+        int expectedOutput = 0;
+        int actualOutput = StringGFG.FindLongestSubstringWithoutRepeatingCharacter(input);
+        Assert.That(actualOutput, Is.EqualTo(expectedOutput));
+    }
+
+    [Test]
+    public void Test_SingleCharacter()
+    {
+        string input = "A";
+        int expectedOutput = 1;
+        int actualOutput = StringGFG.FindLongestSubstringWithoutRepeatingCharacter(input);
+        Assert.That(actualOutput, Is.EqualTo(expectedOutput));
+    }
+
+    [Test]
+    public void Test_AllUniqueCharacters()
+    {
+        string input = "ABCDEFG";
+        int expectedOutput = 7;
+        int actualOutput = StringGFG.FindLongestSubstringWithoutRepeatingCharacter(input);
+        Assert.That(actualOutput, Is.EqualTo(expectedOutput));
+    }
+
 
 }

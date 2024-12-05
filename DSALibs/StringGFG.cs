@@ -106,7 +106,38 @@ namespace DSALibs
 
             return result;
         }
-    }
 
+        public static int FindLongestSubstringWithoutRepeatingCharacter(string str)
+        {
+            int resultLength = int.MinValue;
+            int startIndex = 0;
+
+            int index = 0;
+            Dictionary<char,int> charIndexes = new Dictionary<char,int>();
+
+            while (index < str.Length) {
+                if (charIndexes.ContainsKey(str[index]))
+                {
+                    if (charIndexes[str[index]] >= startIndex)
+                    {
+                        resultLength = Math.Max(index - startIndex, resultLength);
+                        startIndex = charIndexes[str[index]] + 1;
+                        charIndexes[str[index]] = index;
+                    }
+                    else
+                    {
+                        charIndexes[str[index]] = index;
+                    }
+                }
+                else 
+                { 
+                    charIndexes.Add(str[index], index);
+                }
+                index++;
+            }
+
+            return Math.Max (resultLength, str.Length - startIndex);
+        }
+    }
     
 }

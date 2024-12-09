@@ -138,6 +138,51 @@ namespace DSALibs
 
             return Math.Max (resultLength, str.Length - startIndex);
         }
+
+        static int max_length = Int32.MinValue;
+        public static string LongestPalindrome(string str)
+        {
+            List<string> listOfSubstrings = new List<string>();
+            for (int i = 0; i < str.Length; i++)
+            {
+                GenerateSubstring(i, str, listOfSubstrings);
+            }
+            return listOfSubstrings.OrderByDescending(x=>x.Length).FirstOrDefault()!;
+        }
+
+        private static void GenerateSubstring(int i, string str, List<string> listOfSubstrings)
+        {
+            var listOfSub = new List<string>();
+            for (int j = i; j < str.Length; j++) { 
+
+                var subString = str.Substring(i, j-i +1);
+                if (isPalindrome(subString))
+                {
+                    max_length = Math.Max(max_length, j - i + 1);
+                    listOfSub.Add(str.Substring(i, j - i +1));
+                }
+            }
+
+            listOfSubstrings.AddRange(listOfSub);
+        }
+
+        private static bool isPalindrome(string subString)
+        {
+            var strLength = subString.Length;
+            int i = 0;
+            int j = strLength - 1;
+
+            while (i <= j)
+            {
+                if (subString[i] != subString[j])
+                {
+                    return false;
+                }
+                i++;
+                j--;
+            }
+            return true;
+        }
     }
     
 }

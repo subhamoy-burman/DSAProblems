@@ -326,5 +326,24 @@ public class Tests
         Assert.That(actualOutput, Is.EqualTo(expectedOutput));
     }
 
+    [TestCase("abaxyzzyxf", ExpectedResult = "xyzzyx")]
+    [TestCase("a", ExpectedResult = "a")]
+    [TestCase("it's highnoon", ExpectedResult = "noon")]
+    [TestCase("noon high it is", ExpectedResult = "noon")]
+    [TestCase("abccbait's highnoon", ExpectedResult = "abccba")]
+    [TestCase("abcdefgfedcbazzzzzzzzzzzzzzzzzzzz", ExpectedResult = "abcdefgfedcba")]
+    [TestCase("abcdefgfedcba", ExpectedResult = "abcdefgfedcba")]
+    [TestCase("abcdefghfedcbaa", ExpectedResult = "aa")]
+    [TestCase("abcdefggfedcba", ExpectedResult = "abcdefggfedcba")]
+    [TestCase("zzzzzzz2345abbbba5432zzbbababa", ExpectedResult = "zzzzzzz")]
+    [TestCase("z234a5abbbba54a32z", ExpectedResult = "a5abbbba5a")]
+    [TestCase("z234a5abbba54a32z", ExpectedResult = "a5abbba5a")]
+    [TestCase("ab12365456321bb", ExpectedResult = "12365456321")]
+    [TestCase("aca", ExpectedResult = "aca")]
+    public string TestLongestPalindrome(string str)
+    {
+        return StringGFG.LongestPalindrome(str);
+    }
+
 
 }

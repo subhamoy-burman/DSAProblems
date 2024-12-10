@@ -183,6 +183,45 @@ namespace DSALibs
             }
             return true;
         }
+
+        public static string LongestPlaindromeImproved(string str)
+        {
+            int[] longest = new int[2] { -1,-1};
+            int[] oddStartEnd = new int[2];
+            int[] evenStartEnd = new int[2];
+            for (int i = 1; i< str.Length; i++)
+            {
+                oddStartEnd = GeneratePalindrome(str, i - 1, i);
+                evenStartEnd = GeneratePalindrome(str, i - 1, i + 1);
+
+                int oddlength = oddStartEnd[1] - oddStartEnd[0];
+                int evenLength = evenStartEnd[1] - evenStartEnd[0];
+                var currentLongest = oddlength > evenLength ? oddStartEnd : evenStartEnd;
+                if (longest[1] - longest[0] < currentLongest[1] - currentLongest[0])
+                {
+                    longest = currentLongest;
+                }
+            }
+
+            return str.Substring(longest[0], longest[1] - longest[0]);
+        }
+
+        private static int[] GeneratePalindrome(string str, int index1, int index2)
+        {
+            int[] indexes = new int[2] { -1,-1};
+            while (index1 >= 0 && index2 < str.Length)
+            {
+                if(str[index1] != str[index2])
+                {
+                    break;
+                }
+                indexes[0] = index1;
+                indexes[1] = index2;
+                index1--;
+                index2++;
+            }
+            return indexes;
+        }
     }
     
 }

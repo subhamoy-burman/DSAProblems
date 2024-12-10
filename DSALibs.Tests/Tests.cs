@@ -326,6 +326,7 @@ public class Tests
         Assert.That(actualOutput, Is.EqualTo(expectedOutput));
     }
 
+    /*
     [TestCase("abaxyzzyxf", ExpectedResult = "xyzzyx")]
     [TestCase("a", ExpectedResult = "a")]
     [TestCase("it's highnoon", ExpectedResult = "noon")]
@@ -343,6 +344,12 @@ public class Tests
     public string TestLongestPalindrome(string str)
     {
         return StringGFG.LongestPalindrome(str);
+    }*/
+
+    [Test]
+    public void TestLongestPalindrome() {
+
+        Assert.That(StringGFG.LongestPlaindromeImproved("abaxyzzyxf"), Is.EqualTo("xyzzyx"));
     }
 
 

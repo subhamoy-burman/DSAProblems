@@ -352,5 +352,41 @@ public class Tests
         Assert.That(StringGFG.LongestPlaindromeImproved("abaxyzzyxf"), Is.EqualTo("xyzzyx"));
     }
 
+    [Test]
+    public void TestSampleInput()
+    {
+        string input = "clementisacap";
+        string expectedOutput = "mentisac";
+        string actualOutput = StringGFG.LongestSubstringWithoutDuplication(input);
+        Assert.That(actualOutput, Is.EqualTo(expectedOutput));
+    }
+
+    [Test]
+    public void TestEmptyString()
+    {
+        string input = "";
+        string expectedOutput = "";
+        string actualOutput = StringGFG.LongestSubstringWithoutDuplication(input);
+        Assert.That(actualOutput, Is.EqualTo(expectedOutput));
+    }
+
+    [Test]
+    public void TestSingleCharacterString()
+    {
+        string input = "a";
+        string expectedOutput = "a";
+        string actualOutput = StringGFG.LongestSubstringWithoutDuplication(input);
+        Assert.That(actualOutput, Is.EqualTo(expectedOutput));
+    }
+
+    [Test]
+    public void TestStringWithAllUniqueCharacters()
+    {
+        string input = "abcdef";
+        string expectedOutput = "abcdef";
+        string actualOutput = StringGFG.LongestSubstringWithoutDuplication(input);
+        Assert.That(actualOutput, Is.EqualTo(expectedOutput));
+    }
+
 
 }

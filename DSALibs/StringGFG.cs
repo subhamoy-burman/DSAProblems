@@ -203,7 +203,7 @@ namespace DSALibs
                 }
             }
 
-            return str.Substring(longest[0], longest[1] - longest[0]);
+            return str.Substring(longest[0], longest[1] - longest[0]+1);
         }
 
         private static int[] GeneratePalindrome(string str, int index1, int index2)
@@ -221,6 +221,43 @@ namespace DSALibs
                 index2++;
             }
             return indexes;
+        }
+
+
+        public static string LongestSubstringWithoutDuplication(string str)
+        {
+            Dictionary<char,int> charIndexPairs = new Dictionary<char,int>();
+
+            int startIndex = 0;
+            int[] longest = {0,0};
+            int[] startEnd = {0,0};
+
+            if (str.Length == 0) { return str; }
+
+            for(int i =0; i< str.Length; i++)
+            {
+                char c = str[i];
+                startEnd = new int[] { startIndex, i };
+
+                if (charIndexPairs.ContainsKey(c) && charIndexPairs[c] > startIndex)
+                {
+                    startEnd = new int[] { startIndex, i - 1 };
+                    startIndex = charIndexPairs[c] + 1;
+                    if (startEnd[1] - startEnd[0] > longest[1] - longest[0])
+                    {
+                        longest = startEnd;
+                    }
+                }
+
+                charIndexPairs[c] = i;
+            }
+
+            if (startEnd[1] - startEnd[0] > longest[1] - longest[0])
+            {
+                longest = startEnd;
+            }
+
+            return str.Substring(longest[0], longest[1] - longest[0] + 1);
         }
     }
     

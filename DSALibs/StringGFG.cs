@@ -259,6 +259,11 @@ namespace DSALibs
 
             return str.Substring(longest[0], longest[1] - longest[0] + 1);
         }
+
+        public static string UnderScorifySubstring(string str)
+        {
+            return string.Empty;
+        }
     }
     
 }

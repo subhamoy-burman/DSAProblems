@@ -260,6 +260,11 @@ namespace DSALibs
             return str.Substring(longest[0], longest[1] - longest[0] + 1);
         }
 
+        /// <summary>
+        /// Pattern matching and under scoring
+        /// </summary>
+        /// <param name="str"></param>
+        /// <returns></returns>
         public static string UnderScorifySubstring(string str)
         {
             return string.Empty;

@@ -261,7 +261,7 @@ namespace DSALibs
         }
 
         /// <summary>
-        /// Pattern matching and under scoring
+        /// Pattern matching and under scoring _
         /// </summary>
         /// <param name="str"></param>
         /// <returns></returns>

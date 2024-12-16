@@ -18,7 +18,7 @@ namespace DSALibs
 
             bool isLastTwoCharacterRotated = true;
 
-            for(int i = 0; i< str2.Length; i++)
+            for (int i = 0; i < str2.Length; i++)
             {
                 if (str2[i] != str1[(i + 2) % (str2.Length)])
                 {
@@ -33,7 +33,7 @@ namespace DSALibs
 
             for (int i = 0; i < str2.Length; i++)
             {
-                if(str1[i] != str2[(i+2) % (str2.Length)])
+                if (str1[i] != str2[(i + 2) % (str2.Length)])
                 {
                     isLastTwoCharacterRotated = false;
                     break;
@@ -66,7 +66,7 @@ namespace DSALibs
 
             int result = 0;
 
-            if(str.Length == 1)
+            if (str.Length == 1)
             {
                 return characterNumeralkeyValuePairs[str.ToCharArray()[0]];
             }
@@ -78,7 +78,7 @@ namespace DSALibs
                 MCMIV (1900 + 4 = 1904) - Add the result of IV to MCM.
             */
             int index = 0;
-            while(index <str.Length)
+            while (index < str.Length)
             {
                 int firstLetterValue = characterNumeralkeyValuePairs[str[index]];
                 if (index + 1 < str.Length)
@@ -95,12 +95,12 @@ namespace DSALibs
                         index = index + 1;
 
                     }
-                    
+
                 }
                 else
                 {
                     result = result + firstLetterValue;
-                    index =  index + 1;
+                    index = index + 1;
                 }
             }
 
@@ -113,9 +113,10 @@ namespace DSALibs
             int startIndex = 0;
 
             int index = 0;
-            Dictionary<char,int> charIndexes = new Dictionary<char,int>();
+            Dictionary<char, int> charIndexes = new Dictionary<char, int>();
 
-            while (index < str.Length) {
+            while (index < str.Length)
+            {
                 if (charIndexes.ContainsKey(str[index]))
                 {
                     if (charIndexes[str[index]] >= startIndex)
@@ -129,14 +130,14 @@ namespace DSALibs
                         charIndexes[str[index]] = index;
                     }
                 }
-                else 
-                { 
+                else
+                {
                     charIndexes.Add(str[index], index);
                 }
                 index++;
             }
 
-            return Math.Max (resultLength, str.Length - startIndex);
+            return Math.Max(resultLength, str.Length - startIndex);
         }
 
         static int max_length = Int32.MinValue;
@@ -147,19 +148,20 @@ namespace DSALibs
             {
                 GenerateSubstring(i, str, listOfSubstrings);
             }
-            return listOfSubstrings.OrderByDescending(x=>x.Length).FirstOrDefault()!;
+            return listOfSubstrings.OrderByDescending(x => x.Length).FirstOrDefault()!;
         }
 
         private static void GenerateSubstring(int i, string str, List<string> listOfSubstrings)
         {
             var listOfSub = new List<string>();
-            for (int j = i; j < str.Length; j++) { 
+            for (int j = i; j < str.Length; j++)
+            {
 
-                var subString = str.Substring(i, j-i +1);
+                var subString = str.Substring(i, j - i + 1);
                 if (isPalindrome(subString))
                 {
                     max_length = Math.Max(max_length, j - i + 1);
-                    listOfSub.Add(str.Substring(i, j - i +1));
+                    listOfSub.Add(str.Substring(i, j - i + 1));
                 }
             }
 
@@ -186,10 +188,10 @@ namespace DSALibs
 
         public static string LongestPlaindromeImproved(string str)
         {
-            int[] longest = new int[2] { -1,-1};
+            int[] longest = new int[2] { -1, -1 };
             int[] oddStartEnd = new int[2];
             int[] evenStartEnd = new int[2];
-            for (int i = 1; i< str.Length; i++)
+            for (int i = 1; i < str.Length; i++)
             {
                 oddStartEnd = GeneratePalindrome(str, i - 1, i);
                 evenStartEnd = GeneratePalindrome(str, i - 1, i + 1);
@@ -203,15 +205,15 @@ namespace DSALibs
                 }
             }
 
-            return str.Substring(longest[0], longest[1] - longest[0]+1);
+            return str.Substring(longest[0], longest[1] - longest[0] + 1);
         }
 
         private static int[] GeneratePalindrome(string str, int index1, int index2)
         {
-            int[] indexes = new int[2] { -1,-1};
+            int[] indexes = new int[2] { -1, -1 };
             while (index1 >= 0 && index2 < str.Length)
             {
-                if(str[index1] != str[index2])
+                if (str[index1] != str[index2])
                 {
                     break;
                 }
@@ -226,15 +228,15 @@ namespace DSALibs
 
         public static string LongestSubstringWithoutDuplication(string str)
         {
-            Dictionary<char,int> charIndexPairs = new Dictionary<char,int>();
+            Dictionary<char, int> charIndexPairs = new Dictionary<char, int>();
 
             int startIndex = 0;
-            int[] longest = {0,0};
-            int[] startEnd = {0,0};
+            int[] longest = { 0, 0 };
+            int[] startEnd = { 0, 0 };
 
             if (str.Length == 0) { return str; }
 
-            for(int i =0; i< str.Length; i++)
+            for (int i = 0; i < str.Length; i++)
             {
                 char c = str[i];
                 startEnd = new int[] { startIndex, i };
@@ -269,6 +271,37 @@ namespace DSALibs
         {
             return string.Empty;
         }
+
+        public static List<List<string>> FrameGroupAnagrams(List<string> list)
+        {
+            Dictionary<string, List<string>> dictionaryOfStrings = new Dictionary<string, List<string>>();
+            foreach (string s in list)
+            {
+                var originalString = s;
+                var sArray = s.ToCharArray();
+                Array.Sort(sArray); 
+                string sortedString = new string(sArray);
+
+                if (dictionaryOfStrings.ContainsKey(sortedString))
+                {
+
+                    dictionaryOfStrings[sortedString].Add(originalString);
+                }
+                else
+                {
+                    dictionaryOfStrings.Add(sortedString, new List<string>() { originalString });
+                }
+            }
+
+            List<List<string>> newListOfString = new List<List<string>>();
+
+            foreach (var item in dictionaryOfStrings.Keys)
+            {
+                newListOfString.Add(dictionaryOfStrings[item]);
+            }
+
+            return newListOfString;
+        }
     }
-    
+
 }

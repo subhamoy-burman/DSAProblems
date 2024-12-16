@@ -388,5 +388,29 @@ public class Tests
         Assert.That(actualOutput, Is.EqualTo(expectedOutput));
     }
 
+    [Test]
+    public void TestFrameGroupAnagrams()
+    {
+        // Arrange
+        var words = new List<string> { "yo", "act", "flop", "tac", "foo", "cat", "oy", "olfp" };
+        var expected = new List<List<string>>
+        {
+            new List<string> { "yo", "oy" },
+            new List<string> { "flop", "olfp" },
+            new List<string> { "act", "tac", "cat" },
+            new List<string> { "foo" }
+        };
+
+        // Act
+        var result = StringGFG.FrameGroupAnagrams(words);
+
+        // Assert
+        Assert.That(expected.Count.Equals(result.Count));
+        foreach (var group in expected)
+        {
+            Assert.That(result.Exists(r => new HashSet<string>(r).SetEquals(group)));
+        }
+    }
+
 
 }

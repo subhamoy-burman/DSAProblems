@@ -302,6 +302,16 @@ namespace DSALibs
 
             return newListOfString;
         }
+
+        /// <summary>
+        /// 
+        /// </summary>
+        /// <param name="ipAddress"></param>
+        /// <returns></returns>
+        public bool IsIpAddressValid(string ipAddress) {
+
+            return false;
+        }
     }
 
 }

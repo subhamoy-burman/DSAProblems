@@ -312,6 +312,81 @@ namespace DSALibs
 
             return false;
         }
+
+        /// <summary>
+        /// Sample Input
+        //        string = "1921680"
+        //  Sample Output
+        //  [
+        //  "1.9.216.80",
+        //  "1.92.16.80",
+        //  "1.92.168.0",
+        //  "19.2.16.80",
+        //  "19.2.168.0",
+        //  "19.21.6.80",
+        //  "19.21.68.0",
+        //  "19.216.8.0",
+        //  "192.1.6.80",
+        //  "192.1.68.0",
+        //  "192.16.8.0"
+        //  ]
+        /// </summary>
+        /// <param name="ipAddressString"></param>
+        /// <returns></returns>
+        public static List<string> GetIpAddressList(string ipAddressString) { 
+        
+            List<string> listOfIpAddresses = new List<string>();
+
+            for(int i = 1; i < Math.Min(ipAddressString.Length,4); i++)
+            {
+                List<string> list = new List<string>();
+                string firstPartOfIp = ipAddressString.Substring(0,i);
+
+                if (!isValidPart(firstPartOfIp)) {
+                    continue;
+                }
+
+                for(int j = i+1; j < i + (Math.Min(ipAddressString.Length - i, 4)); j++)
+                {   
+                    string secondPartOfIp = ipAddressString.Substring(i, j - i);
+                    if (!isValidPart(secondPartOfIp)) {
+                        continue;   
+                    }
+
+                    for(int k = j + 1; k < j +  (Math.Min(ipAddressString.Length - j, 4)); k++)
+                    {
+                        string thirdPartOfIp = ipAddressString.Substring(j, k - j);
+                        string fourthPartOfIp = ipAddressString.Substring(k);
+                        if (isValidPart(thirdPartOfIp) && isValidPart(fourthPartOfIp))
+                        {
+                            list.Add(firstPartOfIp);
+                            list.Add(secondPartOfIp);
+                            list.Add(thirdPartOfIp);
+                            list.Add(fourthPartOfIp);
+
+                            listOfIpAddresses.Add(string.Join(".", list));
+                            list = new List<string>();
+
+                        }
+                    }
+
+                }
+            }
+
+            return listOfIpAddresses;
+
+        }
+
+        private static bool isValidPart(string str)
+        {
+            int stringAsInt = Int32.Parse(str);
+            if (stringAsInt > 255)
+            {
+                return false;
+            }
+
+            return str.Length == stringAsInt.ToString().Length;  // check for leading 0
+        }
     }
 
 }

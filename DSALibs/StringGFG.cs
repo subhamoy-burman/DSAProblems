@@ -279,7 +279,7 @@ namespace DSALibs
             {
                 var originalString = s;
                 var sArray = s.ToCharArray();
-                Array.Sort(sArray); 
+                Array.Sort(sArray);
                 string sortedString = new string(sArray);
 
                 if (dictionaryOfStrings.ContainsKey(sortedString))
@@ -308,7 +308,8 @@ namespace DSALibs
         /// </summary>
         /// <param name="ipAddress"></param>
         /// <returns></returns>
-        public bool IsIpAddressValid(string ipAddress) {
+        public bool IsIpAddressValid(string ipAddress)
+        {
 
             return false;
         }
@@ -333,27 +334,30 @@ namespace DSALibs
         /// </summary>
         /// <param name="ipAddressString"></param>
         /// <returns></returns>
-        public static List<string> GetIpAddressList(string ipAddressString) { 
-        
+        public static List<string> GetIpAddressList(string ipAddressString)
+        {
+
             List<string> listOfIpAddresses = new List<string>();
 
-            for(int i = 1; i < Math.Min(ipAddressString.Length,4); i++)
+            for (int i = 1; i < Math.Min(ipAddressString.Length, 4); i++)
             {
                 List<string> list = new List<string>();
-                string firstPartOfIp = ipAddressString.Substring(0,i);
+                string firstPartOfIp = ipAddressString.Substring(0, i);
 
-                if (!isValidPart(firstPartOfIp)) {
+                if (!isValidPart(firstPartOfIp))
+                {
                     continue;
                 }
 
-                for(int j = i+1; j < i + (Math.Min(ipAddressString.Length - i, 4)); j++)
-                {   
+                for (int j = i + 1; j < i + (Math.Min(ipAddressString.Length - i, 4)); j++)
+                {
                     string secondPartOfIp = ipAddressString.Substring(i, j - i);
-                    if (!isValidPart(secondPartOfIp)) {
-                        continue;   
+                    if (!isValidPart(secondPartOfIp))
+                    {
+                        continue;
                     }
 
-                    for(int k = j + 1; k < j +  (Math.Min(ipAddressString.Length - j, 4)); k++)
+                    for (int k = j + 1; k < j + (Math.Min(ipAddressString.Length - j, 4)); k++)
                     {
                         string thirdPartOfIp = ipAddressString.Substring(j, k - j);
                         string fourthPartOfIp = ipAddressString.Substring(k);
@@ -387,6 +391,50 @@ namespace DSALibs
 
             return str.Length == stringAsInt.ToString().Length;  // check for leading 0
         }
-    }
 
+        public static string ReverseWords(string str)
+        {
+            var reversedString = ReverseAllTheWords(str.ToCharArray(), 0, str.Length - 1);
+
+            int firstIndex = 0;
+            int startIndex = 0;
+            int endIndex = 0;
+            while(startIndex<= str.Length-1)
+            {
+                if (reversedString[startIndex] != ' ')
+                {
+                    endIndex = endIndex + 1;
+                    startIndex = startIndex + 1;
+                }
+                else 
+                {
+                    reversedString = ReverseAllTheWords(reversedString, firstIndex, endIndex - 1);
+                    startIndex = endIndex+1;
+                    endIndex = startIndex;
+                    firstIndex = startIndex;
+                }
+
+                if(startIndex == str.Length)
+                {
+                    reversedString = ReverseAllTheWords(reversedString, firstIndex, endIndex - 1);
+                }
+            }
+
+            return new string(reversedString);
+        }
+
+        private static char[] ReverseAllTheWords(char[] str, int startIndex, int endIndex)
+        {
+            while (startIndex < endIndex) {
+
+                var temp = str[startIndex];
+                str[startIndex] = str[endIndex];
+                str[endIndex] = temp;
+                startIndex++;
+                endIndex--;
+            }
+            return str;
+        }
+
+    }
 }

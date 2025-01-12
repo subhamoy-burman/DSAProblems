@@ -399,22 +399,22 @@ namespace DSALibs
             int firstIndex = 0;
             int startIndex = 0;
             int endIndex = 0;
-            while(startIndex<= str.Length-1)
+            while (startIndex <= str.Length - 1)
             {
                 if (reversedString[startIndex] != ' ')
                 {
                     endIndex = endIndex + 1;
                     startIndex = startIndex + 1;
                 }
-                else 
+                else
                 {
                     reversedString = ReverseAllTheWords(reversedString, firstIndex, endIndex - 1);
-                    startIndex = endIndex+1;
+                    startIndex = endIndex + 1;
                     endIndex = startIndex;
                     firstIndex = startIndex;
                 }
 
-                if(startIndex == str.Length)
+                if (startIndex == str.Length)
                 {
                     reversedString = ReverseAllTheWords(reversedString, firstIndex, endIndex - 1);
                 }
@@ -425,7 +425,8 @@ namespace DSALibs
 
         private static char[] ReverseAllTheWords(char[] str, int startIndex, int endIndex)
         {
-            while (startIndex < endIndex) {
+            while (startIndex < endIndex)
+            {
 
                 var temp = str[startIndex];
                 str[startIndex] = str[endIndex];
@@ -434,6 +435,47 @@ namespace DSALibs
                 endIndex--;
             }
             return str;
+        }
+
+        public static List<char> ReturnMinimumCharactersForWord(string[] words)
+        {
+            Dictionary<char, int> dictCount = new Dictionary<char, int>();
+            foreach (var word in words)
+            {
+                var charArray = word.ToCharArray();
+                int[] ch = new int[128];
+
+                for (int i = 0; i < charArray.Length; i++)
+                {
+                    ch[charArray[i]] = ch[charArray[i]] + 1;
+                }
+
+                for (int i = 0; i < charArray.Length; i++)
+                {   
+                    if(dictCount.ContainsKey(charArray[i]))
+                    {
+                        if (ch[charArray[i]] >  dictCount[charArray[i]])
+                        {
+                            dictCount[charArray[i]] = ch[charArray[i]];
+                        }
+                    }
+                    else
+                    {
+                        dictCount.Add(charArray[i], ch[charArray[i]]);
+                    }
+                }
+            }
+
+            List<char> result = new List<char>();
+            foreach(var item in dictCount.Keys)
+            {
+                for (int i = 0; i < dictCount[item]; i++) {
+
+                    result.Add(item);
+                }
+            }
+
+            return result;
         }
 
     }

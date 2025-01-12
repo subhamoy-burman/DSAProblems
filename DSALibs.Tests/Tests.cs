@@ -491,5 +491,14 @@ public class Tests
         Assert.That(expected.Equals(result));
     }
 
+    [Test]
+    public void TestMinimumCharacterForWord()
+    {
+        string[] words = { "this", "that", "did", "deed", "them!", "a" };
+        List<char> expected = new List<char> { 't', 't', 'h', 'i', 's', 'a', 'd', 'd', 'e', 'e', 'm', '!' };
+        List<char> result =  StringGFG.ReturnMinimumCharactersForWord(words);
+        CollectionAssert.AreEquivalent(expected, result);
+    }
+
 
 }

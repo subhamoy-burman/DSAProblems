@@ -500,5 +500,123 @@ public class Tests
         CollectionAssert.AreEquivalent(expected, result);
     }
 
+    [Test]
+    public void Test_SameSingleCharacter()
+    {
+        Assert.That(StringGFG.EditDistance("a", "a").Equals(true));
+    }
 
+    [Test]
+    public void Test_SameMultipleCharacters()
+    {
+        Assert.That(StringGFG.EditDistance("aaa", "aaa").Equals(true));
+    }
+
+    [Test]
+    public void Test_SingleCharacterReplace()
+    {
+        Assert.That(StringGFG.EditDistance("a", "b").Equals(true));
+    }
+
+    [Test]
+    public void Test_SingleCharacterRemove()
+    {
+        Assert.That(StringGFG.EditDistance("ab", "b").Equals(true));
+    }
+
+    [Test]
+    public void Test_MultipleCharactersRemove()
+    {
+        Assert.That(StringGFG.EditDistance("abc", "b").Equals(false));
+    }
+
+    [Test]
+    public void Test_SingleCharacterRemoveFromEnd()
+    {
+        Assert.That(StringGFG.EditDistance("ab", "a").Equals(true));
+    }
+
+    [Test]
+    public void Test_SingleCharacterAdd()
+    {
+        Assert.That(StringGFG.EditDistance("b", "ab").Equals(true));
+    }
+
+    [Test]
+    public void Test_MultipleCharactersReplace()
+    {
+        Assert.That(StringGFG.EditDistance("bb", "a").Equals(false));
+    }
+
+    [Test]
+    public void Test_SingleCharacterAddToEnd()
+    {
+        Assert.That(StringGFG.EditDistance("a", "ab").Equals(true));
+    }
+
+    [Test]
+    public void Test_SingleCharacterReplaceInMiddle()
+    {
+        Assert.That(StringGFG.EditDistance("bb", "ab").Equals(true));
+    }
+
+    [Test]
+    public void Test_SingleCharacterReplaceAtStart()
+    {
+        Assert.That(StringGFG.EditDistance("ab", "bb").Equals(true));
+    }
+
+    [Test]
+    public void Test_SingleCharacterRemoveFromMiddle()
+    {
+        Assert.That(StringGFG.EditDistance("hello", "helo").Equals(true));
+    }
+
+    [Test]
+    public void Test_MultipleCharactersRemoveFromMiddle()
+    {
+        Assert.That(StringGFG.EditDistance("hello", "heo").Equals(false));
+    }
+
+    [Test]
+    public void Test_SingleCharacterAddToMiddle()
+    {
+        Assert.That(StringGFG.EditDistance("hello", "heloo").Equals(true));
+    }
+
+    [Test]
+    public void Test_MultipleCharactersAddToEnd()
+    {
+        Assert.That(StringGFG.EditDistance("hello", "heloos").Equals(false));
+    }
+
+    [Test]
+    public void Test_MultipleCharactersAddToEndAgain()
+    {
+        Assert.That(StringGFG.EditDistance("hello", "heloos").Equals(false));
+    }
+
+    [Test]
+    public void Test_SingleCharacterAddToMiddleAgain()
+    {
+        Assert.That(StringGFG.EditDistance("hello", "helllo").Equals(true));
+    }
+
+    [Test]
+    public void Test_MultipleCharactersAddToMiddle()
+    {
+        Assert.That(StringGFG.EditDistance("hello", "helllos").Equals(false));
+    }
+
+    [Test]
+    public void Test_SingleCharacterRemoveFromStart()
+    {
+        Assert.That(StringGFG.EditDistance("hello", "ello").Equals(true));
+    }
+
+    [Test]
+    public void Test_MultipleCharactersRemoveFromStart()
+    {
+        Assert.That(StringGFG.EditDistance("hello", "llo").Equals(false));
+    }
 }

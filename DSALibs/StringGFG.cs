@@ -451,10 +451,10 @@ namespace DSALibs
                 }
 
                 for (int i = 0; i < charArray.Length; i++)
-                {   
-                    if(dictCount.ContainsKey(charArray[i]))
+                {
+                    if (dictCount.ContainsKey(charArray[i]))
                     {
-                        if (ch[charArray[i]] >  dictCount[charArray[i]])
+                        if (ch[charArray[i]] > dictCount[charArray[i]])
                         {
                             dictCount[charArray[i]] = ch[charArray[i]];
                         }
@@ -467,9 +467,10 @@ namespace DSALibs
             }
 
             List<char> result = new List<char>();
-            foreach(var item in dictCount.Keys)
+            foreach (var item in dictCount.Keys)
             {
-                for (int i = 0; i < dictCount[item]; i++) {
+                for (int i = 0; i < dictCount[item]; i++)
+                {
 
                     result.Add(item);
                 }
@@ -478,5 +479,51 @@ namespace DSALibs
             return result;
         }
 
+
+        public static bool EditDistance(string input1, string input2)
+        {
+            var delta = Math.Abs(input1.Length - input2.Length);
+            if (delta > 1) return false;
+
+            int edits = 0;
+            if (delta == 0)
+            {
+                for (int i = 0; i < input1.Length; i++)
+                {
+
+                    if (input1[i] != input2[i]) { edits++; }
+
+                }
+                if (edits <= 1) { return true; }
+                else return false;
+            }
+            else
+            {
+
+                if (input1.Length > input2.Length)
+                {
+
+                    int j = 0;
+                    for (int i = 0; i < input1.Length; i++)
+                    {
+
+                        if (input1[i] == input2[j]) { j++; }
+                        else edits++;
+                    }
+                }
+                else
+                {
+                    int j = 0;
+                    for (int i = 0; i < input2.Length; i++)
+                    {
+
+                        if (input2[i] == input1[j]) { j++; }
+                        else edits++;
+                    }
+                }
+                if (edits <= 1) { return true; }
+                else return false;
+            }
+        }
     }
 }

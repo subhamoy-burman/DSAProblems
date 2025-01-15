@@ -619,4 +619,11 @@ public class Tests
     {
         Assert.That(StringGFG.EditDistance("hello", "llo").Equals(false));
     }
+
+    [Test]
+    public void TestDFSTraversal()
+    {
+        var dfsTravelList = GraphProblems.GetDFSTraversal();
+        Assert.That(dfsTravelList.SequenceEqual(new List<int> { 1, 2, 3, 4, 5 }));
+    }
 }

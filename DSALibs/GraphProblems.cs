@@ -68,5 +68,65 @@ namespace DSALibs
 
             return dfsList;
         }
+
+        public static bool IsCycleVisitedOnce(int[] arr)
+        {
+            //[2, 3, 1, -4, -4, 2]
+            int targetIndex = 0;
+            int[] visitedCount = new int[arr.Length];
+            int count = 0;
+            while(count<arr.Length) {
+
+                visitedCount[targetIndex] = visitedCount[targetIndex]+1; //0 visited //2 visited
+                targetIndex = targetIndex + arr[targetIndex]; //0 + arr[0] = 2 //2 + arr[2] = 3
+
+                if (targetIndex < 0)
+                {
+                    targetIndex = (targetIndex + arr.Length) % arr.Length;
+                }
+                else 
+                {
+                    targetIndex = targetIndex%arr.Length;
+                }
+
+                count++;
+            }
+
+            foreach (var item in visitedCount) { 
+            
+                if(item!=1) return false;
+            }
+
+            return targetIndex == 0;
+        }
+
+        public static List<int> BFSTraversal(List<List<int>> graph)
+        {
+            Queue<int> stringBfsQueue = new Queue<int>();
+            List<int> bfsOutput = new List<int>();
+            HashSet<int> visited = new HashSet<int>();
+
+            stringBfsQueue.Enqueue(1);
+            visited.Add(1);
+
+            while (stringBfsQueue.Count > 0)
+            {
+                var queueLength = stringBfsQueue.Count;
+
+                for (int i = 0; i < queueLength; i++) {
+
+                    var dequeuedItem = stringBfsQueue.Dequeue();
+                    bfsOutput.Add(dequeuedItem);
+                    foreach (var neighbour in graph[dequeuedItem])
+                    {
+                        if(visited.Contains(neighbour)) continue;
+                        stringBfsQueue.Enqueue(neighbour);
+                        visited.Add(neighbour);
+                    }
+                }
+            }
+
+            return bfsOutput;
+        }
     }
 }

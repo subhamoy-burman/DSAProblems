@@ -25,31 +25,31 @@ public class Tests
         //Input: arr[] = {1, 2, 3, 4, 5, 6} 
         //Output: arr[] = {6, 1, 5, 2, 4, 3} 
 
-        int[] input = {1, 2, 3, 4, 5, 6} ;
-        int[] expected = {6, 1, 5, 2, 4, 3};
+        int[] input = { 1, 2, 3, 4, 5, 6 };
+        int[] expected = { 6, 1, 5, 2, 4, 3 };
 
         var output = Arrays.ReArrangeWithMaxMinAlternate(input);
-        Assert.That(output.SequenceEqual(expected)); 
+        Assert.That(output.SequenceEqual(expected));
     }
 
     [Test]
     public void TestReturnKthElement()
     {
-        int[] arr1 = {2, 3, 6, 7, 9} ;
-        int[] arr2 = {1, 4, 8, 10};
+        int[] arr1 = { 2, 3, 6, 7, 9 };
+        int[] arr2 = { 1, 4, 8, 10 };
 
         int k = 5;
         var output = Arrays.FindKthMergedElement(arr1, arr2, k);
 
-        Assert.That(output,Is.EqualTo(6));
+        Assert.That(output, Is.EqualTo(6));
 
     }
 
     [Test]
     public void TestMinimumPlatforms()
     {
-        int[] arr1 = {900, 940, 950, 1100, 1500, 1800} ;
-        int[] arr2 = {910, 1200, 1120, 1130, 1900, 2000};
+        int[] arr1 = { 900, 940, 950, 1100, 1500, 1800 };
+        int[] arr2 = { 910, 1200, 1120, 1130, 1900, 2000 };
 
         int minPlatforms = Arrays.MinimumNoOfPlatforms(arr1, arr2);
 
@@ -60,7 +60,7 @@ public class Tests
     [Test]
     public void TestGetMaxReArrangeSum()
     {
-        string[] arr = {"3", "30", "34", "5", "9" };
+        string[] arr = { "3", "30", "34", "5", "9" };
         string output = Arrays.ArrangeMaximumSum(arr);
 
         Assert.That(output, Is.EqualTo("9534330"));
@@ -69,7 +69,7 @@ public class Tests
     [Test]
     public void TestQuickSort()
     {
-        int[] arr = { 4,3,1,2,5,9,7,10,6 };
+        int[] arr = { 4, 3, 1, 2, 5, 9, 7, 10, 6 };
         var output = SortingSearching.PerformQuickSort(arr);
 
         Assert.That(output.SequenceEqual([1, 2, 3, 4, 5, 6, 7, 9, 10]));
@@ -81,7 +81,7 @@ public class Tests
         int[] arr = { 7, 10, 4, 3, 20, 15 };
         int k = 3;
 
-        Assert.That(SortingSearching.FindKthSmallestElement(arr,k), Is.EqualTo(7));
+        Assert.That(SortingSearching.FindKthSmallestElement(arr, k), Is.EqualTo(7));
     }
 
     [Test]
@@ -90,7 +90,7 @@ public class Tests
         int[] arr1 = { 2, 1, 6 };
         int[] arr2 = { 1, 5 };
 
-        Assert.That(HashingGFG.CountPowerPairs(arr1,arr2), Is.EqualTo(3));
+        Assert.That(HashingGFG.CountPowerPairs(arr1, arr2), Is.EqualTo(3));
 
 
 
@@ -108,10 +108,10 @@ public class Tests
         int[] arr1 = { 1, 2, 1, 3, 4, 2, 3 };
         int[] arr2 = { 1, 2, 4, 4 };
 
-        Assert.That(HashingGFG.FindDistinctElementsInKSizedWindows(arr1, 4).SequenceEqual(new List<int> { 3,4,4,3}), Is.True );
+        Assert.That(HashingGFG.FindDistinctElementsInKSizedWindows(arr1, 4).SequenceEqual(new List<int> { 3, 4, 4, 3 }), Is.True);
 
 
-        Assert.That(HashingGFG.FindDistinctElementsInKSizedWindows(arr2, 2).SequenceEqual(new List<int> { 2,2,1}), Is.True);
+        Assert.That(HashingGFG.FindDistinctElementsInKSizedWindows(arr2, 2).SequenceEqual(new List<int> { 2, 2, 1 }), Is.True);
 
 
     }
@@ -347,7 +347,8 @@ public class Tests
     }*/
 
     [Test]
-    public void TestLongestPalindrome() {
+    public void TestLongestPalindrome()
+    {
 
         Assert.That(StringGFG.LongestPlaindromeImproved("abaxyzzyxf"), Is.EqualTo("xyzzyx"));
     }
@@ -412,7 +413,7 @@ public class Tests
         }
     }
 
-    [Test] 
+    [Test]
     public void TestValidIpAddresses()
     {
         var input = "1921680";
@@ -496,7 +497,7 @@ public class Tests
     {
         string[] words = { "this", "that", "did", "deed", "them!", "a" };
         List<char> expected = new List<char> { 't', 't', 'h', 'i', 's', 'a', 'd', 'd', 'e', 'e', 'm', '!' };
-        List<char> result =  StringGFG.ReturnMinimumCharactersForWord(words);
+        List<char> result = StringGFG.ReturnMinimumCharactersForWord(words);
         CollectionAssert.AreEquivalent(expected, result);
     }
 
@@ -625,5 +626,32 @@ public class Tests
     {
         var dfsTravelList = GraphProblems.GetDFSTraversal();
         Assert.That(dfsTravelList.SequenceEqual(new List<int> { 1, 2, 3, 4, 5 }));
+    }
+
+    [Test]
+    public void TestSingleCycle()
+    {
+        int[] array = { 2, 3, 1, -4, -4, 2 };
+        bool result = GraphProblems.IsCycleVisitedOnce(array);
+        Assert.That(result, Is.True);
+    }
+
+    [Test]
+    public void TestBfsOutput()
+    {
+        List<List<int>> adjacencyList = new List<List<int>>
+        {
+            new List<int>(),        // Placeholder for index 0 (not used)
+            new List<int> { 2, 3 }, // Neighbors of node 1
+            new List<int> { 4, 5 }, // Neighbors of node 2
+            new List<int> { 6 },    // Neighbors of node 3
+            new List<int>(),        // Neighbors of node 4
+            new List<int>(),        // Neighbors of node 5
+            new List<int>()         // Neighbors of node 6
+        };
+
+        var bfsOutput = GraphProblems.BFSTraversal(adjacencyList);
+
+        Assert.That(bfsOutput.SequenceEqual(new List<int> { 1, 2, 3, 4, 5, 6 }));
     }
 }

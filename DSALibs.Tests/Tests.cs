@@ -654,4 +654,28 @@ public class Tests
 
         Assert.That(bfsOutput.SequenceEqual(new List<int> { 1, 2, 3, 4, 5, 6 }));
     }
+
+    [Test]
+    public void TestRiverSizes()
+    {
+        // Arrange
+        int[,] matrix = new int[,]
+        {
+            { 1, 0, 0, 1, 0 },
+            { 1, 0, 1, 0, 0 },
+            { 0, 0, 1, 0, 1 },
+            { 1, 0, 1, 0, 1 },
+            { 1, 0, 1, 1, 0 }
+        };
+        List<int> expectedSizes = new List<int> { 1, 2, 2, 2, 5 };
+
+        // Act
+        List<int> result = GraphProblems.NumberOfIslands(matrix);
+
+        // Assert
+        CollectionAssert.AreEquivalent(expectedSizes, result);
+        //Assert.That(result.Equals(8));
+    }
+
+    
 }

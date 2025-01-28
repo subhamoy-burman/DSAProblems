@@ -128,5 +128,74 @@ namespace DSALibs
 
             return bfsOutput;
         }
+
+        /*
+        You're given a two-dimensional array (a matrix) of potentially unequal height and width 
+        containing only 0s and 1s. Each 0 represents land, and each 1 represents part of a river.
+        A river consists of any number of 1s that are either horizontally or vertically adjacent 
+        (but not diagonally adjacent). The number of adjacent 1s forming a river determine its size.
+
+        Note that a river can twist. In other words, 
+        it doesn't have to be a straight vertical line or a 
+        straight horizontal line; it can be L-shaped, for example.
+
+        Write a function that returns an array of the sizes of all rivers represented 
+        in the input matrix. The sizes don't need to be in any particular order.
+
+        Sample Input
+        matrix = [
+          [1, 0, 0, 1, 0],
+          [1, 0, 1, 0, 0],
+          [0, 0, 1, 0, 1],
+          [1, 0, 1, 0, 1],
+          [1, 0, 1, 1, 0],
+        ]
+        Sample Output
+        [1, 2, 2, 2, 5] // The numbers could be ordered differently.
+        */
+
+        public static List<int> NumberOfIslands(int[,] riverLands)
+        {
+            int riverCount = 0;
+            List<int> listOfRivers = new List<int>();
+            bool[,] visited = new bool [riverLands.GetLength(0), riverLands.GetLength(1)];
+            for(int i = 0; i<riverLands.GetLength(0); i++)
+            {
+                for(int j = 0; j< riverLands.GetLength(1); j++)
+                {
+                    if (!visited[i,j] && riverLands[i,j] == 1)
+                    {
+                        riverCount = 0;
+                        ArrDFS(riverLands,i,j, visited, ref riverCount);
+                        listOfRivers.Add(riverCount);
+                    }
+                }
+            }
+
+            return listOfRivers;
+        }
+
+        private static void ArrDFS(int[,] riverLands, int i, int j, bool[,] visited, ref int riverCount)
+        {
+            riverCount = riverCount + 1;
+            visited[i, j] = true;
+            int[] deltaRows = new int[] { 0, 0, 1, -1 };
+            int[] deltaCols = new int[] { 1, -1, 0, 0 };
+
+
+            for (int m = 0; m < 4; m++) { 
+            
+                int dx = i + deltaRows[m];
+                int dy = j + deltaCols[m];
+
+                if(dx>=0 && dy>=0 && dx<riverLands.GetLength(0) && dy<riverLands.GetLength(1))
+                {
+                    if (!visited[dx,dy] && riverLands[dx,dy] == 1)
+                    {
+                        ArrDFS(riverLands, dx, dy, visited, ref riverCount);
+                    }
+                }
+            }
+        }
     }
 }

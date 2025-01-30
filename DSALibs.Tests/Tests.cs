@@ -677,5 +677,15 @@ public class Tests
         //Assert.That(result.Equals(8));
     }
 
-    
+    [Test]
+    public void TestCommonAncestor()
+    {
+        Assert.That(GraphProblems.GetYoungestCommonAncestor().Equals("B"));
+    }
+
+    [Test]
+    public void TestCommonAncestorOptimal()
+    {
+        Assert.That(GraphProblems.GetYoungestCommonAncestorOptimal().Equals("B"));
+    }
 }

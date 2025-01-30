@@ -197,5 +197,183 @@ namespace DSALibs
                 }
             }
         }
+
+        public class AncestralTree
+        {
+            public string Name;
+            public AncestralTree Ancestor;
+
+            public AncestralTree(string name)
+            {
+                this.Name = name;
+                this.Ancestor = null;
+            }
+        }
+
+        public static AncestralTree BuildAndGetAncestralTree()
+        {
+            // Create nodes
+            AncestralTree A = new AncestralTree("A");
+            AncestralTree B = new AncestralTree("B");
+            AncestralTree C = new AncestralTree("C");
+            AncestralTree D = new AncestralTree("D");
+            AncestralTree E = new AncestralTree("E");
+            AncestralTree F = new AncestralTree("F");
+            AncestralTree G = new AncestralTree("G");
+            AncestralTree H = new AncestralTree("H");
+            AncestralTree I = new AncestralTree("I");
+
+            // Set ancestors
+            B.Ancestor = A;
+            C.Ancestor = A;
+            D.Ancestor = B;
+            E.Ancestor = B;
+            F.Ancestor = C;
+            G.Ancestor = C;
+            H.Ancestor = D;
+            I.Ancestor = D;
+
+            // Inputs
+            AncestralTree topAncestor = A;
+            AncestralTree descendantOne = E;
+            AncestralTree descendantTwo = I;
+
+            // You can now work on finding the youngest common ancestor
+
+            return A;
+        }
+
+        public static string GetYoungestCommonAncestor() {
+
+            // Create nodes
+            AncestralTree A = new AncestralTree("A");
+            AncestralTree B = new AncestralTree("B");
+            AncestralTree C = new AncestralTree("C");
+            AncestralTree D = new AncestralTree("D");
+            AncestralTree E = new AncestralTree("E");
+            AncestralTree F = new AncestralTree("F");
+            AncestralTree G = new AncestralTree("G");
+            AncestralTree H = new AncestralTree("H");
+            AncestralTree I = new AncestralTree("I");
+
+            // Set ancestors
+            B.Ancestor = A;
+            C.Ancestor = A;
+            D.Ancestor = B;
+            E.Ancestor = B;
+            F.Ancestor = C;
+            G.Ancestor = C;
+            H.Ancestor = D;
+            I.Ancestor = D;
+
+            // Inputs
+            AncestralTree topAncestor = A;
+            AncestralTree descendantOne = E;
+            AncestralTree descendantTwo = I;
+
+
+            List<string> pathForDescendantOne = new List<string>();
+            List<string> pathForDescendantTwo = new List<string>();
+
+            Traverse(descendantOne, pathForDescendantOne);
+            Traverse(descendantTwo, pathForDescendantTwo);
+
+            pathForDescendantOne.Reverse();
+            pathForDescendantTwo.Reverse();
+
+            string lastMatched = string.Empty;
+
+            for(int i = 0; i < Math.Min(pathForDescendantOne.Count, pathForDescendantTwo.Count); i++)
+            {
+                if (pathForDescendantOne[i] == pathForDescendantTwo[i])
+                {
+                    lastMatched = pathForDescendantOne[i];
+                }
+            }
+
+            return lastMatched;
+
+        }
+
+        private static void Traverse(AncestralTree descendant, List<string> path)
+        {
+            if (descendant.Ancestor is null)
+                return;
+
+            path.Add(descendant.Ancestor.Name);   
+            Traverse(descendant.Ancestor, path);
+        }
+
+
+        public static string GetYoungestCommonAncestorOptimal()
+        {
+
+            // Create nodes
+            AncestralTree A = new AncestralTree("A");
+            AncestralTree B = new AncestralTree("B");
+            AncestralTree C = new AncestralTree("C");
+            AncestralTree D = new AncestralTree("D");
+            AncestralTree E = new AncestralTree("E");
+            AncestralTree F = new AncestralTree("F");
+            AncestralTree G = new AncestralTree("G");
+            AncestralTree H = new AncestralTree("H");
+            AncestralTree I = new AncestralTree("I");
+
+            // Set ancestors
+            B.Ancestor = A;
+            C.Ancestor = A;
+            D.Ancestor = B;
+            E.Ancestor = B;
+            F.Ancestor = C;
+            G.Ancestor = C;
+            H.Ancestor = D;
+            I.Ancestor = D;
+
+            // Inputs
+            AncestralTree topAncestor = A;
+            AncestralTree descendantOne = E;
+            AncestralTree descendantTwo = I;
+
+            int depthOfDescendantOne = GetDepth(descendantOne);
+            int depthOfDescendantTwo = GetDepth(descendantTwo);
+
+            if(depthOfDescendantOne>depthOfDescendantTwo)
+            {
+                return GetLeveledAncestor(descendantOne, descendantTwo, depthOfDescendantOne - depthOfDescendantTwo);
+            }
+            else
+            {
+                return GetLeveledAncestor(descendantTwo, descendantOne, depthOfDescendantTwo - depthOfDescendantOne);
+            }
+
+        }
+
+        private static string GetLeveledAncestor(AncestralTree descendantOne, AncestralTree descendantTwo, int diff )
+        {
+            while(diff > 0)
+            {
+                descendantOne = descendantOne.Ancestor;
+                diff = diff - 1;
+            }
+
+            while(descendantOne != descendantTwo)
+            {
+                descendantOne = descendantOne.Ancestor;
+                descendantTwo = descendantTwo.Ancestor;
+            }
+
+            return descendantTwo.Name;
+        }
+
+        private static int GetDepth(AncestralTree descendant)
+        {
+            int depth = 0;
+            while (descendant != null) {
+            
+                descendant = descendant.Ancestor;
+                depth++;
+            }
+            return depth;
+        }
     }
 }

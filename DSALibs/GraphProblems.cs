@@ -396,6 +396,14 @@ namespace DSALibs
             return isCycleDetected;
         }
 
+        /// <summary>
+        /// Code for detecting cycle
+        /// </summary>
+        /// <param name="index"></param>
+        /// <param name="graph"></param>
+        /// <param name="listOfParents"></param>
+        /// <param name="visitedArray"></param>
+        /// <param name="isCycleDetected"></param>
         private void DFSCycle(int index, int[,] graph, List<int> listOfParents, bool[] visitedArray,ref bool isCycleDetected)
         {
             if(isCycleDetected) { return; } 

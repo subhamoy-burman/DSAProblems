@@ -375,5 +375,45 @@ namespace DSALibs
             }
             return depth;
         }
+
+        public bool DetectCycleInAGraph(int[,] graph)
+        {
+            bool[] visitedArray = new bool[graph.GetLength(0)];
+            List<int> listOfParents = new List<int>();
+            for (int i = 0; i < graph.GetLength(0); i++)
+            { 
+                listOfParents.Add(-99);
+            }
+            listOfParents[0] = -1;
+            bool isCycleDetected = false;
+            for (int i = 0; i < graph.GetLength(0); i++)
+            {
+                if (!visitedArray[i])
+                {
+                    DFSCycle(i, graph, listOfParents, visitedArray, ref isCycleDetected);
+                }
+            }
+            return isCycleDetected;
+        }
+
+        private void DFSCycle(int index, int[,] graph, List<int> listOfParents, bool[] visitedArray,ref bool isCycleDetected)
+        {
+            if(isCycleDetected) { return; } 
+            visitedArray[index] = true;
+            for (int j = 0; j < graph.GetLength(1); j++)
+            {   
+                if (graph[index, j] == 1 && visitedArray[j] != true)
+                {
+                    listOfParents[j] = index;
+                    DFSCycle(j, graph, listOfParents, visitedArray, ref isCycleDetected);
+                }
+                else if (listOfParents[index] != j)
+                {
+                    isCycleDetected = true;
+                    break;
+                }
+            }
+            
+        }
     }
 }

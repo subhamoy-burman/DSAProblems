@@ -423,5 +423,75 @@ namespace DSALibs
             }
             
         }
+
+        public static int[,] RemoveIslands(int[,] graph) {
+
+            //Go with top and bottom rows
+            int rows = graph.GetLength(0);
+            int cols = graph.GetLength(1);
+            bool[,] visited = new bool[rows, cols];
+
+            // Check top and bottom rows
+            for (int col = 0; col < cols; col++)
+            {
+                if (graph[0, col] == 1)
+                {
+                    DFSArr(0, col, graph, visited);
+                }
+                if (graph[rows - 1, col] == 1)
+                {
+                    DFSArr(rows - 1, col, graph, visited);
+                }
+            }
+
+            // Check left and right columns
+            for (int row = 0; row < rows; row++)
+            {
+                if (graph[row, 0] == 1)
+                {
+                    DFSArr(row, 0, graph, visited);
+                }
+                if (graph[row, cols - 1] == 1)
+                {
+                    DFSArr(row, cols - 1, graph, visited);
+                }
+            }
+
+            int[,] updatedGraph = new int[graph.GetLength(1), graph.GetLength(1)];
+
+            for(int i = 0; i<graph.GetLength(0); i++)
+            {
+                for(int j =0; j< graph.GetLength(1); j++)
+                {
+                    if(visited[i,j] == true)
+                    {
+                        graph[i, j] = 1;
+                    }
+                }
+            }
+
+            return graph;
+        }
+
+        private static void DFSArr(int rowIndex, int colIndex, int[,] graph, bool[,] visited)
+        {
+            visited[rowIndex, colIndex] = true;
+
+            int[] deltaX = new int[] { 1,0,-1,0};
+            int[] deltaY = new int[] { 0,1,0,-1};
+
+            for(int i = 0;i < 4;i++)
+            {
+                rowIndex = rowIndex+deltaX[i];
+                colIndex = colIndex+deltaY[i];
+
+                if(rowIndex >= 0 && rowIndex < graph.GetLength(0) && 
+                    colIndex >= 0 && colIndex< graph.GetLength(1)
+                    && !visited[rowIndex,colIndex])
+                {
+                    DFSArr(rowIndex, colIndex, graph, visited);
+                }
+            }
+        }
     }
 }

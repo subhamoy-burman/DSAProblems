@@ -8,8 +8,9 @@ namespace DSALibs
 {
     public class GraphProblems
     {
-        public static List<List<int>> GetAdjanceyList() { 
-        
+        public static List<List<int>> GetAdjanceyList()
+        {
+
             List<List<int>> adjList = new List<List<int>>();
 
             // Initialize the adjacency list with empty lists for each node
@@ -60,7 +61,7 @@ namespace DSALibs
         public static List<int> GetDFSTraversal()
         {
             int numberOfNodes = 5;
-            bool[] visited = new bool[numberOfNodes+1];
+            bool[] visited = new bool[numberOfNodes + 1];
             List<int> dfsList = new List<int>();
 
 
@@ -75,26 +76,28 @@ namespace DSALibs
             int targetIndex = 0;
             int[] visitedCount = new int[arr.Length];
             int count = 0;
-            while(count<arr.Length) {
+            while (count < arr.Length)
+            {
 
-                visitedCount[targetIndex] = visitedCount[targetIndex]+1; //0 visited //2 visited
+                visitedCount[targetIndex] = visitedCount[targetIndex] + 1; //0 visited //2 visited
                 targetIndex = targetIndex + arr[targetIndex]; //0 + arr[0] = 2 //2 + arr[2] = 3
 
                 if (targetIndex < 0)
                 {
                     targetIndex = (targetIndex + arr.Length) % arr.Length;
                 }
-                else 
+                else
                 {
-                    targetIndex = targetIndex%arr.Length;
+                    targetIndex = targetIndex % arr.Length;
                 }
 
                 count++;
             }
 
-            foreach (var item in visitedCount) { 
-            
-                if(item!=1) return false;
+            foreach (var item in visitedCount)
+            {
+
+                if (item != 1) return false;
             }
 
             return targetIndex == 0;
@@ -113,13 +116,14 @@ namespace DSALibs
             {
                 var queueLength = stringBfsQueue.Count;
 
-                for (int i = 0; i < queueLength; i++) {
+                for (int i = 0; i < queueLength; i++)
+                {
 
                     var dequeuedItem = stringBfsQueue.Dequeue();
                     bfsOutput.Add(dequeuedItem);
                     foreach (var neighbour in graph[dequeuedItem])
                     {
-                        if(visited.Contains(neighbour)) continue;
+                        if (visited.Contains(neighbour)) continue;
                         stringBfsQueue.Enqueue(neighbour);
                         visited.Add(neighbour);
                     }
@@ -158,15 +162,15 @@ namespace DSALibs
         {
             int riverCount = 0;
             List<int> listOfRivers = new List<int>();
-            bool[,] visited = new bool [riverLands.GetLength(0), riverLands.GetLength(1)];
-            for(int i = 0; i<riverLands.GetLength(0); i++)
+            bool[,] visited = new bool[riverLands.GetLength(0), riverLands.GetLength(1)];
+            for (int i = 0; i < riverLands.GetLength(0); i++)
             {
-                for(int j = 0; j< riverLands.GetLength(1); j++)
+                for (int j = 0; j < riverLands.GetLength(1); j++)
                 {
-                    if (!visited[i,j] && riverLands[i,j] == 1)
+                    if (!visited[i, j] && riverLands[i, j] == 1)
                     {
                         riverCount = 0;
-                        ArrDFS(riverLands,i,j, visited, ref riverCount);
+                        ArrDFS(riverLands, i, j, visited, ref riverCount);
                         listOfRivers.Add(riverCount);
                     }
                 }
@@ -183,14 +187,15 @@ namespace DSALibs
             int[] deltaCols = new int[] { 1, -1, 0, 0 };
 
 
-            for (int m = 0; m < 4; m++) { 
-            
+            for (int m = 0; m < 4; m++)
+            {
+
                 int dx = i + deltaRows[m];
                 int dy = j + deltaCols[m];
 
-                if(dx>=0 && dy>=0 && dx<riverLands.GetLength(0) && dy<riverLands.GetLength(1))
+                if (dx >= 0 && dy >= 0 && dx < riverLands.GetLength(0) && dy < riverLands.GetLength(1))
                 {
-                    if (!visited[dx,dy] && riverLands[dx,dy] == 1)
+                    if (!visited[dx, dy] && riverLands[dx, dy] == 1)
                     {
                         ArrDFS(riverLands, dx, dy, visited, ref riverCount);
                     }
@@ -243,7 +248,8 @@ namespace DSALibs
             return A;
         }
 
-        public static string GetYoungestCommonAncestor() {
+        public static string GetYoungestCommonAncestor()
+        {
 
             // Create nodes
             AncestralTree A = new AncestralTree("A");
@@ -283,7 +289,7 @@ namespace DSALibs
 
             string lastMatched = string.Empty;
 
-            for(int i = 0; i < Math.Min(pathForDescendantOne.Count, pathForDescendantTwo.Count); i++)
+            for (int i = 0; i < Math.Min(pathForDescendantOne.Count, pathForDescendantTwo.Count); i++)
             {
                 if (pathForDescendantOne[i] == pathForDescendantTwo[i])
                 {
@@ -300,7 +306,7 @@ namespace DSALibs
             if (descendant.Ancestor is null)
                 return;
 
-            path.Add(descendant.Ancestor.Name);   
+            path.Add(descendant.Ancestor.Name);
             Traverse(descendant.Ancestor, path);
         }
 
@@ -337,7 +343,7 @@ namespace DSALibs
             int depthOfDescendantOne = GetDepth(descendantOne);
             int depthOfDescendantTwo = GetDepth(descendantTwo);
 
-            if(depthOfDescendantOne>depthOfDescendantTwo)
+            if (depthOfDescendantOne > depthOfDescendantTwo)
             {
                 return GetLeveledAncestor(descendantOne, descendantTwo, depthOfDescendantOne - depthOfDescendantTwo);
             }
@@ -348,15 +354,15 @@ namespace DSALibs
 
         }
 
-        private static string GetLeveledAncestor(AncestralTree descendantOne, AncestralTree descendantTwo, int diff )
+        private static string GetLeveledAncestor(AncestralTree descendantOne, AncestralTree descendantTwo, int diff)
         {
-            while(diff > 0)
+            while (diff > 0)
             {
                 descendantOne = descendantOne.Ancestor;
                 diff = diff - 1;
             }
 
-            while(descendantOne != descendantTwo)
+            while (descendantOne != descendantTwo)
             {
                 descendantOne = descendantOne.Ancestor;
                 descendantTwo = descendantTwo.Ancestor;
@@ -368,8 +374,9 @@ namespace DSALibs
         private static int GetDepth(AncestralTree descendant)
         {
             int depth = 0;
-            while (descendant != null) {
-            
+            while (descendant != null)
+            {
+
                 descendant = descendant.Ancestor;
                 depth++;
             }
@@ -381,7 +388,7 @@ namespace DSALibs
             bool[] visitedArray = new bool[graph.GetLength(0)];
             List<int> listOfParents = new List<int>();
             for (int i = 0; i < graph.GetLength(0); i++)
-            { 
+            {
                 listOfParents.Add(-99);
             }
             listOfParents[0] = -1;
@@ -404,12 +411,12 @@ namespace DSALibs
         /// <param name="listOfParents"></param>
         /// <param name="visitedArray"></param>
         /// <param name="isCycleDetected"></param>
-        private void DFSCycle(int index, int[,] graph, List<int> listOfParents, bool[] visitedArray,ref bool isCycleDetected)
+        private void DFSCycle(int index, int[,] graph, List<int> listOfParents, bool[] visitedArray, ref bool isCycleDetected)
         {
-            if(isCycleDetected) { return; } 
+            if (isCycleDetected) { return; }
             visitedArray[index] = true;
             for (int j = 0; j < graph.GetLength(1); j++)
-            {   
+            {
                 if (graph[index, j] == 1 && visitedArray[j] != true)
                 {
                     listOfParents[j] = index;
@@ -421,10 +428,11 @@ namespace DSALibs
                     break;
                 }
             }
-            
+
         }
 
-        public static int[,] RemoveIslands(int[,] graph) {
+        public static int[,] RemoveIslands(int[,] graph)
+        {
 
             //Go with top and bottom rows
             int rows = graph.GetLength(0);
@@ -459,11 +467,11 @@ namespace DSALibs
 
             int[,] updatedGraph = new int[graph.GetLength(1), graph.GetLength(1)];
 
-            for(int i = 0; i<graph.GetLength(0); i++)
+            for (int i = 0; i < graph.GetLength(0); i++)
             {
-                for(int j =0; j< graph.GetLength(1); j++)
+                for (int j = 0; j < graph.GetLength(1); j++)
                 {
-                    if(visited[i,j] == true)
+                    if (visited[i, j] == true)
                     {
                         graph[i, j] = 1;
                     }
@@ -477,21 +485,89 @@ namespace DSALibs
         {
             visited[rowIndex, colIndex] = true;
 
-            int[] deltaX = new int[] { 1,0,-1,0};
-            int[] deltaY = new int[] { 0,1,0,-1};
+            int[] deltaX = new int[] { 1, 0, -1, 0 };
+            int[] deltaY = new int[] { 0, 1, 0, -1 };
 
-            for(int i = 0;i < 4;i++)
+            for (int i = 0; i < 4; i++)
             {
-                rowIndex = rowIndex+deltaX[i];
-                colIndex = colIndex+deltaY[i];
+                rowIndex = rowIndex + deltaX[i];
+                colIndex = colIndex + deltaY[i];
 
-                if(rowIndex >= 0 && rowIndex < graph.GetLength(0) && 
-                    colIndex >= 0 && colIndex< graph.GetLength(1)
-                    && !visited[rowIndex,colIndex])
+                if (rowIndex >= 0 && rowIndex < graph.GetLength(0) &&
+                    colIndex >= 0 && colIndex < graph.GetLength(1)
+                    && !visited[rowIndex, colIndex])
                 {
                     DFSArr(rowIndex, colIndex, graph, visited);
                 }
             }
+        }
+
+
+        public static bool IsBipartite(List<List<int>> adjList)
+        {
+
+            int[] colorArray = new int[adjList.Count];
+
+            for (int i = 0; i < colorArray.Length; i++)
+            {
+                colorArray[i] = -1;
+            }
+
+            for (int start = 0; start < adjList.Count; start++)
+            {
+
+                Queue<int> queue = new Queue<int>();
+                queue.Enqueue(start);
+                colorArray[start] = 0;
+
+
+                while (queue.Count > 0)
+                {
+                    int queueValue = queue.Dequeue();
+                    foreach(var adjV in adjList[queueValue])
+                    { 
+                        if (!isColorable(colorArray, adjV, adjList, queueValue))
+                        {
+                            return false;
+                        }
+
+                        if (colorArray[adjV] == -1)
+                        {
+                            if (colorArray[queueValue] == 0)
+                            {
+                                colorArray[adjV] = 1;
+                                queue.Enqueue(adjV);
+                            }
+                            else
+                            {
+                                colorArray[adjV] = 0;
+                                queue.Enqueue(adjV);
+                            }
+                        }
+
+                    }
+
+                }
+            }
+
+
+
+            return true;
+        }
+
+        private static bool isColorable(int[] colorArray, int adjV, List<List<int>> adjList, int currentNode)
+        {
+            foreach (var item in adjList[adjV])
+            {
+
+                if (colorArray[item] == colorArray[currentNode])
+                {
+
+                    return false;
+                }
+            }
+
+            return true;
         }
     }
 }

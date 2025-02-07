@@ -524,8 +524,8 @@ namespace DSALibs
                 while (queue.Count > 0)
                 {
                     int queueValue = queue.Dequeue();
-                    foreach(var adjV in adjList[queueValue])
-                    { 
+                    foreach (var adjV in adjList[queueValue])
+                    {
                         if (!isColorable(colorArray, adjV, adjList, queueValue))
                         {
                             return false;
@@ -568,6 +568,101 @@ namespace DSALibs
             }
 
             return true;
+        }
+
+
+        public class TrieNode
+        {
+            public char TrieChar { get; set; }
+            public bool IsEnd { get; set; }
+            public Dictionary<char, TrieNode> Childrens { get; set; }
+            public string Word { get; set; }
+        }
+
+        public class Trie
+        {
+            public TrieNode rootNode;
+
+            public Trie()
+            {
+                rootNode = new TrieNode();
+            }
+
+            public void InsertNode(string word)
+            {
+                var node = rootNode;
+                foreach (var ch in word)
+                {
+                    if (!rootNode.Childrens.ContainsKey(ch))
+                    {
+                        node.Childrens[ch] = new TrieNode();
+                    }
+                }
+                node.IsEnd = true;
+                node.Word = word;
+            }
+        }
+
+        public List<string> BoggleBoard(char[,] board, List<string> listOfWord)
+        {
+            Trie trieOfWords = new Trie();
+            foreach(var word in listOfWord)
+            {
+                trieOfWords.InsertNode(word);
+            }
+
+            int rows = board.GetLength(0);
+            int columns = board.GetLength(1);
+
+            bool[,] visited = new bool[rows, columns];
+            List<string> result = new List<string>();
+
+            string currString = string.Empty;
+
+            for(int i= 0; i < rows; i++)
+            {
+                for(int j=0; j < columns; j++)
+                {
+                    DFSBoggle(i,j,board, trieOfWords.rootNode, result, visited);
+                }
+            }
+
+            return result;
+        }
+
+        private void DFSBoggle(int i, int j, char[,] board, TrieNode listOfWord, List<string> result, bool[,] visited)
+        {
+            if (!listOfWord.Childrens.ContainsKey(board[i, j]))
+            {
+                return;
+            }
+
+            var currentNode = listOfWord.Childrens[board[i, j]];
+
+            if(currentNode.IsEnd)
+            {
+                result.Add(currentNode.Word);
+            }
+
+            int[] deltaX = { -1, -1, 0, 1, 1, 1, 0, -1 };
+            int[] deltaY = { 0, 1, 1, 1, 0, -1, -1, 1 };
+            visited[i,j] = true;
+
+            for(i = 0; i<8; i++)
+            {
+                int rowIndex = i + deltaX[i];
+                int colIndex = j + deltaY[i];
+
+                if(rowIndex >= 0 && rowIndex < board.GetLength(0) && colIndex >=0 && colIndex < board.GetLength(1))
+                {
+                    if (!visited[rowIndex, colIndex]) {
+
+                        DFSBoggle(rowIndex, colIndex, board, currentNode, result, visited);
+                    }
+                }
+            }
+
+            visited[i,j] = false;
         }
     }
 }

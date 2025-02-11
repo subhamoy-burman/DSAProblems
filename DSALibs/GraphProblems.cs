@@ -525,12 +525,7 @@ namespace DSALibs
                 {
                     int queueValue = queue.Dequeue();
                     foreach (var adjV in adjList[queueValue])
-                    {
-                        if (!isColorable(colorArray, adjV, adjList, queueValue))
-                        {
-                            return false;
-                        }
-
+                    {   
                         if (colorArray[adjV] == -1)
                         {
                             if (colorArray[queueValue] == 0)
@@ -544,14 +539,17 @@ namespace DSALibs
                                 queue.Enqueue(adjV);
                             }
                         }
+                        else
+                        {
+                            //Check wheather code colorArray
+                            if(colorArray[queueValue] == colorArray[adjV])
+                                return false;
+                        }
 
                     }
 
                 }
             }
-
-
-
             return true;
         }
 

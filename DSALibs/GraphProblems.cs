@@ -553,21 +553,6 @@ namespace DSALibs
             return true;
         }
 
-        private static bool isColorable(int[] colorArray, int adjV, List<List<int>> adjList, int currentNode)
-        {
-            foreach (var item in adjList[adjV])
-            {
-
-                if (colorArray[item] == colorArray[currentNode])
-                {
-
-                    return false;
-                }
-            }
-
-            return true;
-        }
-
 
         public class TrieNode
         {
@@ -661,6 +646,69 @@ namespace DSALibs
             }
 
             visited[i,j] = false;
+        }
+
+
+        public class DSU
+        {
+            public int[] Parents { get; set; }
+            public int[] Ranks { get; set; }
+
+            public DSU(int[,] graph)
+            {
+                Parents = new int[graph.GetLength(0)];
+                for(int i = 0;i<graph.GetLength(0);i++)
+                {
+                    Parents[i] = i;
+                }
+
+                Ranks = new int[graph.GetLength(0)];
+                for(int i = 0;i < graph.GetLength(0);i++)
+                {
+                    Ranks[i] = 0;
+                }
+            }
+
+            public int FindParent(int index) {
+
+                if (Parents[index] == index)
+                {
+                    return index;
+                }
+                return Parents[index] = FindParent(Parents[index]);
+            }
+
+            public void Union(int[,] graph) {
+
+                for(int i = 0; i<graph.GetLength(0);i++)
+                {
+                    for(int j = 0; j<graph.GetLength(1);j++)
+                    {
+                        if (graph[i,j] == 1)
+                        {
+                            var parentOfi = FindParent(i);
+                            var parentOfj = FindParent(j);
+
+                            if(Ranks[parentOfi] > Ranks[parentOfj])
+                            {
+                                Parents[parentOfj] = parentOfi;
+                            }
+                            else if (Ranks[parentOfi] < Ranks[parentOfj])
+                            {
+                                Parents[parentOfi] = parentOfj;
+                            }
+                            else
+                            {
+                                Parents[parentOfj] = parentOfi;
+                                Ranks[parentOfi] = Ranks[parentOfi] + 1;
+                            }
+
+                        }
+                    }
+                }
+                
+            }
+
         }
     }
 }

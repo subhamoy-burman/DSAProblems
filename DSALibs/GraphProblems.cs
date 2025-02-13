@@ -525,7 +525,7 @@ namespace DSALibs
                 {
                     int queueValue = queue.Dequeue();
                     foreach (var adjV in adjList[queueValue])
-                    {   
+                    {
                         if (colorArray[adjV] == -1)
                         {
                             if (colorArray[queueValue] == 0)
@@ -542,7 +542,7 @@ namespace DSALibs
                         else
                         {
                             //Check wheather code colorArray
-                            if(colorArray[queueValue] == colorArray[adjV])
+                            if (colorArray[queueValue] == colorArray[adjV])
                                 return false;
                         }
 
@@ -589,7 +589,7 @@ namespace DSALibs
         public List<string> BoggleBoard(char[,] board, List<string> listOfWord)
         {
             Trie trieOfWords = new Trie();
-            foreach(var word in listOfWord)
+            foreach (var word in listOfWord)
             {
                 trieOfWords.InsertNode(word);
             }
@@ -602,11 +602,11 @@ namespace DSALibs
 
             string currString = string.Empty;
 
-            for(int i= 0; i < rows; i++)
+            for (int i = 0; i < rows; i++)
             {
-                for(int j=0; j < columns; j++)
+                for (int j = 0; j < columns; j++)
                 {
-                    DFSBoggle(i,j,board, trieOfWords.rootNode, result, visited);
+                    DFSBoggle(i, j, board, trieOfWords.rootNode, result, visited);
                 }
             }
 
@@ -622,30 +622,31 @@ namespace DSALibs
 
             var currentNode = listOfWord.Childrens[board[i, j]];
 
-            if(currentNode.IsEnd)
+            if (currentNode.IsEnd)
             {
                 result.Add(currentNode.Word);
             }
 
             int[] deltaX = { -1, -1, 0, 1, 1, 1, 0, -1 };
             int[] deltaY = { 0, 1, 1, 1, 0, -1, -1, 1 };
-            visited[i,j] = true;
+            visited[i, j] = true;
 
-            for(i = 0; i<8; i++)
+            for (i = 0; i < 8; i++)
             {
                 int rowIndex = i + deltaX[i];
                 int colIndex = j + deltaY[i];
 
-                if(rowIndex >= 0 && rowIndex < board.GetLength(0) && colIndex >=0 && colIndex < board.GetLength(1))
+                if (rowIndex >= 0 && rowIndex < board.GetLength(0) && colIndex >= 0 && colIndex < board.GetLength(1))
                 {
-                    if (!visited[rowIndex, colIndex]) {
+                    if (!visited[rowIndex, colIndex])
+                    {
 
                         DFSBoggle(rowIndex, colIndex, board, currentNode, result, visited);
                     }
                 }
             }
 
-            visited[i,j] = false;
+            visited[i, j] = false;
         }
 
 
@@ -657,19 +658,20 @@ namespace DSALibs
             public DSU(int[,] graph)
             {
                 Parents = new int[graph.GetLength(0)];
-                for(int i = 0;i<graph.GetLength(0);i++)
+                for (int i = 0; i < graph.GetLength(0); i++)
                 {
                     Parents[i] = i;
                 }
 
                 Ranks = new int[graph.GetLength(0)];
-                for(int i = 0;i < graph.GetLength(0);i++)
+                for (int i = 0; i < graph.GetLength(0); i++)
                 {
                     Ranks[i] = 0;
                 }
             }
 
-            public int FindParent(int index) {
+            public int FindParent(int index)
+            {
 
                 if (Parents[index] == index)
                 {
@@ -678,37 +680,34 @@ namespace DSALibs
                 return Parents[index] = FindParent(Parents[index]);
             }
 
-            public void Union(int[,] graph) {
+            public void Union(int node1, int node2)
+            {
+                var parentOfi = FindParent(node1);
+                var parentOfj = FindParent(node2);
 
-                for(int i = 0; i<graph.GetLength(0);i++)
+                if(parentOfj == parentOfi)
                 {
-                    for(int j = 0; j<graph.GetLength(1);j++)
-                    {
-                        if (graph[i,j] == 1)
-                        {
-                            var parentOfi = FindParent(i);
-                            var parentOfj = FindParent(j);
-
-                            if(Ranks[parentOfi] > Ranks[parentOfj])
-                            {
-                                Parents[parentOfj] = parentOfi;
-                            }
-                            else if (Ranks[parentOfi] < Ranks[parentOfj])
-                            {
-                                Parents[parentOfi] = parentOfj;
-                            }
-                            else
-                            {
-                                Parents[parentOfj] = parentOfi;
-                                Ranks[parentOfi] = Ranks[parentOfi] + 1;
-                            }
-
-                        }
-                    }
+                    return;
                 }
-                
+
+                if (Ranks[parentOfi] > Ranks[parentOfj])
+                {
+                    Parents[parentOfj] = parentOfi;
+                }
+                else if (Ranks[parentOfi] < Ranks[parentOfj])
+                {
+                    Parents[parentOfi] = parentOfj;
+                }
+                else
+                {
+                    Parents[parentOfj] = parentOfi;
+                    Ranks[parentOfi] = Ranks[parentOfi] + 1;
+                }
+
             }
 
         }
+
     }
 }
+

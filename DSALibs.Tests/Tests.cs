@@ -688,4 +688,10 @@ public class Tests
     {
         Assert.That(GraphProblems.GetYoungestCommonAncestorOptimal().Equals("B"));
     }
+
+    [Test]
+    public void TestStackPathProblem()
+    {
+        StackProblems.PathOutput("/foo/../test/../test/../foo//bar/./baz");
+    }
 }

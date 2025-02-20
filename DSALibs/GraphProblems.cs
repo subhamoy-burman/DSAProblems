@@ -672,7 +672,6 @@ namespace DSALibs
 
             public int FindParent(int index)
             {
-
                 if (Parents[index] == index)
                 {
                     return index;

@@ -72,12 +72,12 @@ namespace DSALibs
 
             Stack<string> stackOfPath = new Stack<string>();
 
-            for(int i = output.Count - 1; i >= 0; i--) 
+            for (int i = output.Count - 1; i >= 0; i--)
             {
 
                 if (output[i] == "..")
                 {
-                    if(stackOfPath.Count>0) stackOfPath.Pop();
+                    if (stackOfPath.Count > 0) stackOfPath.Pop();
                     continue;
                 }
 
@@ -100,5 +100,49 @@ namespace DSALibs
             return pathBuilder.ToString();
         }
 
+
+        public static int LargestRectangleUnderSkyline(int[] heights)
+        {
+            int n = heights.Length;
+            if (n == 0) return 0;
+
+            int[] left = new int[n];  // Previous smaller indices
+            int[] right = new int[n]; // Next smaller indices
+            Stack<int> stack = new Stack<int>();
+
+            // Compute previous smaller elements
+            for (int i = 0; i < n; i++)
+            {
+                while (stack.Count > 0 && heights[stack.Peek()] >= heights[i])
+                {
+                    stack.Pop();
+                }
+                left[i] = stack.Count == 0 ? -1 : stack.Peek();
+                stack.Push(i);
+            }
+
+            stack.Clear();
+
+            // Compute next smaller elements
+            for (int i = n - 1; i >= 0; i--)
+            {
+                while (stack.Count > 0 && heights[stack.Peek()] >= heights[i])
+                {
+                    stack.Pop();
+                }
+                right[i] = stack.Count == 0 ? n : stack.Peek();
+                stack.Push(i);
+            }
+
+            // Calculate max area
+            int maxArea = 0;
+            for (int i = 0; i < n; i++)
+            {
+                int width = right[i] - left[i] - 1;
+                maxArea = Math.Max(maxArea, heights[i] * width);
+            }
+
+            return maxArea;
+        }
     }
 }

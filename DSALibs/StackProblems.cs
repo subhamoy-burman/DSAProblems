@@ -1,4 +1,5 @@
 ﻿using System;
+using System.Collections;
 using System.Collections.Generic;
 using System.Linq;
 using System.Text;
@@ -143,6 +144,41 @@ namespace DSALibs
             }
 
             return maxArea;
+        }
+
+        public static int LargestPossibleNumber(string stringOfDigits, int numOfDigits)
+        {
+            Stack<int> stackOfNumbers = new Stack<int>();
+            stackOfNumbers.Push(stringOfDigits[0] - '0');
+
+            for (int i = 1; i < stringOfDigits.Length; i++) {
+
+                int arrayNum = stringOfDigits[i] - '0';
+                while (stackOfNumbers.Count>0 && arrayNum > stackOfNumbers.Peek() && numOfDigits>0)
+                {
+                    stackOfNumbers.Pop();
+                    numOfDigits--;
+                }
+                stackOfNumbers.Push(arrayNum - '0');
+            }
+
+            // Remove remaining digits from the end if needed
+            while (numOfDigits > 0 && stackOfNumbers.Count > 0)
+            {
+                stackOfNumbers.Pop();
+                numOfDigits--;
+            }
+
+            int num = stackOfNumbers.Pop();
+            int power = 1;
+
+            while (stackOfNumbers.Count > 0)
+            {
+                num = num + Convert.ToInt32(stackOfNumbers.Pop()*Math.Pow(10,power));
+                power++;
+            }
+
+            return num;
         }
     }
 }

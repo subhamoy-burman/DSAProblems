@@ -151,10 +151,11 @@ namespace DSALibs
             Stack<int> stackOfNumbers = new Stack<int>();
             stackOfNumbers.Push(stringOfDigits[0] - '0');
 
-            for (int i = 1; i < stringOfDigits.Length; i++) {
+            for (int i = 1; i < stringOfDigits.Length; i++)
+            {
 
                 int arrayNum = stringOfDigits[i] - '0';
-                while (stackOfNumbers.Count>0 && arrayNum > stackOfNumbers.Peek() && numOfDigits>0)
+                while (stackOfNumbers.Count > 0 && arrayNum > stackOfNumbers.Peek() && numOfDigits > 0)
                 {
                     stackOfNumbers.Pop();
                     numOfDigits--;
@@ -174,11 +175,46 @@ namespace DSALibs
 
             while (stackOfNumbers.Count > 0)
             {
-                num = num + Convert.ToInt32(stackOfNumbers.Pop()*Math.Pow(10,power));
+                num = num + Convert.ToInt32(stackOfNumbers.Pop() * Math.Pow(10, power));
                 power++;
             }
 
             return num;
+        }
+
+
+        public static List<int> SortResultStack(int[] arrayList)
+        {
+            var list = new List<int>(arrayList);
+            return SortStack(list);
+        }
+
+        private static List<int> SortStack(List<int> list)
+        {
+            if (list.Count == 0)
+                return list;
+
+            var element = list.LastOrDefault();
+            list.RemoveAt(list.Count - 1);
+            SortStack(list);
+            InsertInPlace(list, element);
+            return list;
+        }
+
+        private static void InsertInPlace(List<int> list, int element)
+        {
+            if (list.Count == 0 || list.LastOrDefault() <= element)
+            {
+                list.Add(element);
+                return;
+            }
+            else
+            {
+                var lastElement = list.LastOrDefault();
+                list.RemoveAt(list.Count - 1);
+                InsertInPlace(list, element);
+                list.Add(lastElement);
+            }
         }
     }
 }

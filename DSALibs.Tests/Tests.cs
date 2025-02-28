@@ -694,4 +694,12 @@ public class Tests
     {
         StackProblems.PathOutput("/foo/../test/../test/../foo//bar/./baz");
     }
+
+    [Test]
+    public void TestStackCircularNextGreater()
+    {
+        var array = new int[] { 3,8,4};
+        var array2 = new int[] { 5, 3, 5 };
+        int[] arr = StackProblems.NextGreaterCircular(array);
+    }
 }

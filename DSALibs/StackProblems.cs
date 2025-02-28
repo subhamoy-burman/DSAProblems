@@ -216,5 +216,51 @@ namespace DSALibs
                 list.Add(lastElement);
             }
         }
+
+        public static int[] NextGreaterCircular(int[] arrayList)
+        {
+            List<int> outputArray = new List<int>();
+            Stack<int> stack = new Stack<int>();
+            stack.Push(int.MinValue);
+
+            for (int i = arrayList.Length - 1; i >= 0; i--)
+            {
+                while (arrayList[i] >= stack.Peek() && stack.Peek() != int.MinValue)
+                {
+                    stack.Pop();
+                }
+
+
+                if (stack.Peek() == int.MinValue)
+                {
+                    for (int j = 0; j < i; j++)
+                    {
+                        if (arrayList[j] > arrayList[i])
+                        {
+                            outputArray.Add(arrayList[j]);
+                            stack.Push(arrayList[i]);
+                            break;
+                        }
+                    }
+
+                    if(stack.Peek() == int.MinValue)
+                    {
+                        outputArray.Add(-1);
+                        stack.Push(arrayList[i]);
+                    }
+
+                }
+                else
+                {
+                    outputArray.Add(stack.Peek());
+                    stack.Push(arrayList[i]);
+                }
+            }
+            var result = outputArray.ToArray();
+            Array.Reverse(result);
+
+            return result;
+            
+        }
     }
 }

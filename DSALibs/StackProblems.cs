@@ -243,7 +243,7 @@ namespace DSALibs
                         }
                     }
 
-                    if(stack.Peek() == int.MinValue)
+                    if (stack.Peek() == int.MinValue)
                     {
                         outputArray.Add(-1);
                         stack.Push(arrayList[i]);
@@ -260,7 +260,44 @@ namespace DSALibs
             Array.Reverse(result);
 
             return result;
-            
+
+        }
+
+        private static int GetResult(int operand1, int operand2, string operation)
+        {
+            switch (operation)
+            {
+                case "+":
+                    return operand2 + operand1;
+                case "-":
+                    return operand2 - operand1;
+                case "*":
+                    return operand2 * operand1;
+                case "/":
+                    return operand2 / operand1;
+                default:
+                    throw new InvalidOperationException("Invalid operation");
+            }
+        }
+
+        public static int PolishNotationOutput(string[] tokensArray)
+        {
+            Stack<int> operardsStack = new Stack<int>();
+
+            foreach (string token in tokensArray)
+            {
+                if (token == "+" || token == "-" || token == "*" || token == "/")
+                {
+                    var result = GetResult(operardsStack.Pop(), operardsStack.Pop(), token);
+                    operardsStack.Push(result);
+                }
+                else
+                {
+                    operardsStack.Push(int.Parse(token));
+                }
+            }
+
+            return operardsStack.Pop();
         }
     }
 }

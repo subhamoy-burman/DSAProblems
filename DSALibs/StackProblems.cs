@@ -299,5 +299,49 @@ namespace DSALibs
 
             return operardsStack.Pop();
         }
+
+        public static List<int> CollidingAsteroids(int[] asteroids)
+        {
+            var asteroidStack = new Stack<int>();
+            var collidedList = new List<int>();
+            for (int i = asteroids.Length - 1; i >= 0; i--)
+            {
+                asteroidStack.Push(asteroids[i]);
+            }
+
+            while (asteroidStack.Count >= 2)
+            {
+                var lastTop = asteroidStack.Pop();
+                var secondLastTop = asteroidStack.Pop();
+
+                if (lastTop > 0 && secondLastTop < 0)
+                {
+                    if (Math.Abs(lastTop) == Math.Abs(secondLastTop))
+                    {
+                        continue;
+                    }
+                    else if (Math.Abs(lastTop) > Math.Abs(secondLastTop))
+                    {
+                        asteroidStack.Push(lastTop);
+                    }
+                    else
+                    {
+                        asteroidStack.Push(secondLastTop);
+                    }
+                }
+                else 
+                {
+                    asteroidStack.Push(secondLastTop);
+                    collidedList.Add(lastTop);
+                }
+            }
+
+            if(asteroidStack.Count == 1)
+            {
+                collidedList.Add(asteroidStack.Pop());
+            }
+
+            return collidedList;
+        }
     }
 }

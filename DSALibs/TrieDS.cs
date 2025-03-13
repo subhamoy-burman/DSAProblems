@@ -1,5 +1,6 @@
 ﻿using System;
 using System.Collections.Generic;
+using System.Diagnostics.CodeAnalysis;
 using System.Linq;
 using System.Text;
 using System.Threading.Tasks;
@@ -20,6 +21,7 @@ namespace DSALibs
                     currentNode.Childrens.Add(character, new TrieNode());
                 }
                 currentNode = currentNode.Childrens[character];
+                currentNode.PrefixCount = currentNode.PrefixCount + 1;
             }
 
             currentNode.IsLeaf = true;
@@ -27,7 +29,6 @@ namespace DSALibs
 
         public bool Search(string word)
         {
-
             var currentNode = RootNode;
 
             foreach (var character in word)
@@ -35,7 +36,6 @@ namespace DSALibs
 
                 if (!currentNode.Childrens.ContainsKey(character))
                 {
-
                     return false;
                 }
                 currentNode = currentNode.Childrens[character];
@@ -43,6 +43,40 @@ namespace DSALibs
 
             return currentNode.IsLeaf;
 
+        }
+
+        public string GetHighestFrequencyPrefix(string[] words)
+        {
+            foreach (var word in words)
+            {
+                Insert(word);
+            }
+
+            var nodeChildrens = RootNode.Childrens;
+            KeyValuePair<char, int> characterCountKvp = new('\0', 0);
+            int maxCount = 0;
+
+            foreach (var node in nodeChildrens) { 
+            
+                if(node.Value.PrefixCount > maxCount)
+                {
+                    maxCount = node.Value.PrefixCount;
+                    characterCountKvp = new KeyValuePair<char, int>(node.Key, node.Value.PrefixCount);
+                }
+            }
+
+            //Search By key and prefix count
+            var rootNode = RootNode.Childrens[characterCountKvp.Key];
+
+            StringBuilder result = new StringBuilder();
+            while(rootNode.PrefixCount == characterCountKvp.Value)
+            {
+                char valueToAppend = rootNode.Childrens.Where(x => x.Value.PrefixCount == maxCount).FirstOrDefault().Key;
+                result.Append(valueToAppend);
+                rootNode = rootNode.Childrens[valueToAppend];
+            }
+
+            return result.ToString();
         }
 
         public TrieNode BuildSuffix(string str)
@@ -81,7 +115,7 @@ namespace DSALibs
 
         public void BuildSuffix(string str)
         {
-            for(int i = 0; i < str.Length; i++)
+            for (int i = 0; i < str.Length; i++)
             {
                 BuildSuffixTree(str.Substring(i));
             }
@@ -89,6 +123,7 @@ namespace DSALibs
 
         private void BuildSuffixTree(string subStr)
         {
+            var node = RootNode;
             foreach (var item in subStr)
             {
                 if (!node.Childrens.ContainsKey(item))
@@ -97,17 +132,20 @@ namespace DSALibs
                 }
                 node = node.Childrens[item];
             }
+            node.IsLeaf = true;
         }
     }
 
     public class TrieNode
     {
         public Dictionary<char, TrieNode> Childrens;
+        public int PrefixCount { get; set; }
         public bool IsLeaf { get; set; }
 
         public TrieNode()
         {
             Childrens = new Dictionary<char, TrieNode>();
+            PrefixCount = 0;
         }
     }
 }

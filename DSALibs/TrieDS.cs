@@ -52,32 +52,41 @@ namespace DSALibs
                 Insert(word);
             }
 
-            var nodeChildrens = RootNode.Childrens;
-            KeyValuePair<char, int> characterCountKvp = new('\0', 0);
-            int maxCount = 0;
+            string result = string.Empty;
+            int maxFrequency = 0;
+            int maxLength = 0;
 
-            foreach (var node in nodeChildrens) { 
-            
-                if(node.Value.PrefixCount > maxCount)
-                {
-                    maxCount = node.Value.PrefixCount;
-                    characterCountKvp = new KeyValuePair<char, int>(node.Key, node.Value.PrefixCount);
-                }
-            }
 
-            //Search By key and prefix count
-            var rootNode = RootNode.Childrens[characterCountKvp.Key];
-
-            StringBuilder result = new StringBuilder();
-            while(rootNode.PrefixCount == characterCountKvp.Value)
+            void TrieDFS(TrieNode node, string currentPrefix)
             {
-                char valueToAppend = rootNode.Childrens.Where(x => x.Value.PrefixCount == maxCount).FirstOrDefault().Key;
-                result.Append(valueToAppend);
-                rootNode = rootNode.Childrens[valueToAppend];
+                if(node ==null)
+                {
+                    return;
+                }
+
+                if (node.PrefixCount > maxFrequency || 
+                    (node.PrefixCount == maxFrequency && currentPrefix.Length>maxLength)) {
+
+                    maxFrequency = node.PrefixCount;
+                    result = currentPrefix;
+                    maxLength = currentPrefix.Length;
+                }
+
+
+                foreach (var kvp in node.Childrens) { 
+                
+                    TrieDFS(kvp.Value, currentPrefix + kvp.Key);
+                }
+
             }
 
-            return result.ToString();
+            TrieDFS(RootNode, string.Empty);
+
+            return result;
+
         }
+
+
 
         public TrieNode BuildSuffix(string str)
         {

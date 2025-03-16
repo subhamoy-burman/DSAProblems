@@ -16,7 +16,8 @@ namespace DSALibs
         public int Value { get; set; }
         public DLNode? Prev { get; set; }
         public DLNode? Next { get; set; }
-        public DLNode(int value) {
+        public DLNode(int value)
+        {
 
             this.Value = value;
         }
@@ -40,7 +41,7 @@ namespace DSALibs
 
     public class DoubleLinkedList
     {
-        public DLNode DLHead { get; set; }
+        public DLNode? DLHead { get; set; }
 
         public void SetDoublyLinkedListHead(DLNode head)
         {
@@ -50,36 +51,102 @@ namespace DSALibs
                 return;
             }
 
-            if(DLHead == head)
+            if (DLHead == head)
             {
                 return;
             }
 
-            else
+            // Go through the whole list to understand if the head is there already in the list
+            var currentNode = DLHead;
+            while (currentNode != null)
             {
-                // Go through the whole list to understand if the head is there already in the list
-                var currentNode = DLHead;
-                while (currentNode != null)
+                if (currentNode == head)
                 {
-                    if (currentNode.Value == head.Value)
+                    var savedNode = currentNode;
+                    if (currentNode.Prev != null)
                     {
-                        var savedNode = currentNode;
-                        currentNode.Prev!.Next = savedNode.Next;
-                        
-                        if (currentNode.Next != null)
-                        {
-                            currentNode.Next.Prev = savedNode.Prev;
-                        }
-                        return;
+                        currentNode.Prev.Next = savedNode.Next;
                     }
-                    currentNode = currentNode.Next;
-                }
 
-                var currentHead = DLHead;
-                currentHead.Prev = head;
-                head.Next = currentHead;
-                DLHead = head;
+                    if (currentNode.Next != null)
+                    {
+                        currentNode.Next.Prev = savedNode.Prev;
+                    }
+
+                    currentNode.Prev = null;
+                    currentNode.Next = null;
+
+                    break;
+                }
+                currentNode = currentNode.Next;
+            }
+
+            var currentHead = DLHead;
+            currentHead.Prev = head;
+            head.Next = currentHead;
+            DLHead = head;
+        }
+
+        public void InsertBefore(DLNode targetNode, DLNode newNode)
+        {
+            var currentNode = DLHead;
+
+            if(currentNode == targetNode)
+            {
+                SetDoublyLinkedListHead(newNode);
+                return;
+            }
+
+            while (currentNode != null)
+            {
+                if (currentNode == targetNode)
+                {
+                    var tempNode = currentNode;
+                    if (currentNode.Prev != null)
+                    {
+                        currentNode.Prev.Next = newNode;
+                    }
+                    currentNode.Prev = newNode;
+                    newNode.Prev = tempNode.Prev;
+                    newNode.Next = currentNode;
+                    break;
+                }
+                currentNode = currentNode.Next;
             }
         }
+
+        public void InsertAfter(DLNode targetNode, DLNode newNode)
+        {
+            if (DLHead is null)
+            {
+                throw new Exception();
+            }
+
+            if (DLHead == targetNode)
+            {
+                SetDoublyLinkedListHead(newNode);
+            }
+
+            var currentNode = DLHead;
+
+            while (currentNode != null)
+            {
+                if (currentNode == targetNode)
+                {
+                    newNode.Prev = currentNode;
+                    newNode.Next = currentNode.Next;
+
+                    if (currentNode.Next != null)
+                    {
+                        currentNode.Next.Prev = newNode;
+                    }
+                    currentNode.Next = newNode;
+
+                    break;
+                }
+                currentNode = currentNode.Next;
+            }
+        }
+
     }
 }

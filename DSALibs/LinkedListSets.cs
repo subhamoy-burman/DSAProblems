@@ -91,12 +91,6 @@ namespace DSALibs
         {
             var currentNode = DLHead;
 
-            if(currentNode == targetNode)
-            {
-                SetDoublyLinkedListHead(newNode);
-                return;
-            }
-
             while (currentNode != null)
             {
                 if (currentNode == targetNode)

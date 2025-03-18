@@ -23,6 +23,68 @@ namespace DSALibs
         }
     }
 
+    public class SingleDLNode
+    {
+        public int NodeValue { get; set; }
+        public SingleDLNode? Next { get; set; }
+
+        public SingleDLNode(int nodeValue)
+        {
+            NodeValue = nodeValue;
+        }
+    }
+
+    public class SingleLinkedList
+    {
+        public SingleDLNode? Head { get; set; }
+        public void RemoveKthNode(int k)
+        {
+            if (Head == null) return;
+            var currentNode = Head;
+            int totalLength = 0;
+
+            while (currentNode != null) 
+            { 
+                currentNode = currentNode.Next;
+                totalLength++;
+            }
+
+            int traverseLength = totalLength - k;
+
+            
+
+            if(k<1 || k> totalLength)
+            {
+                return;
+            }
+
+            if (traverseLength == 0) { 
+            
+                Head = Head.Next;
+                return;
+            }
+
+            var prevToCurrentNode = Head;
+
+            while (traverseLength > 1) 
+            {
+                prevToCurrentNode = prevToCurrentNode?.Next;
+                traverseLength--;
+            }
+
+            if (prevToCurrentNode != null)
+            {
+                prevToCurrentNode.Next = prevToCurrentNode.Next?.Next;
+            }
+        }
+
+        private void Remove(SingleDLNode? newCurrentNode, SingleDLNode? prevToCurrentNode)
+        {
+            prevToCurrentNode!.Next = newCurrentNode?.Next;
+            newCurrentNode = null;
+        }
+    }
+
     /*
             Write a DoublyLinkedList class that has a head and a tail, both of which point to either a linked list Node or None / null. The class should support:
             Setting the head and tail of the linked list.

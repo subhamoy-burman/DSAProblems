@@ -37,6 +37,43 @@ namespace DSALibs
     public class SingleLinkedList
     {
         public SingleDLNode? Head { get; set; }
+
+        public SingleDLNode FindStartOfLoop()
+        {
+            if (Head == null) return null;
+            if (Head.Next == null) return Head;
+            var slowPointerStart = Head;
+
+            if (slowPointerStart != null)
+            {
+                slowPointerStart = slowPointerStart.Next;
+            }
+            var fastPointerStart = Head.Next;
+            if (fastPointerStart != null)
+            {
+
+                fastPointerStart = fastPointerStart.Next;
+            }
+
+
+            while (slowPointerStart != fastPointerStart)
+            {
+                slowPointerStart = slowPointerStart?.Next;
+                fastPointerStart = fastPointerStart?.Next?.Next;
+
+                if (slowPointerStart == null || fastPointerStart == null) return null; //No loop deteted
+            }
+
+            slowPointerStart = Head;
+
+            while (slowPointerStart != fastPointerStart)
+            {
+                slowPointerStart = slowPointerStart?.Next;
+                fastPointerStart = fastPointerStart?.Next;
+            }
+
+            return slowPointerStart!;
+        }
         public void RemoveKthNode(int k)
         {
             if (Head == null) return;
@@ -83,6 +120,8 @@ namespace DSALibs
             prevToCurrentNode!.Next = newCurrentNode?.Next;
             newCurrentNode = null;
         }
+
+       
     }
 
     /*

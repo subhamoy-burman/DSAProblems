@@ -61,7 +61,7 @@ namespace DSALibs
                 slowPointerStart = slowPointerStart?.Next;
                 fastPointerStart = fastPointerStart?.Next?.Next;
 
-                if (slowPointerStart == null || fastPointerStart == null) return null; //No loop deteted
+                if (slowPointerStart == null || fastPointerStart == null) return null; //No loop detected
             }
 
             slowPointerStart = Head;
@@ -114,13 +114,26 @@ namespace DSALibs
                 prevToCurrentNode.Next = prevToCurrentNode.Next?.Next;
             }
         }
-
         private void Remove(SingleDLNode? newCurrentNode, SingleDLNode? prevToCurrentNode)
         {
             prevToCurrentNode!.Next = newCurrentNode?.Next;
             newCurrentNode = null;
         }
 
+        public void ReverseLinkedList()
+        {
+            var prev = Head;
+            var curr = Head?.Next;
+
+
+            while (curr.Next != null)
+            {
+                var curr = prev?.Next;
+                var temp = curr?.Next;
+                curr!.Next = prev;
+            }
+
+        }
        
     }
 

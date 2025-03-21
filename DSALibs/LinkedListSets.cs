@@ -124,14 +124,55 @@ namespace DSALibs
         {
             var prev = Head;
             var curr = Head?.Next;
+            SingleDLNode prevRef = null;
 
-
-            while (curr.Next != null)
+            while (curr != null)
             {
-                var curr = prev?.Next;
-                var temp = curr?.Next;
-                curr!.Next = prev;
+                var temp = curr.Next;
+                curr.Next = prev;
+                prev.Next = prevRef;
+                prevRef = curr;
+                prev = curr;
+                curr = temp;
             }
+            Head = prev;
+        }
+
+        public SingleDLNode? MergeSortLinkedList(SingleDLNode node1, SingleDLNode node2)
+        {
+            // Step 1: Decide the head of the merged list
+            SingleDLNode head;
+            if (node1.NodeValue <= node2.NodeValue)
+            {
+                head = node1;
+                node1 = node1.Next;
+            }
+            else
+            {
+                head = node2;
+                node2 = node2.Next;
+            }
+
+            // Step 2: Use a pointer to build the merged list
+            SingleDLNode current = head;
+
+            // Step 3: Iteratively merge the lists
+            while (node1 != null && node2 != null)
+            {
+                if (node1.NodeValue <= node2.NodeValue)
+                {
+                    current.Next = node1;
+                    node1 = node1.Next;
+                }
+                else
+                {
+                    current.Next = node2;
+                    node2 = node2.Next;
+                }
+                current = current.Next;
+            }
+
+            return head;
 
         }
        

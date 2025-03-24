@@ -78,7 +78,6 @@ namespace DSALibs
 
         }
         public SingleDLNode? Head { get; set; }
-
         public SingleDLNode FindStartOfLoop()
         {
             if (Head == null) return null;
@@ -160,7 +159,6 @@ namespace DSALibs
             prevToCurrentNode!.Next = newCurrentNode?.Next;
             newCurrentNode = null;
         }
-
         public void ReverseLinkedList()
         {
             var prev = Head;
@@ -178,7 +176,6 @@ namespace DSALibs
             }
             Head = prev;
         }
-
         public SingleDLNode? MergeSortLinkedList(SingleDLNode node1, SingleDLNode node2)
         {
             // Step 1: Decide the head of the merged list
@@ -215,6 +212,31 @@ namespace DSALibs
 
             return head;
 
+        }
+
+        public SingleDLNode SumOfLinkedLists(SingleDLNode? node1, SingleDLNode? node2)
+        {
+            SingleDLNode dummyNode = new SingleDLNode(0);
+            var resultLL = dummyNode;
+            int sum = 0;
+            int carryForward = 0;
+
+            while (node1 != null || node2 != null || carryForward>0)
+            {
+                int node1Value = node1!=null ? node1.NodeValue : 0;
+                int node2Value = node2!=null ? node2.NodeValue : 0;
+                int actualSum = node1Value + node2Value + carryForward;
+                sum = actualSum % 10;
+                carryForward = actualSum / 10;
+                
+                resultLL.Next = new SingleDLNode(sum);
+                resultLL = resultLL.Next;
+                
+                if (node1!=null) node1 = node1.Next;
+                if (node2!=null) node2 = node2.Next;
+            }
+
+            return dummyNode?.Next;
         }
 
        

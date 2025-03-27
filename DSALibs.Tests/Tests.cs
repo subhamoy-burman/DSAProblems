@@ -702,4 +702,20 @@ public class Tests
         var array2 = new int[] { 5, 3, 5 };
         int[] arr = StackProblems.NextGreaterCircular(array);
     }
+
+    [Test]
+    public void CreateMinHeap_SimpleArray_ReturnsValidMinHeap()
+    {
+        var heap = new HeapProblems();
+        // Arrange
+        int[] input = new int[] { 4, 10, 3, 5, 1 };
+        int[] expected = new int[] { 1, 4, 3, 5, 10 }; // A valid min-heap
+
+        // Act
+        int[] result = heap.CreateMinHeap(input);
+
+        // Assert
+        Assert.That(expected.Length.Equals(input.Length));
+        CollectionAssert.AreEquivalent(expected, result, "Result should match a valid min-heap arrangement.");
+    }
 }

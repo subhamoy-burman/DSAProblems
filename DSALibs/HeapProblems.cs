@@ -77,5 +77,100 @@ namespace DSALibs
                 HandleHeapInsertion(arr, parentIndex);
             }
         }
+
+
+    }
+
+    public class ContinuousMedianHandler
+    {
+        private PriorityQueue<int, int> maxHeap; // Max heap for lower half (use negative priority)
+        private PriorityQueue<int, int> minHeap; // Min heap for upper half
+
+        public ContinuousMedianHandler()
+        {
+            maxHeap = new PriorityQueue<int, int>();
+            minHeap = new PriorityQueue<int, int>();
+        }
+
+        
+
+        public double GetMedian()
+        {
+            if (maxHeap.Count > minHeap.Count)
+                return maxHeap.Peek();
+            if(minHeap.Count > maxHeap.Count)
+                return minHeap.Peek();
+            return ((double)maxHeap.Peek() + minHeap.Peek()) / 2;
+        }
+
+        public void Insert(int number)
+        {
+            if (maxHeap.Count == 0 && minHeap.Count == 0)
+            {
+                maxHeap.Enqueue(number, -number);
+                return;
+            }
+
+            if (minHeap.Count == 0)
+            {
+                if (number < maxHeap.Peek())
+                {
+                    var maxTop = maxHeap.Dequeue();
+                    minHeap.Enqueue(maxTop, maxTop);
+                    maxHeap.Enqueue(number, -number);
+                }
+                else
+                {
+                    minHeap.Enqueue(number, number);
+                }
+            }
+
+            if (minHeap.Count == maxHeap.Count) { 
+            
+                if(number < maxHeap.Peek())
+                {
+                    maxHeap.Enqueue(number, -number);
+                }
+                else if(number > minHeap.Peek())
+                {
+                    minHeap.Enqueue(number, number);
+                }
+                else
+                {
+                    maxHeap.Enqueue(number, -number);
+                }
+                return;
+            }
+
+            if(maxHeap.Count > minHeap.Count)
+            {
+                if(number < maxHeap.Peek())
+                {
+                    var maxTop = maxHeap.Dequeue();
+                    minHeap.Enqueue(maxTop, maxTop);
+                    maxHeap.Enqueue(number, -number);
+                }
+                else
+                {
+                    minHeap.Enqueue(number, number);
+                }
+                return;
+            }
+
+            if (minHeap.Count > maxHeap.Count)
+            {
+                if (number > minHeap.Peek())
+                {
+                    var minTop = minHeap.Dequeue();
+                    maxHeap.Enqueue(minTop, -minTop);
+                    minHeap.Enqueue(number, number);
+                }
+                else
+                {
+                    maxHeap.Enqueue(number, -number);
+                }
+                return;
+            }
+        }
     }
 }

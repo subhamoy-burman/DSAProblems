@@ -78,6 +78,33 @@ namespace DSALibs
             }
         }
 
+        public int[] KSortedArray(int[] arr, int k)
+        {
+            PriorityQueue<int, int> minHeap = new PriorityQueue<int, int>();
+
+            int n = arr.Length;
+            var result = new int[n];
+
+            for (int i = 0; i<=k; i++)
+            {
+               minHeap.Enqueue(arr[i], arr[i]);
+            }
+
+            int index = 0;
+            for(int i = k + 1; i < n; i++)
+            {
+                result[index++] = minHeap.Dequeue();
+                minHeap.Enqueue(arr[i], arr[i]);
+            }
+
+            while(minHeap.Count > 0)
+            {
+                result[index++] = minHeap.Dequeue(); 
+            }
+
+            return result;
+        }
+
 
     }
 
@@ -172,5 +199,7 @@ namespace DSALibs
                 return;
             }
         }
+
+        
     }
 }

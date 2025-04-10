@@ -19,6 +19,30 @@ namespace DSALibs
     }
     internal class BinaryTreeProblems
     {
+        int maxHeight = int.MinValue;
+        public void GetDiameter(BinaryTreeNode rootNode)
+        {
+            if(rootNode == null) return;
+            int leftHeight = GetLeftHeight(rootNode);
+            int rightHeight = GetRightHeight(rootNode);
+
+            maxHeight = Math.Max(maxHeight, 1 + leftHeight + rightHeight);
+            GetDiameter(rootNode.LeftNode);
+            GetDiameter(rootNode.RightNode);
+        }
+
+        private int GetRightHeight(BinaryTreeNode rootNode)
+        {
+            if(rootNode == null) return 0;
+            return 1 + GetRightHeight(rootNode.RightNode);
+        }
+
+        private int GetLeftHeight(BinaryTreeNode rootNode)
+        {
+            if(rootNode == null) return 0;
+            return 1 + GetLeftHeight(rootNode.LeftNode);
+        }
+
         public BinaryTreeNode InvertBinaryTree(BinaryTreeNode root)
         {
             InvertFunction(root);

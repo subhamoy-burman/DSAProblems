@@ -59,5 +59,10 @@ namespace DSALibs
            InvertFunction(root.LeftNode);
            InvertFunction(root.RightNode);
         }
+
+        public int GetMaxPathSum(BinaryTreeNode root)
+        {
+            return 0;
+        }
     }
 }

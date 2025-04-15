@@ -17,7 +17,7 @@ namespace DSALibs
             NodeValue = value;
         }
     }
-    internal class BinaryTreeProblems
+    public class BinaryTreeProblems
     {
         int maxHeight = int.MinValue;
         public void GetDiameter(BinaryTreeNode rootNode)
@@ -60,9 +60,18 @@ namespace DSALibs
            InvertFunction(root.RightNode);
         }
 
+        public int maxPathValue = int.MinValue;
         public int GetMaxPathSum(BinaryTreeNode root)
         {
-            return 0;
+            if(root == null) return 0;
+
+            int rightMax = GetMaxPathSum(root.RightNode);
+            int leftMax = GetMaxPathSum(root.LeftNode);
+
+            maxPathValue = Math.Max(root.NodeValue, maxPathValue);
+            maxPathValue = Math.Max(root.NodeValue + Math.Max(rightMax, leftMax), maxPathValue);
+
+            return root.NodeValue + Math.Max(rightMax, leftMax);
         }
     }
 }

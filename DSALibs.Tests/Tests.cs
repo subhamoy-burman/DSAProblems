@@ -718,4 +718,26 @@ public class Tests
         Assert.That(expected.Length.Equals(input.Length));
         CollectionAssert.AreEquivalent(expected, result, "Result should match a valid min-heap arrangement.");
     }
+
+    [Test]
+    public void TestGetMaxPathSum_ComplexTree()
+    {
+        // Arrange
+        var binaryTreeProblems = new BinaryTreeProblems();
+
+        BinaryTreeNode root = new BinaryTreeNode(10);
+        root.LeftNode = new BinaryTreeNode(2);
+        root.RightNode = new BinaryTreeNode(10);
+        root.LeftNode.LeftNode = new BinaryTreeNode(20);
+        root.LeftNode.RightNode = new BinaryTreeNode(1);
+        root.RightNode.RightNode = new BinaryTreeNode(-25);
+        root.RightNode.RightNode.LeftNode = new BinaryTreeNode(3);
+        root.RightNode.RightNode.RightNode = new BinaryTreeNode(4);
+
+        // Act
+        binaryTreeProblems.GetMaxPathSum(root);
+
+        // Assert
+        Assert.That(binaryTreeProblems.maxPathValue, Is.EqualTo(32)); // 20 + 2 + 10 + 1 = 33
+    }
 }

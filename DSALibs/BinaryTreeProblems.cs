@@ -73,5 +73,67 @@ namespace DSALibs
 
             return root.NodeValue + Math.Max(rightMax, leftMax);
         }
+
+        public int[] BoundaryTraversal(BinaryTreeNode root)
+        {
+            List<int> result = new List<int>();
+            AddLeftBoundary(root,result);
+            AddLeafNodes(root,result);
+            List<int> rightNodeList = new List<int>();
+            AddRightBoundary(root.RightNode, rightNodeList);
+            rightNodeList.Reverse();
+            result.AddRange(rightNodeList);
+
+            return result.ToArray();
+        }
+
+        private void AddRightBoundary(BinaryTreeNode root, List<int> result)
+        {
+            if (root == null) return;
+            if(root.RightNode == null && root.LeftNode == null) return;
+            result.Add(root.NodeValue);
+
+            if (root.RightNode != null)
+            {
+                AddRightBoundary(root.RightNode, result);
+            }
+            else
+            {
+                AddRightBoundary(root.LeftNode, result);
+            }
+        }
+
+        private void AddLeafNodes(BinaryTreeNode root, List<int> result)
+        {
+           if (root == null) return;
+
+            if (root.LeftNode == null && root.RightNode == null)
+            {
+                result.Add(root.NodeValue);
+                return;
+            }
+
+           AddLeafNodes(root.LeftNode, result);
+           AddLeafNodes(root.RightNode, result);
+        }
+
+        private void AddLeftBoundary(BinaryTreeNode root, List<int> result)
+        {
+            if (root == null) return;
+            if (root.RightNode == null && root.LeftNode == null) return;
+            result.Add(root.NodeValue);
+            if (root.LeftNode != null)
+            {
+                AddLeftBoundary(root.LeftNode, result);
+            }
+            else
+            {
+                AddLeftBoundary(root.RightNode, result);
+            }
+
+        }
+
+
+
     }
 }

@@ -12,17 +12,25 @@ namespace DSALibs
         public BinaryTreeNode LeftNode { get; set; }
         public BinaryTreeNode RightNode { get; set; }
 
-        public BinaryTreeNode(int value) 
+        public BinaryTreeNode(int value)
         {
             NodeValue = value;
         }
+    }
+
+    public class PBinaryTreeNode
+    {
+        public int NodeValue { get; set; }
+        public PBinaryTreeNode LeftNode { get; set; }
+        public PBinaryTreeNode RightNode { get; set; }
+        public PBinaryTreeNode ParentNode { get; set; }
     }
     public class BinaryTreeProblems
     {
         int maxHeight = int.MinValue;
         public void GetDiameter(BinaryTreeNode rootNode)
         {
-            if(rootNode == null) return;
+            if (rootNode == null) return;
             int leftHeight = GetLeftHeight(rootNode);
             int rightHeight = GetRightHeight(rootNode);
 
@@ -33,13 +41,13 @@ namespace DSALibs
 
         private int GetRightHeight(BinaryTreeNode rootNode)
         {
-            if(rootNode == null) return 0;
+            if (rootNode == null) return 0;
             return 1 + GetRightHeight(rootNode.RightNode);
         }
 
         private int GetLeftHeight(BinaryTreeNode rootNode)
         {
-            if(rootNode == null) return 0;
+            if (rootNode == null) return 0;
             return 1 + GetLeftHeight(rootNode.LeftNode);
         }
 
@@ -51,19 +59,19 @@ namespace DSALibs
 
         private void InvertFunction(BinaryTreeNode root)
         {
-           if(root == null) return;
-           var tempNode = root.RightNode;
-           root.RightNode = root.LeftNode;
-           root.LeftNode = tempNode;
+            if (root == null) return;
+            var tempNode = root.RightNode;
+            root.RightNode = root.LeftNode;
+            root.LeftNode = tempNode;
 
-           InvertFunction(root.LeftNode);
-           InvertFunction(root.RightNode);
+            InvertFunction(root.LeftNode);
+            InvertFunction(root.RightNode);
         }
 
         public int maxPathValue = int.MinValue;
         public int GetMaxPathSum(BinaryTreeNode root)
         {
-            if(root == null) return 0;
+            if (root == null) return 0;
 
             int rightMax = GetMaxPathSum(root.RightNode);
             int leftMax = GetMaxPathSum(root.LeftNode);
@@ -77,8 +85,8 @@ namespace DSALibs
         public int[] BoundaryTraversal(BinaryTreeNode root)
         {
             List<int> result = new List<int>();
-            AddLeftBoundary(root,result);
-            AddLeafNodes(root,result);
+            AddLeftBoundary(root, result);
+            AddLeafNodes(root, result);
             List<int> rightNodeList = new List<int>();
             AddRightBoundary(root.RightNode, rightNodeList);
             rightNodeList.Reverse();
@@ -90,7 +98,7 @@ namespace DSALibs
         private void AddRightBoundary(BinaryTreeNode root, List<int> result)
         {
             if (root == null) return;
-            if(root.RightNode == null && root.LeftNode == null) return;
+            if (root.RightNode == null && root.LeftNode == null) return;
             result.Add(root.NodeValue);
 
             if (root.RightNode != null)
@@ -105,7 +113,7 @@ namespace DSALibs
 
         private void AddLeafNodes(BinaryTreeNode root, List<int> result)
         {
-           if (root == null) return;
+            if (root == null) return;
 
             if (root.LeftNode == null && root.RightNode == null)
             {
@@ -113,8 +121,8 @@ namespace DSALibs
                 return;
             }
 
-           AddLeafNodes(root.LeftNode, result);
-           AddLeafNodes(root.RightNode, result);
+            AddLeafNodes(root.LeftNode, result);
+            AddLeafNodes(root.RightNode, result);
         }
 
         private void AddLeftBoundary(BinaryTreeNode root, List<int> result)
@@ -134,6 +142,43 @@ namespace DSALibs
         }
 
 
+        public int FindSuccessor(PBinaryTreeNode node)
+        {
+            if (node == null) return -1;
+            List<int> result = new List<int>();
 
+            if (node.RightNode != null)
+            {
+                InOrder(node.RightNode, result);
+                return result[0];
+            }
+            else
+            {
+                var parentNode = node.ParentNode;
+
+                if(parentNode.LeftNode == node)
+                {
+                    return parentNode.NodeValue;
+                }
+                else
+                {
+                    while (parentNode.LeftNode != node && parentNode!=null) { 
+                    
+                        node = parentNode;
+                        parentNode = node.ParentNode;
+                    }
+                    return parentNode.NodeValue;
+                }
+            }
+        }
+
+        private void InOrder(PBinaryTreeNode node, List<int> result)
+        {
+            if (node == null) return;
+
+            InOrder(node.LeftNode, result);
+            result.Add(node.NodeValue);
+            InOrder(node.RightNode, result);
+        }
     }
 }

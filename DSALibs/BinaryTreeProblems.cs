@@ -24,6 +24,7 @@ namespace DSALibs
         public PBinaryTreeNode LeftNode { get; set; }
         public PBinaryTreeNode RightNode { get; set; }
         public PBinaryTreeNode ParentNode { get; set; }
+        public bool IsVisited { get; set; }
     }
     public class BinaryTreeProblems
     {
@@ -179,6 +180,32 @@ namespace DSALibs
             InOrder(node.LeftNode, result);
             result.Add(node.NodeValue);
             InOrder(node.RightNode, result);
+        }
+
+
+
+
+        private void TraverseToK(PBinaryTreeNode node, int target, List<int> result, int level = 0)
+        {
+            if (node == null) return ;
+            if (node.IsVisited) return;
+            if (target == 0) return;
+            node.IsVisited = true;
+            if (target == level)
+            {
+                result.Add(node.NodeValue);
+                return;
+            }
+            TraverseToK(node.LeftNode, target, result, level + 1);
+            TraverseToK(node.RightNode, target, result,  level + 1);
+            TraverseToK(node.ParentNode, target, result, level + 1);
+        }
+
+        public List<int> FindNodeAtKDistance(PBinaryTreeNode node, int distance)
+        {
+            var result = new List<int>(); 
+            TraverseToK(node, distance, result, 0);
+            return result;
         }
     }
 }

@@ -274,5 +274,18 @@ namespace DSALibs
             }
 
         }
+
+        public bool IsSymmetric(BinaryTreeNode node1, BinaryTreeNode node2)
+        {
+            if (node1 == null && node2 == null) return true;
+            if (node1 != null && node2 != null)
+            {
+                return node1.NodeValue.Equals(node2.NodeValue) && IsSymmetric(node1.RightNode, node2.RightNode) && IsSymmetric(node1.LeftNode, node2.RightNode);
+            }
+            else
+            {
+                return false;
+            }
+        }
     }
 }

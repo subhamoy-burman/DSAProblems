@@ -157,14 +157,15 @@ namespace DSALibs
             {
                 var parentNode = node.ParentNode;
 
-                if(parentNode.LeftNode == node)
+                if (parentNode.LeftNode == node)
                 {
                     return parentNode.NodeValue;
                 }
                 else
                 {
-                    while (parentNode.LeftNode != node && parentNode!=null) { 
-                    
+                    while (parentNode.LeftNode != node && parentNode != null)
+                    {
+
                         node = parentNode;
                         parentNode = node.ParentNode;
                     }
@@ -187,7 +188,7 @@ namespace DSALibs
 
         private void TraverseToK(PBinaryTreeNode node, int target, List<int> result, int level = 0)
         {
-            if (node == null) return ;
+            if (node == null) return;
             if (node.IsVisited) return;
             if (target == 0) return;
             node.IsVisited = true;
@@ -197,15 +198,81 @@ namespace DSALibs
                 return;
             }
             TraverseToK(node.LeftNode, target, result, level + 1);
-            TraverseToK(node.RightNode, target, result,  level + 1);
+            TraverseToK(node.RightNode, target, result, level + 1);
             TraverseToK(node.ParentNode, target, result, level + 1);
         }
 
         public List<int> FindNodeAtKDistance(PBinaryTreeNode node, int distance)
         {
-            var result = new List<int>(); 
+            var result = new List<int>();
             TraverseToK(node, distance, result, 0);
             return result;
+        }
+
+        public void MergeBinaryTrees(BinaryTreeNode node1, BinaryTreeNode node2, BinaryTreeNode result)
+        {
+
+            if(node1 == null && node2 == null) return;
+
+            if (node1 != null && node2 != null)
+            {
+                result.NodeValue = node1.NodeValue + node2.NodeValue;
+            }
+            else if (node1 != null)
+            {
+                result.NodeValue = node1.NodeValue;
+            }
+            else if (node2 != null)
+            {
+                result.NodeValue = node2.NodeValue;
+            }
+
+            if (node1?.LeftNode != null || node2?.LeftNode != null)
+            {
+                result.LeftNode = new BinaryTreeNode(-1);
+            }
+
+            if(node1?.RightNode != null || node2?.RightNode!=null)
+            {
+                result.RightNode = new BinaryTreeNode(-1);
+            }
+
+            BinaryTreeNode? node1Left = null;
+            BinaryTreeNode? node1Right = null;
+
+            BinaryTreeNode? node2Left = null;
+            BinaryTreeNode? node2Right = null;
+
+
+            if (node1?.LeftNode != null)
+            {
+                node1Left = node1.LeftNode;
+            }
+
+            if(node1?.RightNode != null)
+            {
+                node1Right = node1.RightNode;
+            }
+
+            if (node2?.LeftNode != null)
+            {
+                node2Left = node2.LeftNode;
+            }
+
+            if (node2?.RightNode != null)
+            {
+                node2Right = node2.RightNode;
+            }
+
+            if (result.LeftNode != null)
+            {
+                MergeBinaryTrees(node1Left, node2Left, result.LeftNode);
+            }
+            if (result.RightNode != null)
+            {
+                MergeBinaryTrees(node1Right, node2Right, result.RightNode);
+            }
+
         }
     }
 }

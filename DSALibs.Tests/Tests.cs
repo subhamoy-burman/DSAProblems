@@ -740,4 +740,41 @@ public class Tests
         // Assert
         Assert.That(binaryTreeProblems.maxPathValue, Is.EqualTo(32)); // 20 + 2 + 10 + 1 = 33
     }
+
+    [Test]
+    public void TestSplitBinaryTree_WithSplittableTree()
+    {
+        // Arrange
+        var binaryTreeProblems = new BinaryTreeProblems();
+
+        // Create the tree:
+        //     1
+        //    / \
+        //   3   -2
+        //  / \  / \
+        // 6  -5 5  2
+        // /
+        // 2
+
+        BinaryTreeNode root = new BinaryTreeNode(1);
+        root.LeftNode = new BinaryTreeNode(3);
+        root.RightNode = new BinaryTreeNode(-2);
+
+        root.LeftNode.LeftNode = new BinaryTreeNode(6);
+        root.LeftNode.RightNode = new BinaryTreeNode(-5);
+
+        root.RightNode.LeftNode = new BinaryTreeNode(5);
+        root.RightNode.RightNode = new BinaryTreeNode(2);
+
+        root.LeftNode.LeftNode.LeftNode = new BinaryTreeNode(2);
+
+        // Act
+        int result = binaryTreeProblems.SplitBinaryTree(root);
+
+        // Assert
+        // Total sum = 1 + 3 + (-2) + 6 + (-5) + 5 + 2 + 2 = 12
+        // If splittable, each part should have sum = 6
+        Assert.That(result, Is.EqualTo(6));
+    }
+
 }

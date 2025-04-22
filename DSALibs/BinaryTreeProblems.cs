@@ -287,5 +287,26 @@ namespace DSALibs
                 return false;
             }
         }
+
+        public int SplitBinaryTree(BinaryTreeNode btNode)
+        {
+            List<int> result = new List<int>();
+            int actualSum = DetermineActualSumOfBinaryTree(btNode, result);
+
+            if(actualSum % 2 != 0) return 0;
+
+            if(result.Contains(actualSum/2)) return actualSum/2;
+            return 0;
+
+        }
+
+        private int DetermineActualSumOfBinaryTree(BinaryTreeNode btNode, List<int> results)
+        {
+            if(btNode == null) return 0;
+
+            var nodeSumResult = btNode.NodeValue + DetermineActualSumOfBinaryTree(btNode.LeftNode, results) + DetermineActualSumOfBinaryTree(btNode.RightNode, results);
+            results.Add(nodeSumResult);
+            return nodeSumResult;
+        }
     }
 }

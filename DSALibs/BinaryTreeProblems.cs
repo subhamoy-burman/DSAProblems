@@ -308,5 +308,65 @@ namespace DSALibs
             results.Add(nodeSumResult);
             return nodeSumResult;
         }
+
+        public bool ValidateBinarySearchTree(BinaryTreeNode btNode)
+        {
+            return ValidateBst(btNode, int.MinValue, int.MaxValue);
+            
+            //return 
+            //    ValidateValueLeftInBinarySearchTree(btNode.LeftNode, btNode.NodeValue) &&
+            //ValidateValueRightInBinarySearchTree(btNode.RightNode, btNode.NodeValue);
+
+        }
+
+        private bool ValidateBst(BinaryTreeNode btNode, int minValue, int maxValue)
+        {
+            if(btNode == null) return true;
+
+            if (btNode.NodeValue >= minValue && btNode.NodeValue <= maxValue)
+            {
+                return ValidateBst(btNode.LeftNode, minValue, btNode.NodeValue) && ValidateBst(btNode.RightNode, btNode.NodeValue, maxValue);
+            }
+            return false;
+        }
+
+        private bool ValidateValueRightInBinarySearchTree(BinaryTreeNode rightNode, int nodeValue)
+        {
+            if (rightNode == null) return true;
+
+            return rightNode.NodeValue >= nodeValue &&
+                ValidateValueRightInBinarySearchTree(rightNode.LeftNode, rightNode.NodeValue)
+                && ValidateValueRightInBinarySearchTree(rightNode.RightNode, rightNode.NodeValue);
+        }
+
+        private bool ValidateValueLeftInBinarySearchTree(BinaryTreeNode leftNode, int nodeValue)
+        {
+            if(leftNode == null) return true;
+
+            return leftNode.NodeValue <= nodeValue &&
+                ValidateValueLeftInBinarySearchTree(leftNode.LeftNode, leftNode.NodeValue)
+                && ValidateValueRightInBinarySearchTree(leftNode.RightNode, leftNode.NodeValue);
+            
+        }
+
+        //public void DeleteBinaryTreeNode(BinaryTreeNode rootNode, BinaryTreeNode targetNode)
+        //{
+        //    if (rootNode == null) return;
+        //    if (rootNode.RightNode == null && rootNode.LeftNode == null) return;
+        //    if (targetNode.RightNode != null)
+        //    {
+        //        BinaryTreeNode inOrderSuccessor = GetInorderSuccessor(targetNode.RightNode);//Get the left most node of right subtree
+        //        //Swap
+        //    }
+        //    else
+        //    {
+        //        rootNode = 
+        //    }
+        //}
+
+        //private BinaryTreeNode GetInorderSuccessor(BinaryTreeNode rightNode)
+        //{
+        //    if(rightNode.RightNode == null && rightNode.LeftNode == null) return rightNode;
+        //}
     }
 }

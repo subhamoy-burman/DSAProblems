@@ -777,4 +777,91 @@ public class Tests
         Assert.That(result, Is.EqualTo(6));
     }
 
+    [Test]
+    public void TestValidateBinarySearchTree_ValidBST_ReturnsTrue()
+    {
+        // Arrange
+        var binaryTreeProblems = new BinaryTreeProblems();
+
+        // Create a valid BST:
+        //     10
+        //    /   \
+        //   5     15
+        //  / \    / \
+        // 2   5  13  22
+        // /        \
+        //1          14
+
+        BinaryTreeNode root = new BinaryTreeNode(10);
+        root.LeftNode = new BinaryTreeNode(5);
+        root.RightNode = new BinaryTreeNode(15);
+
+        root.LeftNode.LeftNode = new BinaryTreeNode(2);
+        root.LeftNode.RightNode = new BinaryTreeNode(5);
+        root.LeftNode.LeftNode.LeftNode = new BinaryTreeNode(1);
+
+        root.RightNode.LeftNode = new BinaryTreeNode(13);
+        root.RightNode.RightNode = new BinaryTreeNode(22);
+        root.RightNode.LeftNode.RightNode = new BinaryTreeNode(14);
+
+        // Act
+        bool result = binaryTreeProblems.ValidateBinarySearchTree(root);
+
+        // Assert
+        Assert.That(result, Is.True);
+    }
+
+    [Test]
+    public void TestValidateBinarySearchTree_InvalidLeftSubtree_ReturnsFalse()
+    {
+        // Arrange
+        var binaryTreeProblems = new BinaryTreeProblems();
+
+        // Create an invalid BST (left subtree has a value greater than root):
+        //     10
+        //    /   \
+        //   5     15
+        //  / \
+        // 2   12  <-- Invalid: 12 > 10
+
+        BinaryTreeNode root = new BinaryTreeNode(10);
+        root.LeftNode = new BinaryTreeNode(5);
+        root.RightNode = new BinaryTreeNode(15);
+
+        root.LeftNode.LeftNode = new BinaryTreeNode(2);
+        root.LeftNode.RightNode = new BinaryTreeNode(12); // Invalid: 12 > 10
+
+        // Act
+        bool result = binaryTreeProblems.ValidateBinarySearchTree(root);
+
+        // Assert
+        Assert.That(result, Is.False);
+    }
+
+    [Test]
+    public void TestValidateBinarySearchTree_InvalidRightSubtree_ReturnsFalse()
+    {
+        // Arrange
+        var binaryTreeProblems = new BinaryTreeProblems();
+
+        // Create an invalid BST (right subtree has a value less than root):
+        //     10
+        //    /   \
+        //   5     15
+        //        /
+        //       8   <-- Invalid: 8 < 10
+
+        BinaryTreeNode root = new BinaryTreeNode(10);
+        root.LeftNode = new BinaryTreeNode(5);
+        root.RightNode = new BinaryTreeNode(15);
+
+        root.RightNode.LeftNode = new BinaryTreeNode(8); // Invalid: 8 < 10
+
+        // Act
+        bool result = binaryTreeProblems.ValidateBinarySearchTree(root);
+
+        // Assert
+        Assert.That(result, Is.False);
+    }
+
 }

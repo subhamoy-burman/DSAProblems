@@ -381,10 +381,32 @@ namespace DSALibs
                     rightSubarray.Add(inputArr1[i]);
                 }
             }
-            
+
             return (leftSubarray.ToArray(), rightSubarray.ToArray());
 
         }
 
+        public BinaryTreeNode ConstructMinHeightBinaryTree(int[] inputArray)
+        {
+            if (inputArray == null || inputArray.Length == 0)
+                return null;
+
+            return ConstructMinHeightBST(inputArray, 0, inputArray.Length - 1);
+        }
+
+        private BinaryTreeNode ConstructMinHeightBST(int[] array, int startIndex, int endIndex)
+        {
+            if (startIndex > endIndex)
+                return null;
+
+            int midIndex = startIndex + (endIndex - startIndex) / 2;
+            BinaryTreeNode node = new BinaryTreeNode(array[midIndex]);
+
+            // Recursively build left and right subtrees
+            node.LeftNode = ConstructMinHeightBST(array, startIndex, midIndex - 1);
+            node.RightNode = ConstructMinHeightBST(array, midIndex + 1, endIndex);
+
+            return node;
+        }
     }
 }

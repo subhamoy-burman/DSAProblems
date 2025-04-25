@@ -212,7 +212,7 @@ namespace DSALibs
         public void MergeBinaryTrees(BinaryTreeNode node1, BinaryTreeNode node2, BinaryTreeNode result)
         {
 
-            if(node1 == null && node2 == null) return;
+            if (node1 == null && node2 == null) return;
 
             if (node1 != null && node2 != null)
             {
@@ -232,7 +232,7 @@ namespace DSALibs
                 result.LeftNode = new BinaryTreeNode(-1);
             }
 
-            if(node1?.RightNode != null || node2?.RightNode!=null)
+            if (node1?.RightNode != null || node2?.RightNode != null)
             {
                 result.RightNode = new BinaryTreeNode(-1);
             }
@@ -249,7 +249,7 @@ namespace DSALibs
                 node1Left = node1.LeftNode;
             }
 
-            if(node1?.RightNode != null)
+            if (node1?.RightNode != null)
             {
                 node1Right = node1.RightNode;
             }
@@ -293,16 +293,16 @@ namespace DSALibs
             List<int> result = new List<int>();
             int actualSum = DetermineActualSumOfBinaryTree(btNode, result);
 
-            if(actualSum % 2 != 0) return 0;
+            if (actualSum % 2 != 0) return 0;
 
-            if(result.Contains(actualSum/2)) return actualSum/2;
+            if (result.Contains(actualSum / 2)) return actualSum / 2;
             return 0;
 
         }
 
         private int DetermineActualSumOfBinaryTree(BinaryTreeNode btNode, List<int> results)
         {
-            if(btNode == null) return 0;
+            if (btNode == null) return 0;
 
             var nodeSumResult = btNode.NodeValue + DetermineActualSumOfBinaryTree(btNode.LeftNode, results) + DetermineActualSumOfBinaryTree(btNode.RightNode, results);
             results.Add(nodeSumResult);
@@ -312,7 +312,7 @@ namespace DSALibs
         public bool ValidateBinarySearchTree(BinaryTreeNode btNode)
         {
             return ValidateBst(btNode, int.MinValue, int.MaxValue);
-            
+
             //return 
             //    ValidateValueLeftInBinarySearchTree(btNode.LeftNode, btNode.NodeValue) &&
             //ValidateValueRightInBinarySearchTree(btNode.RightNode, btNode.NodeValue);
@@ -321,7 +321,7 @@ namespace DSALibs
 
         private bool ValidateBst(BinaryTreeNode btNode, int minValue, int maxValue)
         {
-            if(btNode == null) return true;
+            if (btNode == null) return true;
 
             if (btNode.NodeValue >= minValue && btNode.NodeValue <= maxValue)
             {
@@ -341,32 +341,50 @@ namespace DSALibs
 
         private bool ValidateValueLeftInBinarySearchTree(BinaryTreeNode leftNode, int nodeValue)
         {
-            if(leftNode == null) return true;
+            if (leftNode == null) return true;
 
             return leftNode.NodeValue <= nodeValue &&
                 ValidateValueLeftInBinarySearchTree(leftNode.LeftNode, leftNode.NodeValue)
                 && ValidateValueRightInBinarySearchTree(leftNode.RightNode, leftNode.NodeValue);
-            
+
         }
 
-        //public void DeleteBinaryTreeNode(BinaryTreeNode rootNode, BinaryTreeNode targetNode)
-        //{
-        //    if (rootNode == null) return;
-        //    if (rootNode.RightNode == null && rootNode.LeftNode == null) return;
-        //    if (targetNode.RightNode != null)
-        //    {
-        //        BinaryTreeNode inOrderSuccessor = GetInorderSuccessor(targetNode.RightNode);//Get the left most node of right subtree
-        //        //Swap
-        //    }
-        //    else
-        //    {
-        //        rootNode = 
-        //    }
-        //}
 
-        //private BinaryTreeNode GetInorderSuccessor(BinaryTreeNode rightNode)
-        //{
-        //    if(rightNode.RightNode == null && rightNode.LeftNode == null) return rightNode;
-        //}
+        public bool SameBstDetermination(int[] inputArr1, int[] inputArr2)
+        {
+            if (inputArr1.Length != inputArr2.Length) return false;
+
+            if (inputArr1[0] != inputArr2[0]) return false;
+
+            var rootValue = inputArr1[0];
+            var input1Items = ParttitionArray(rootValue, inputArr1);
+            var input2Items = ParttitionArray(rootValue, inputArr2);
+
+            return SameBstDetermination(input1Items.Item1, input2Items.Item1) &&
+                SameBstDetermination(input1Items.Item2, input2Items.Item2);
+
+        }
+
+        private static (int[], int[]) ParttitionArray(int root, int[] inputArr1)
+        {
+            var leftSubarray = new List<int>();
+            var rightSubarray = new List<int>();
+
+            for (int i = 1; i < inputArr1.Length; i++)
+            {
+                if (root > inputArr1[i])
+                {
+                    leftSubarray.Add(inputArr1[i]);
+                }
+                else
+                {
+                    rightSubarray.Add(inputArr1[i]);
+                }
+            }
+            
+            return (leftSubarray.ToArray(), rightSubarray.ToArray());
+
+        }
+
     }
 }

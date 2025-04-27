@@ -408,5 +408,38 @@ namespace DSALibs
 
             return node;
         }
+
+        public bool ValidateThreeNodes(BinaryTreeNode node1,  BinaryTreeNode node2, BinaryTreeNode node3)
+        {
+            if(IsNodeAncestorOfTarget(target: node2, node1) && IsNodeAncestorOfTarget(target: node3, node2))
+            {
+                return true;
+            }
+
+            if(IsNodeAncestorOfTarget(target:node2, node3) && IsNodeAncestorOfTarget(target:node3,node2))
+            {
+                return true;
+            }
+
+            return false;
+        }
+
+        private bool IsNodeAncestorOfTarget(BinaryTreeNode target, BinaryTreeNode node)
+        {
+            if(node == null) return false;
+
+            if(node.NodeValue == target.NodeValue) return true;
+
+            if(node.NodeValue > target.NodeValue)
+            {
+                return IsNodeAncestorOfTarget(target,node.LeftNode);
+            }
+            else if(node.NodeValue < target.NodeValue)
+            {
+                return IsNodeAncestorOfTarget(target,node.RightNode);
+            }
+            return false;
+        
+        }
     }
 }

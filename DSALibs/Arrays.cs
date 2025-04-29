@@ -203,4 +203,45 @@ public class Arrays
         }
     }
 
+    public static List<Tuple<int, int, int>> ThreeNumberSum(int[] numbers, int target)
+    {
+        // Step 1: Create a dictionary to store expected numbers and their corresponding pairs
+        Dictionary<int, List<Tuple<int, int>>> keyValuePairs = new Dictionary<int, List<Tuple<int, int>>>();
+        List<Tuple<int, int, int>> resultTuples = new List<Tuple<int, int, int>>();
+
+        // Step 2: Populate the dictionary with all possible pairs (a, b) and their expected numbers
+        for (int i = 0; i < numbers.Length - 1; i++)
+        {
+            for (int j = i + 1; j < numbers.Length; j++)
+            {
+                int expectedNumber = target - (numbers[i] + numbers[j]);
+
+                if (!keyValuePairs.ContainsKey(expectedNumber))
+                {
+                    keyValuePairs[expectedNumber] = new List<Tuple<int, int>>();
+                }
+
+                keyValuePairs[expectedNumber].Add(Tuple.Create(numbers[i], numbers[j]));
+            }
+        }
+
+        // Step 3: Iterate through the array to find triplets
+        for (int k = 0; k < numbers.Length; k++)
+        {
+            if (keyValuePairs.ContainsKey(numbers[k]))
+            {
+                foreach (var pair in keyValuePairs[numbers[k]])
+                {
+                    // Ensure the triplet uses distinct elements
+                    if (pair.Item1 != numbers[k] && pair.Item2 != numbers[k])
+                    {
+                        resultTuples.Add(Tuple.Create(numbers[k], pair.Item1, pair.Item2));
+                    }
+                }
+            }
+        }
+
+        return resultTuples;
+
+    }
 }

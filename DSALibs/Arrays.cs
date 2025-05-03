@@ -6,59 +6,59 @@ public class Arrays
 {
     public static void ReArrangeToZigZag(int[] arr)
     {
-        for(int i=0;i<arr.Length;i=i+3)
+        for (int i = 0; i < arr.Length; i = i + 3)
         {
             int a = arr[i];
-            
 
-            int highest = GetHighest(a, (i+1<arr.Length-1)?arr[i+1]:Int32.MinValue, (i+2<arr.Length-1)?arr[i+2]:Int32.MinValue);
-            int min = GetMin(arr[i], (i+1<arr.Length-1)?arr[i+1]:Int32.MaxValue, (i+2<arr.Length-1)?arr[i+2]:Int32.MaxValue);
+
+            int highest = GetHighest(a, (i + 1 < arr.Length - 1) ? arr[i + 1] : Int32.MinValue, (i + 2 < arr.Length - 1) ? arr[i + 2] : Int32.MinValue);
+            int min = GetMin(arr[i], (i + 1 < arr.Length - 1) ? arr[i + 1] : Int32.MaxValue, (i + 2 < arr.Length - 1) ? arr[i + 2] : Int32.MaxValue);
             int secondHighest = Int32.MinValue;
 
-            if(arr[i] != min && arr[i] != highest)
+            if (arr[i] != min && arr[i] != highest)
             {
                 secondHighest = arr[i];
             }
-            else if(i+1 < arr.Length && arr[i+1] != min && arr[i+1] != highest)
+            else if (i + 1 < arr.Length && arr[i + 1] != min && arr[i + 1] != highest)
             {
-                secondHighest = arr[i+1];
+                secondHighest = arr[i + 1];
             }
-            else if(i+2< arr.Length && arr[i+2]!= min && arr[i+2] != highest)
+            else if (i + 2 < arr.Length && arr[i + 2] != min && arr[i + 2] != highest)
             {
-                secondHighest = arr[i+2];
+                secondHighest = arr[i + 2];
             }
 
-            if(i%2 == 0)
+            if (i % 2 == 0)
             {
                 arr[i] = min;
-                if(i+1 < arr.Length) arr[i+1] = highest;
-                if(i+2 < arr.Length) arr[i+2] = secondHighest;
+                if (i + 1 < arr.Length) arr[i + 1] = highest;
+                if (i + 2 < arr.Length) arr[i + 2] = secondHighest;
             }
             else
             {
                 arr[i] = highest;
-                if(i+1 < arr.Length) arr[i+1] = min;
-                if(i+2 < arr.Length)arr[i+2] = secondHighest;
-            } 
+                if (i + 1 < arr.Length) arr[i + 1] = min;
+                if (i + 2 < arr.Length) arr[i + 2] = secondHighest;
+            }
 
         }
 
-        
+
     }
 
     private static int GetMin(int a = Int32.MaxValue, int b = Int32.MaxValue, int c = Int32.MaxValue)
     {
         int min = Int32.MaxValue;
 
-        if(a<min)
+        if (a < min)
         {
             min = a;
         }
-        if(b<min)
+        if (b < min)
         {
             min = b;
         }
-        if(c<min)
+        if (c < min)
         {
             min = c;
         }
@@ -71,15 +71,15 @@ public class Arrays
     {
         int highest = Int32.MinValue;
 
-        if(a>highest)
+        if (a > highest)
         {
             highest = a;
         }
-        if(b>highest)
+        if (b > highest)
         {
             highest = b;
         }
-        if(c>highest)
+        if (c > highest)
         {
             highest = c;
         }
@@ -90,13 +90,13 @@ public class Arrays
 
     public static int[] ReArrangeWithMaxMinAlternate(int[] arr)
     {
-        int i=0;
-        int j = arr.Length-1;
+        int i = 0;
+        int j = arr.Length - 1;
         int m = 0;
 
         int[] outputArr = new int[arr.Length];
 
-        while(i<=j)
+        while (i <= j)
         {
             outputArr[m++] = arr[j--];
             outputArr[m++] = arr[i++];
@@ -106,14 +106,14 @@ public class Arrays
     }
 
     public static int FindKthMergedElement(int[] arr1, int[] arr2, int k)
-    {   
-        int i=0;
-        int j=0;
+    {
+        int i = 0;
+        int j = 0;
 
-        while(i<=arr1.Length-1 && j<=arr2.Length-1)
+        while (i <= arr1.Length - 1 && j <= arr2.Length - 1)
         {
-            if(i+j == k-1) return Math.Min(arr1[i], arr2[j]);
-            if(arr1[i] < arr2[j])
+            if (i + j == k - 1) return Math.Min(arr1[i], arr2[j]);
+            if (arr1[i] < arr2[j])
             {
                 i++;
             }
@@ -123,15 +123,15 @@ public class Arrays
             }
         }
 
-        while(i<arr1.Length-1)
+        while (i < arr1.Length - 1)
         {
-            if(i == k-1) return arr1[i];
+            if (i == k - 1) return arr1[i];
             i++;
         }
 
-        while(j<arr2.Length-1)
+        while (j < arr2.Length - 1)
         {
-            if(j == k-1) return arr2[j];
+            if (j == k - 1) return arr2[j];
         }
 
         return -1;
@@ -143,23 +143,23 @@ public class Arrays
         List<int> departureListOfTrainsPresent = new List<int>();
         int minPlatforms = int.MinValue;
 
-        for(int i=0; i<arrivalTimes.Length; i++)
+        for (int i = 0; i < arrivalTimes.Length; i++)
         {
-            if(departureListOfTrainsPresent.Count == 0)
+            if (departureListOfTrainsPresent.Count == 0)
             {
                 departureListOfTrainsPresent.Add(departureTimes[i]);
             }
             else
             {
                 List<int> itemsToBeRemoved = new List<int>();
-                foreach(var item in departureListOfTrainsPresent)
+                foreach (var item in departureListOfTrainsPresent)
                 {
-                    if(arrivalTimes[i]>item)
+                    if (arrivalTimes[i] > item)
                     {
                         itemsToBeRemoved.Add(item);
                     }
                 }
-                departureListOfTrainsPresent.RemoveAll(x=>itemsToBeRemoved.Contains(x));
+                departureListOfTrainsPresent.RemoveAll(x => itemsToBeRemoved.Contains(x));
                 departureListOfTrainsPresent.Add(departureTimes[i]);
             }
 
@@ -178,7 +178,7 @@ public class Arrays
         }
 
         numbers.Sort();
-        return string.Join("",numbers);
+        return string.Join("", numbers);
     }
 
     public class Number : IComparable<Number>
@@ -244,4 +244,41 @@ public class Arrays
         return resultTuples;
 
     }
+
+    public static (int, int) LargestSetOfIntegars(int[] numbers)
+    {
+        HashSet<int> uniqueElements = new HashSet<int>();
+        if (numbers.Length == 0) {
+
+            return (-1, -1);
+        }
+        var pairedTuples = Tuple.Create(numbers[0], numbers[0]);
+
+        foreach (int number in numbers)
+        {
+            uniqueElements.Add(number);
+        }
+
+        for (int i = 1; i < numbers.Length - 1; i++)
+        {
+            if (numbers[i] >= pairedTuples.Item1 && numbers[i] <= pairedTuples.Item2)
+            {
+                continue;
+            }
+
+            int leftNumber = numbers[i];
+            int rightNumber = numbers[i];
+
+            while (uniqueElements.Contains(leftNumber - 1)) leftNumber--;
+            while (uniqueElements.Contains(rightNumber + 1)) rightNumber++;
+
+            if (Math.Abs(rightNumber - leftNumber) > Math.Abs(pairedTuples.Item2 - pairedTuples.Item1))
+            {
+                pairedTuples = Tuple.Create(leftNumber, rightNumber);
+            }
+
+        }
+        return (pairedTuples.Item1, pairedTuples.Item2);
+    }
+
 }

@@ -864,4 +864,32 @@ public class Tests
         Assert.That(result, Is.False);
     }
 
+    [Test]
+    public void TestLargestSetOfIntegers()
+    {
+        // Arrange
+        int[] array = [1, 11, 3, 0, 15, 5, 2, 4, 10, 7, 12, 6];
+
+        // Act
+        var result = Arrays.LargestSetOfIntegars(array);
+
+        // Assert
+        Assert.That(result.Item1, Is.EqualTo(0));
+        Assert.That(result.Item2, Is.EqualTo(7));
+    }
+
+    [Test]
+    public void TestLargestSetOfIntegarsWithLastElementInSequence()
+    {
+        // Arrange
+        int[] array = [1, 5, 2, 3, 4];
+
+        // Act
+        var result = Arrays.LargestSetOfIntegars(array);
+
+        // Assert
+        Assert.That(result.Item1, Is.EqualTo(1));
+        Assert.That(result.Item2, Is.EqualTo(5));
+    }
+
 }

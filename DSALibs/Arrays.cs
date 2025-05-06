@@ -248,7 +248,8 @@ public class Arrays
     public static (int, int) LargestSetOfIntegars(int[] numbers)
     {
         HashSet<int> uniqueElements = new HashSet<int>();
-        if (numbers.Length == 0) {
+        if (numbers.Length == 0)
+        {
 
             return (-1, -1);
         }
@@ -281,4 +282,50 @@ public class Arrays
         return (pairedTuples.Item1, pairedTuples.Item2);
     }
 
+    public int[] MoveElementsToEnd(int[] numbers, int targetElement)
+    {
+        int targetOccuranceIndex = -1;
+
+        for (int i = 0; i < numbers.Length; i++)
+        {
+            if (targetOccuranceIndex == -1)
+            {
+                if (numbers[i] == targetElement)
+                {
+                    targetOccuranceIndex = i;
+                    break;
+                }
+
+            }
+        }
+
+        for (int i = 0; i < numbers.Length; i++)
+        {
+            // Swap
+            if (numbers[i] != numbers[targetOccuranceIndex])
+            {
+                var temp = numbers[i];
+                numbers[i] = numbers[targetOccuranceIndex];
+                numbers[targetOccuranceIndex] = temp;
+
+                var startIndex = 0;
+
+                while (startIndex < numbers.Length) {
+                    if (numbers[startIndex] == targetElement)
+                    {
+                        targetOccuranceIndex = startIndex;
+                        break;
+                    }
+                    startIndex++;
+                }
+
+            }
+
+        }
+        return numbers;
+
+    }
+
 }
+
+

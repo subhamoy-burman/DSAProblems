@@ -892,4 +892,32 @@ public class Tests
         Assert.That(result.Item2, Is.EqualTo(5));
     }
 
+    [Test]
+    public void TestMoveElementsToEnd()
+    {
+        // Arrange
+        var arrays = new Arrays();
+        int[] input = { 2, 1, 2, 2, 2, 3, 4, 2 };
+        int toMove = 2;
+
+        // Act
+        var result = arrays.MoveElementsToEnd(input, toMove);
+
+        // Assert
+        // Count the number of elements that are not the target element
+        int nonTargetCount = input.Count(x => x != toMove);
+
+        // Verify all non-target elements are at the beginning
+        for (int i = 0; i < nonTargetCount; i++)
+        {
+            Assert.That(result[i] != toMove);
+        }
+
+        // Verify all target elements are at the end
+        for (int i = nonTargetCount; i < result.Length; i++)
+        {
+            Assert.That(result[i] == toMove);
+        }
+    }
+
 }

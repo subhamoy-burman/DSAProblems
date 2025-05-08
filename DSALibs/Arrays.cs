@@ -323,7 +323,40 @@ public class Arrays
 
         }
         return numbers;
+    }
 
+    public bool IsMonotonicArray(int[] numbers)
+    {
+        // Edge case: empty or single-element arrays are monotonic
+        if (numbers.Length <= 1)
+        {
+            return true;
+        }
+
+        bool isNonDecreasing = true;
+        bool isNonIncreasing = true;
+
+        for (int i = 1; i < numbers.Length; i++)
+        {
+            if (numbers[i] > numbers[i - 1])
+            {
+                // If current element is greater than previous, it can't be non-increasing
+                isNonIncreasing = false;
+            }
+            else if (numbers[i] < numbers[i - 1])
+            {
+                // If current element is less than previous, it can't be non-decreasing
+                isNonDecreasing = false;
+            }
+
+            // If neither is true, it's not monotonic
+            if (!isNonDecreasing && !isNonIncreasing)
+            {
+                return false;
+            }
+        }
+
+        return isNonDecreasing || isNonIncreasing;
     }
 
 }

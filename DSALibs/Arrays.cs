@@ -359,6 +359,69 @@ public class Arrays
         return isNonDecreasing || isNonIncreasing;
     }
 
+
+    public int GetTheLongestPeak(int[] numbers)
+    {
+        int maxLength = int.MinValue;    
+        for (int i = 0; i < numbers.Length - 2; i++)
+        {
+            int k = i;
+            bool isIncreasing = false;
+            bool isDecreasing = false;
+            bool increaseCompleted = false;
+            bool decreaseCompleted = false;
+
+            while (k < numbers.Length - 2) {
+
+                if (numbers[k + 1] == numbers[k])
+                {
+                    break;
+                }
+
+                if (numbers[k+1] - numbers[k] > 0)
+                {
+                    if(increaseCompleted) { break; }
+                    if (isIncreasing == false && isDecreasing == false)
+                    {
+                        isIncreasing = true;
+                        k++;
+                        continue;
+                    }
+                    else if(isDecreasing == true)
+                    {
+                        decreaseCompleted = true;
+                        isIncreasing = true;
+                        k++;
+                        continue;
+                    }
+                }
+                else if (numbers[k+1] - numbers[k] < 0)
+                {
+                    if(decreaseCompleted) { break; }
+                    if(isIncreasing == true && isDecreasing == false)
+                    {
+                        increaseCompleted = true;
+                        isDecreasing = true;
+                        k++;
+                        continue;
+                    }
+
+                    if(isIncreasing == false)
+                    {
+                        isDecreasing=true;
+                        k++;
+                        continue ;
+                    }
+                }
+            
+            }
+
+            maxLength = Math.Max(maxLength, k-i);
+
+        }
+
+        return maxLength;
+    }
 }
 
 

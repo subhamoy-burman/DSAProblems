@@ -422,6 +422,46 @@ public class Arrays
 
         return maxLength;
     }
+
+
+    public List<int[]> MergeIntervals(List<int[]> list) 
+    { 
+        if(list is null || list.Count == 0)
+        {
+            return list;
+        }
+
+        list.Sort((a,b) => a[0].CompareTo(b[0]));
+
+        List<int[]> merged = new List<int[]>();
+
+        foreach (var interval in list) {
+            
+            if(merged.Count == 0)
+            {
+                merged.Add(interval);
+                continue;
+            }
+
+            var lastMergedInterval = merged[merged.Count - 1];
+
+            var currentStart = interval[0];
+            var currentEnd = interval[1];
+
+            if (lastMergedInterval[1] >= currentStart) {
+
+                lastMergedInterval[1] = Math.Max(lastMergedInterval[1], currentEnd);
+
+            }
+            else
+            {
+                merged.Add(interval);
+            }
+        }
+
+        return merged;
+
+    }
 }
 
 

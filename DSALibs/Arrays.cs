@@ -462,6 +462,11 @@ public class Arrays
         return merged;
 
     }
+
+    public int FindBestSeat(int[] seats)
+    {
+        return seats[0];
+    }
 }
 
 

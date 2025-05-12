@@ -310,7 +310,8 @@ public class Arrays
 
                 var startIndex = 0;
 
-                while (startIndex < numbers.Length) {
+                while (startIndex < numbers.Length)
+                {
                     if (numbers[startIndex] == targetElement)
                     {
                         targetOccuranceIndex = startIndex;
@@ -362,7 +363,7 @@ public class Arrays
 
     public int GetTheLongestPeak(int[] numbers)
     {
-        int maxLength = int.MinValue;    
+        int maxLength = int.MinValue;
         for (int i = 0; i < numbers.Length - 2; i++)
         {
             int k = i;
@@ -371,23 +372,24 @@ public class Arrays
             bool increaseCompleted = false;
             bool decreaseCompleted = false;
 
-            while (k < numbers.Length - 2) {
+            while (k < numbers.Length - 2)
+            {
 
                 if (numbers[k + 1] == numbers[k])
                 {
                     break;
                 }
 
-                if (numbers[k+1] - numbers[k] > 0)
+                if (numbers[k + 1] - numbers[k] > 0)
                 {
-                    if(increaseCompleted) { break; }
+                    if (increaseCompleted) { break; }
                     if (isIncreasing == false && isDecreasing == false)
                     {
                         isIncreasing = true;
                         k++;
                         continue;
                     }
-                    else if(isDecreasing == true)
+                    else if (isDecreasing == true)
                     {
                         decreaseCompleted = true;
                         isIncreasing = true;
@@ -395,10 +397,10 @@ public class Arrays
                         continue;
                     }
                 }
-                else if (numbers[k+1] - numbers[k] < 0)
+                else if (numbers[k + 1] - numbers[k] < 0)
                 {
-                    if(decreaseCompleted) { break; }
-                    if(isIncreasing == true && isDecreasing == false)
+                    if (decreaseCompleted) { break; }
+                    if (isIncreasing == true && isDecreasing == false)
                     {
                         increaseCompleted = true;
                         isDecreasing = true;
@@ -406,17 +408,17 @@ public class Arrays
                         continue;
                     }
 
-                    if(isIncreasing == false)
+                    if (isIncreasing == false)
                     {
-                        isDecreasing=true;
+                        isDecreasing = true;
                         k++;
-                        continue ;
+                        continue;
                     }
                 }
-            
+
             }
 
-            maxLength = Math.Max(maxLength, k-i);
+            maxLength = Math.Max(maxLength, k - i);
 
         }
 
@@ -424,20 +426,21 @@ public class Arrays
     }
 
 
-    public List<int[]> MergeIntervals(List<int[]> list) 
-    { 
-        if(list is null || list.Count == 0)
+    public List<int[]> MergeIntervals(List<int[]> list)
+    {
+        if (list is null || list.Count == 0)
         {
             return list;
         }
 
-        list.Sort((a,b) => a[0].CompareTo(b[0]));
+        list.Sort((a, b) => a[0].CompareTo(b[0]));
 
         List<int[]> merged = new List<int[]>();
 
-        foreach (var interval in list) {
-            
-            if(merged.Count == 0)
+        foreach (var interval in list)
+        {
+
+            if (merged.Count == 0)
             {
                 merged.Add(interval);
                 continue;
@@ -448,7 +451,8 @@ public class Arrays
             var currentStart = interval[0];
             var currentEnd = interval[1];
 
-            if (lastMergedInterval[1] >= currentStart) {
+            if (lastMergedInterval[1] >= currentStart)
+            {
 
                 lastMergedInterval[1] = Math.Max(lastMergedInterval[1], currentEnd);
 
@@ -465,7 +469,61 @@ public class Arrays
 
     public int FindBestSeat(int[] seats)
     {
-        return seats[0];
+        int zeroStartIndex = -1;
+        int zeroEndIndex = -1;
+        int bestSeatLength = 0;
+        Tuple<int, int> seatLengthTuple = Tuple.Create(-1, -1);
+
+        for (int i = 1; i < seats.Length - 1; i++)
+        {
+
+            if (seats[i] == 0 && zeroStartIndex != -1)
+            {
+                zeroEndIndex = i;
+            }
+            else if (seats[i] == 0 && zeroStartIndex == -1)
+            {
+                zeroStartIndex = i;
+                zeroEndIndex = i;
+            }
+            else if (seats[i] == 1 && zeroStartIndex != -1 && zeroEndIndex != -1)
+            {
+                int currentLength = zeroEndIndex - zeroStartIndex + 1;
+                if (currentLength > bestSeatLength)
+                {
+                    bestSeatLength = currentLength;
+                    seatLengthTuple = Tuple.Create(zeroStartIndex, zeroEndIndex);
+                    zeroEndIndex = -1;
+                    zeroStartIndex = -1;
+                }
+            }
+
+        }
+
+        if (zeroStartIndex != -1 && zeroEndIndex != -1)
+        {
+            int currentLength = zeroEndIndex - zeroStartIndex + 1;
+            if (currentLength > bestSeatLength)
+            {
+                bestSeatLength = currentLength;
+                seatLengthTuple = Tuple.Create(zeroStartIndex, zeroEndIndex);
+            }
+        }
+
+        if (bestSeatLength == 0 && seatLengthTuple.Item1 == -1)
+        {
+            return -1;
+        }
+
+        if (bestSeatLength % 2 == 0)
+        {
+            return seatLengthTuple.Item1 + (seatLengthTuple.Item2 - seatLengthTuple.Item1 - 1) / 2;
+        }
+        else
+        {
+            return (seatLengthTuple.Item2 + seatLengthTuple.Item1) / 2;
+        }
+
     }
 }
 

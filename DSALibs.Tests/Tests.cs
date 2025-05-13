@@ -920,4 +920,28 @@ public class Tests
         }
     }
 
+    [Test]
+    public void TestLongestArrayOfTargetSum_SampleInput()
+    {
+        // Arrange
+        var arrays = new Arrays();
+        int[] input = { 1, 2, 3, 4, 3, 3, 1, 2, 1, 2 };
+        int targetSum = 10;
+
+        // Act
+        var result = arrays.LongestArrayOfTargetSum(input, targetSum);
+
+        // Assert
+        Assert.That(result.Item1, Is.EqualTo(4));  // Start index
+        Assert.That(result.Item2, Is.EqualTo(8));  // End index
+
+        // Verify the sum of subarray equals target sum
+        int sum = 0;
+        for (int i = result.Item1; i <= result.Item2; i++)
+        {
+            sum += input[i];
+        }
+        Assert.That(sum, Is.EqualTo(targetSum));
+    }
+
 }

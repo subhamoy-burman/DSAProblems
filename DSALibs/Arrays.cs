@@ -1,4 +1,5 @@
 ﻿using System.Runtime.CompilerServices;
+using System.Xml;
 
 namespace DSALibs;
 
@@ -524,6 +525,47 @@ public class Arrays
             return (seatLengthTuple.Item2 + seatLengthTuple.Item1) / 2;
         }
 
+    }
+
+    public Tuple<int, int> LongestArrayOfTargetSum(int[] inputArray, int targetSum)
+    {
+        int startIndex = 0;
+        Tuple<int, int> longestTuple = Tuple.Create(0, 0);
+        int sum = 0;
+        int i = 0;
+
+        while (i < inputArray.Length)
+        {
+            {
+                if (sum + inputArray[i] <= targetSum)
+                {
+                    sum += inputArray[i];
+
+                    if (sum == targetSum)
+                    {
+                        if (longestTuple.Item2 - longestTuple.Item1 < i - startIndex)
+                        {
+                            longestTuple = Tuple.Create(startIndex, i);
+                        }
+                    }
+                    i++;
+                }
+                else
+                {
+                    sum = sum - inputArray[startIndex];
+
+                    if (sum == targetSum)
+                    {
+                        if (longestTuple.Item2 - longestTuple.Item1 < i - startIndex)
+                        {
+                            longestTuple = Tuple.Create(startIndex, i);
+                        }
+                    }
+                    startIndex++;
+                }
+            }
+        }
+        return longestTuple;
     }
 }
 

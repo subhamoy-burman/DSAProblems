@@ -567,6 +567,82 @@ public class Arrays
         }
         return longestTuple;
     }
+
+    private class KinghtPostions
+    {
+        public int PositionAXPoint { get; set; }
+        public int PositionAYPoint { get; set; }
+        public int PositionBXPoint { get; set; }
+        public int PositionBYPoint { get; set; }
+        public int Turns { get; set; }
+    }
+
+    public int KinghtConnectionMeetingPoint(Tuple<int, int> startingPointA, Tuple<int, int> startingPointB)
+    {
+        Queue<KinghtPostions> kinghtPostionsQueue = new Queue<KinghtPostions>();
+        kinghtPostionsQueue.Enqueue(new KinghtPostions
+        {
+            PositionAXPoint = startingPointA.Item1,
+            PositionAYPoint = startingPointA.Item2,
+            PositionBXPoint = startingPointB.Item1,
+            PositionBYPoint = startingPointB.Item2,
+            Turns = 0
+        });
+        HashSet<string> visited = new HashSet<string>();
+        visited.Add($"{startingPointA.Item1}-{startingPointA.Item2}-{startingPointB.Item1}-{startingPointB.Item2}");
+
+        int[,] moves = new int[,]
+        {
+            { -2, 1 },
+            { -1, 2 },
+            { 1, 2 },
+            { 2, 1 },
+            { 2, -1 },
+            { 1, -2 },
+            { -1, -2 },
+            { -2, -1 }
+        };
+
+        while (kinghtPostionsQueue.Count > 0)
+        {
+            var positionToProcess = kinghtPostionsQueue.Dequeue();
+            for (int i = 0; i < moves.GetLength(0); i++)
+            {
+                var newAPostionXPoint = positionToProcess.PositionAXPoint + moves[i, 0];
+                var newAPositionYPoint = positionToProcess.PositionAYPoint + moves[i, 1];
+
+
+                for (int j = 0; j < moves.GetLength(0); j++)
+                {
+                    var newBPostionXPoint = positionToProcess.PositionBXPoint + moves[j, 0];
+                    var newBPositionYPoint = positionToProcess.PositionBYPoint + moves[j, 1];
+
+                    if (newAPostionXPoint == newBPostionXPoint && newAPositionYPoint == newBPositionYPoint)
+                    {
+                        return positionToProcess.Turns + 1;
+                    }
+                    else
+                    {
+                        var stateKey = $"{newAPostionXPoint}-{newAPositionYPoint}-{newBPostionXPoint}-{newBPositionYPoint}";
+                        if (!visited.Contains(stateKey))
+                        {
+                            kinghtPostionsQueue.Enqueue(new KinghtPostions
+                            {
+                                PositionAXPoint = newAPostionXPoint,
+                                PositionAYPoint = newAPositionYPoint,
+                                PositionBXPoint = newBPostionXPoint,
+                                PositionBYPoint = newBPositionYPoint,
+                                Turns = positionToProcess.Turns + 1
+                            });
+                            visited.Add(stateKey);
+                        }
+                    }
+                }
+            }
+        }
+        return -1;
+
+    }
 }
 
 

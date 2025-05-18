@@ -944,4 +944,11 @@ public class Tests
         Assert.That(sum, Is.EqualTo(targetSum));
     }
 
+
+    [Test]
+    public void TestPermutations()
+    {
+        var rec = new RecursionProblems();
+        rec.GetPermutations(new int[] { 1, 2, 3 });
+    }
 }

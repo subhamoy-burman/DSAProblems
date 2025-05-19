@@ -37,5 +37,30 @@ namespace DSALibs
         }
 
         //Powerset
+
+        public List<List<int>> PowerSets(int[] inputArr) { 
+        
+            List<List<int>> result = new List<List<int>>();
+            List<int> localList = new List<int>();
+            int startIndex = 0;
+
+            PreparePowerSets(inputArr, result, localList, startIndex);
+            return result;
+        }
+
+        private void PreparePowerSets(int[] inputArr, List<List<int>> result, List<int> localList, int startIndex)
+        {
+            if (startIndex == inputArr.Length) 
+            {
+                result.Add(new List<int>(localList));
+                return;
+            }
+            
+            localList.Add(inputArr[startIndex]);
+            PreparePowerSets(inputArr, result, localList, startIndex + 1);
+            localList.Remove(inputArr[startIndex]);
+            PreparePowerSets(inputArr, result, localList, startIndex + 1);
+
+        }
     }
 }

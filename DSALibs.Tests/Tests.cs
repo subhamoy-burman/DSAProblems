@@ -951,4 +951,11 @@ public class Tests
         var rec = new RecursionProblems();
         rec.GetPermutations(new int[] { 1, 2, 3 });
     }
+
+    [Test]
+
+    public void TestPowerSet()
+    {
+        var powerSets = new RecursionProblems().PowerSets(new int[] { 1, 2, 3 });
+    }
 }

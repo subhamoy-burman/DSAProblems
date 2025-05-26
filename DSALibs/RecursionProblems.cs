@@ -70,6 +70,7 @@ namespace DSALibs
         {
             string result = string.Empty;
             GenerateInterleavingString(input1, 0, input2, 0, target, result);
+            return true;
         }
 
         private void GenerateInterleavingString(string input1, int index1, string input2, int index2, string target, string result)
@@ -82,7 +83,8 @@ namespace DSALibs
 
 
             }
-
         }
+
+        //Solve Sudoku 
     }
 }

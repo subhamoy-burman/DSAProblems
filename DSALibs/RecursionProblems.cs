@@ -80,8 +80,6 @@ namespace DSALibs
                 result += input1[index1];
                 result += input2[index2];
                 GenerateInterleavingString(input1, index1 + 1, input2, index2 + 1, target, result);
-
-
             }
         }
 

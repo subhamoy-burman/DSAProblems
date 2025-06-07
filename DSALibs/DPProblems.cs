@@ -79,5 +79,29 @@ namespace DSALibs
                                     1 + EditDistanceImplementationFunc(str1, str2, index1, index2 - 2))); //Insert
             }
         }
+    
+        //Recursive solution to find the length
+        public int FindLongestCommonSubsequece(string str1, string str2)
+        {
+            return FindLCSFunc(str1, str2, str1.Length - 1, str2.Length - 1);
+        }
+
+        private int FindLCSFunc(string str1, string str2, int i, int j)
+        {
+            if(i<0 || j<0)
+            {
+                return 0;
+            }
+
+            if (str1[i] == str2[j])
+            {
+                return 1 + FindLCSFunc(str1, str2, i - 1, j - 1);
+            }
+            else 
+            {
+                return Math.Max(FindLCSFunc(str1, str2, i - 1, j),
+                    FindLCSFunc(str1, str2, i, j - 1));
+            }
+        }
     }
 }

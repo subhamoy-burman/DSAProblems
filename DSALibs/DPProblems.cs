@@ -103,5 +103,42 @@ namespace DSALibs
                     FindLCSFunc(str1, str2, i, j - 1));
             }
         }
+
+        static Tuple<int, List<int>> Knapsack(List<Tuple<int, int>> items, int index, int remainingCapacity)
+        {
+            // Base case: no items left
+            if (index < 0)
+            {
+                return Tuple.Create(0, new List<int>());
+            }
+
+            var (value, weight) = items[index];
+
+            // Option 1: Try taking the current item
+            Tuple<int, List<int>> takeResult = null;
+            if (weight <= remainingCapacity)
+            {
+                takeResult = Knapsack(items, index - 1, remainingCapacity - weight);
+
+                // Add current item's value and index
+                int totalValueIfTaken = takeResult.Item1 + value;
+                var updatedList = new List<int>(takeResult.Item2) { index };
+
+                takeResult = Tuple.Create(totalValueIfTaken, updatedList);
+            }
+
+            // Option 2: Skip the current item
+            var skipResult = Knapsack(items, index - 1, remainingCapacity);
+
+            // Choose the better option
+            if (takeResult == null || skipResult.Item1 > takeResult.Item1)
+            {
+                return skipResult;
+            }
+            else
+            {
+                return takeResult;
+            }
+        }
     }
 }

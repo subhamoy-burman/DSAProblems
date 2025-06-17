@@ -958,4 +958,21 @@ public class Tests
     {
         var powerSets = new RecursionProblems().PowerSets(new int[] { 1, 2, 3 });
     }
+
+    [Test]
+    public void Test_LIS_With_Input_5_1_2_3_4()
+    {
+        // Arrange
+        int[] input = { 5, 1, 2, 3, 4 };
+        List<int> expected = new List<int> { 1, 2, 3, 4 };
+
+        
+
+        List<int> initialList = new List<int>();
+        List<int> result = DPProblems.BuildLIS(currIndex: 0, prevIndex: -1, initialList, new List<int>(), input);
+
+        // Assert
+        Assert.Equals(expected, result);
+    }
+
 }

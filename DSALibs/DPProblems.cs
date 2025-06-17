@@ -6,7 +6,7 @@ using System.Threading.Tasks;
 
 namespace DSALibs
 {
-    internal class DPProblems
+    public static class DPProblems
     {
 
         /// <summary>
@@ -81,12 +81,12 @@ namespace DSALibs
         }
     
         //Recursive solution to find the length
-        public int FindLongestCommonSubsequece(string str1, string str2)
+        public static int FindLongestCommonSubsequece(string str1, string str2)
         {
             return FindLCSFunc(str1, str2, str1.Length - 1, str2.Length - 1);
         }
 
-        private int FindLCSFunc(string str1, string str2, int i, int j)
+        private static int FindLCSFunc(string str1, string str2, int i, int j)
         {
             if(i<0 || j<0)
             {
@@ -140,5 +140,37 @@ namespace DSALibs
                 return takeResult;
             }
         }
+
+        public static List<int> BuildLIS(int currIndex, int prevIndex, List<int> listOfNumbers, List<int> maxLisSoFar, int[] arr)
+        {
+            if (currIndex >= arr.Length)
+            {
+                // Compare current list with maxLisSoFar before returning
+                return listOfNumbers.Count > maxLisSoFar.Count ? listOfNumbers : maxLisSoFar;
+            }
+
+            List<int> pick = new List<int>();
+            List<int> dontPick;
+
+            // Option 1: Pick current element if it's strictly increasing
+            if (prevIndex == -1 || arr[currIndex] > arr[prevIndex])
+            {
+                listOfNumbers.Add(arr[currIndex]);
+                List<int> newList = new List<int>(listOfNumbers);
+                pick = BuildLIS(currIndex + 1, currIndex, newList, maxLisSoFar, arr);
+            }
+            else
+            {
+                pick = new List<int>(listOfNumbers); // fallback
+            }
+
+            // Option 2: Don't pick current element
+            dontPick = BuildLIS(currIndex + 1, prevIndex, new List<int>(listOfNumbers), maxLisSoFar, arr);
+
+            // Choose better of the two options
+            List<int> betterOption = pick.Count > dontPick.Count ? pick : dontPick;
+            return betterOption;
+        }
+
     }
 }

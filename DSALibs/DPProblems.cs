@@ -141,6 +141,7 @@ namespace DSALibs
             }
         }
 
+        // Wrong impmentation
         public static List<int> BuildLIS(int currIndex, int prevIndex, List<int> listOfNumbers, List<int> maxLisSoFar, int[] arr)
         {
             if (currIndex >= arr.Length)

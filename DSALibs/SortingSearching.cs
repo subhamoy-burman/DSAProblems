@@ -75,5 +75,49 @@ namespace DSALibs
 
             return priorityQueue.Dequeue();
         }
+
+        public (int, int) SearchInSortedMatrix(int[,] arr, int target)
+        {
+            int rowLength = arr.GetLength(0);
+            int columnLength = arr.GetLength(1);
+            int possibleRow = -1;
+
+            for (int i = 0; i < rowLength; i++)
+            {
+                if (target >= arr[i, 0] && target <= arr[i, columnLength-1])
+                {
+                    possibleRow = i;
+                    break;
+                }
+            }
+
+            if (possibleRow == -1)
+            {
+                return (-1, -1);
+            }
+
+
+            int start = 0;
+            int end = columnLength-1;
+
+            while (start < end) {
+                int mid = start + (end - start) / 2;
+
+                if (arr[possibleRow, mid] == target) { 
+                
+                    return (possibleRow, mid);
+                }
+                if (arr[possibleRow, mid] > target)
+                {
+                    end = mid - 1;
+                }
+                if (arr[possibleRow, end] < target)
+                {
+                    start = mid + 1;
+                }
+            }
+
+            return (-1, -1);
+        }
     }
 }

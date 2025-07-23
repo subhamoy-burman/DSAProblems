@@ -111,7 +111,7 @@ namespace DSALibs
                 {
                     end = mid - 1;
                 }
-                if (arr[possibleRow, end] < target)
+                else if (arr[possibleRow, end] < target)
                 {
                     start = mid + 1;
                 }

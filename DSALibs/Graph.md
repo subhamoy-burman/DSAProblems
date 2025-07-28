@@ -118,3 +118,5 @@ You’re not guessing.
 You’re **solving**.
 
 And you've got it right. 💡
+
+**Next: Detect Cycle in a undirected graph.**

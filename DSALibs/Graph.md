@@ -119,4 +119,4 @@ You’re **solving**.
 
 And you've got it right. 💡
 
-**Next: Detect Cycle in a undirected graph.**
+**Next: Detect Cycle in a undirected graph.**Cool can you please write the code in C#

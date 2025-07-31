@@ -120,3 +120,90 @@ You’re **solving**.
 And you've got it right. 💡
 
 **Next: Detect Cycle in a undirected graph.**Cool can you please write the code in C#
+
+Here’s a clean and efficient C# implementation of the BFS-based approach you’ve reasoned through:
+
+```csharp
+using System;
+using System.Collections.Generic;
+
+public class Solution
+{
+    public int[][] UpdateMatrix(int[][] grid)
+    {
+        int rows = grid.Length;
+        int cols = grid[0].Length;
+        int[][] result = new int[rows][];
+        bool[][] visited = new bool[rows][];
+        Queue<(int x, int y, int dist)> queue = new Queue<(int, int, int)>();
+
+        // Initialize result and visited arrays
+        for (int i = 0; i < rows; i++)
+        {
+            result[i] = new int[cols];
+            visited[i] = new bool[cols];
+        }
+
+        // Enqueue all 1s and mark them visited
+        for (int i = 0; i < rows; i++)
+        {
+            for (int j = 0; j < cols; j++)
+            {
+                if (grid[i][j] == 1)
+                {
+                    queue.Enqueue((i, j, 0));
+                    visited[i][j] = true;
+                }
+            }
+        }
+
+        // Directions: up, down, left, right
+        int[] dx = new int[] { -1, 1, 0, 0 };
+        int[] dy = new int[] { 0, 0, -1, 1 };
+
+        // BFS traversal
+        while (queue.Count > 0)
+        {
+            var (x, y, dist) = queue.Dequeue();
+            result[x][y] = dist;
+
+            for (int d = 0; d < 4; d++)
+            {
+                int newX = x + dx[d];
+                int newY = y + dy[d];
+
+                if (newX >= 0 && newX < rows && newY >= 0 && newY < cols && !visited[newX][newY])
+                {
+                    queue.Enqueue((newX, newY, dist + 1));
+                    visited[newX][newY] = true;
+                }
+            }
+        }
+
+        return result;
+    }
+}
+```
+
+### 🧪 Example Usage
+
+You can test it like this:
+
+```csharp
+var solution = new Solution();
+int[][] grid = new int[][]
+{
+    new int[] { 0, 0, 1 },
+    new int[] { 0, 0, 0 },
+    new int[] { 1, 0, 0 }
+};
+
+int[][] result = solution.UpdateMatrix(grid);
+
+foreach (var row in result)
+{
+    Console.WriteLine(string.Join(" ", row));
+}
+```
+
+Let me know if you’d like to walk through this code line by line or explore optimizations or variations!

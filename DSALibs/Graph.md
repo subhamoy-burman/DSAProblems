@@ -642,3 +642,189 @@ Would you like me to write the **complete C# function** based on your design?
 Or would you like to **write it yourself** and have me review it?
 
 Your call.
+
+You're thinking actively and that’s great — but there’s a **critical misunderstanding** in your approach that we need to gently untangle using first principles.
+
+Let’s walk through this **step by step**, with questions, corrections, and intuition — so you arrive at the right mental model yourself.
+
+---
+
+### ✅ Problem Recap
+
+You are given an `N x M` grid:
+- `'1'` = Land
+- `'0'` = Water
+
+An **island** is a group of `'1'`s connected **in any of 8 directions**:
+- Horizontal (left/right)
+- Vertical (up/down)
+- Diagonal (top-left, top-right, bottom-left, bottom-right)
+
+So it's **8-directional connectivity** — more connected than the usual 4-directional.
+
+Your task: Count the number of **connected components of '1's**, where each component is surrounded by water.
+
+---
+
+### ❌ Your Proposed Plan (Let’s Analyze)
+
+> "Will start to traverse through all **border elements** and start DFS on them."
+
+Wait — why **border elements**?
+
+Let’s pause and ask:
+
+---
+
+### 🤔 Guiding Question 1:
+> Suppose a land cell (`1`) is **in the middle of the grid**, not near any border.  
+> But it's part of an island (surrounded by water).  
+> Will your algorithm ever visit it if you only start DFS from the **border**?
+
+👉 No. And that means: **you’ll miss islands completely**.
+
+So starting only from **border cells** is incorrect.
+
+Because:
+- Islands can be **anywhere** — center, corner, edge — doesn’t matter.
+- What matters is: **Is this land cell part of a group that hasn't been visited yet?**
+
+So we must check **every cell in the entire grid**, not just the border.
+
+---
+
+### 🤔 Guiding Question 2:
+> What does "connected component" mean in this context?
+
+It means:
+- All `'1'`s that are reachable from each other via 8-directional moves form **one island**.
+- If two groups of `'1'`s are **not connected** (even diagonally), they are **two separate islands**.
+
+So your tool — **DFS (or BFS)** — is correct for exploring one full island once you land on it.
+
+But the **starting point** must be **every unvisited `'1'`**, wherever it is.
+
+---
+
+### ✅ Correct High-Level Strategy (Intuition)
+
+We want to:
+1. Traverse **every cell** in the grid (all `N x M` cells).
+2. When we find a `'1'` that hasn’t been visited:
+   - It means we’ve found a **new island** → increment counter
+   - Do **DFS/BFS** from that cell to mark **all connected `'1'`s** (via 8 directions) as visited
+3. Continue until all cells are processed.
+
+This way:
+- No island is missed
+- Each island is counted exactly once
+
+---
+
+### 🔍 Let’s Fix Your Plan Step-by-Step
+
+#### ❌ "Traverse only border elements"
+- ❌ Wrong — islands can be fully internal
+- ✅ Must traverse **all cells** in the grid
+
+#### ✅ "When we get a 1 not visited, do island++ and start DFS"
+- ✅ YES — this is the **core idea of connected components**
+- Every time you start a DFS from an unvisited `'1'`, you’re discovering a **new island**
+
+#### ✅ "Inside DFS, go in 8 directions using dx, dy"
+- ✅ YES — since the problem says "all 8 directions"
+- So your direction arrays should be:
+  ```text
+  dx = {-1, -1, -1, 0, 0, 1, 1, 1}
+  dy = {-1,  0,  1, -1, 1, -1, 0, 1}
+  ```
+  (covers all 8 neighbors)
+
+---
+
+### 🧠 Visual Example
+
+Grid:
+```
+1 0 1
+0 1 0
+1 0 1
+```
+
+Each `'1'` is diagonally connected to others.
+
+With **8-directional** connectivity:
+- All `'1'`s are connected → **1 island**
+
+With **4-directional** connectivity:
+- No horizontal/vertical connection → **5 islands**
+
+So: **Connectivity rules change the answer!**
+
+And your DFS must reflect 8-way movement.
+
+---
+
+### ✅ So What Should You Do?
+
+```text
+islandCount = 0
+visited[N][M] = false
+
+for i from 0 to N-1:
+    for j from 0 to M-1:
+        if grid[i][j] == '1' and not visited[i][j]:
+            islandCount++
+            DFS(i, j)   ← explores all 8-connected '1's
+```
+
+In `DFS(i, j)`:
+- Mark `(i,j)` as visited
+- For each of 8 neighbors:
+  - If in bounds, is `'1'`, and not visited → DFS(neighbor)
+
+---
+
+### 🚫 Why Border-Only Traversal Fails
+
+Imagine this grid:
+
+```
+0 0 0 0 0
+0 1 1 1 0
+0 1 1 1 0
+0 1 1 1 0
+0 0 0 0 0
+```
+
+- The island is a 3x3 square in the center
+- **No land on the border**
+- If you only check border → you see all `0`s → output `0`
+- But correct answer is **1**
+
+So: ❌ Misses entire island
+
+---
+
+### ✅ Summary: What Was Right, What Was Wrong
+
+| Part of Your Idea | Verdict | Why |
+|-------------------|--------|-----|
+| Use DFS with visited matrix | ✅ | Correct for avoiding revisits |
+| Explore in 8 directions | ✅ | Required by problem |
+| Start DFS only from border cells | ❌ | Will miss internal islands |
+| Increment island count when finding new unvisited '1' | ✅ | Core idea of component counting |
+
+---
+
+### 💡 Final Thought
+
+You had the **right engine** (DFS + visited + 8 directions), but the **wrong starting points**.
+
+> 🔑 The key insight:  
+> **An island can be anywhere.**  
+> So you must scan the **entire grid**, and every time you find a `'1'` that hasn’t been claimed, it’s the start of a new island.
+
+Now you’re ready to implement it correctly — and you’ve learned a subtle but crucial lesson about **problem assumptions**.
+
+Keep going — you're leveling up! 💪

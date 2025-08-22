@@ -828,3 +828,232 @@ You had the **right engine** (DFS + visited + 8 directions), but the **wrong sta
 Now you’re ready to implement it correctly — and you’ve learned a subtle but crucial lesson about **problem assumptions**.
 
 Keep going — you're leveling up! 💪
+
+You're **very close** — and the fact that you're thinking in terms of **in-degrees**, **queue**, and **dependency resolution** shows you’ve built strong intuition.
+
+Let’s now **refine your pseudo-code step by step**, point out what’s correct, fix subtle issues, and clarify the logic — all without jumping to code, just strengthening your mental model.
+
+We’ll go line by line.
+
+---
+
+### ✅ What You Got Right
+
+| Part | Why It's Correct |
+|------|------------------|
+| Compute in-degree array by iterating over adjacency list | This is how you count incoming edges |
+| Use a queue for nodes with `in-degree == 0` | Core of Kahn’s Algorithm |
+| Reduce in-degree of neighbors when a node is processed | This simulates removing edges |
+| Only process nodes when their in-degree becomes 0 | Ensures dependency constraints are met |
+
+So your **core idea is spot-on**.
+
+Now let’s fix the **logical and structural issues** that could break correctness.
+
+---
+
+## ❌ Issues in Your Pseudo-Code
+
+---
+
+### ❌ 1. `HashSet<int> topoOrder` — Why a Set?
+
+You wrote:
+```pseudo
+HashSet<int> topoOrder;
+```
+
+But `HashSet`:
+- Does not preserve **order**
+- Allows only unique entries (good), but you don’t need fast lookup
+- You’re using it to "check if node already exists"
+
+But here’s the problem:
+> 🔁 **Topological sort is an ordered list** — not a set.
+
+You need to **record the sequence** in which nodes are processed.
+
+✅ So use a `List<int>` or similar ordered collection.
+
+Also:
+- You don’t need to check `!topoOrder.Contains(i)` — because no node will be added twice if you manage in-degrees correctly.
+
+---
+
+### ❌ 2. You’re checking `indegreeArray[i] == 0` inside the loop — but `i` is not defined
+
+Inside the while loop:
+```pseudo
+Dequeue each element and check
+if (indegreeArray[i] == 0 && !topoOrder.ContainsKey[i])
+```
+
+Wait — what is `i`?
+
+You just dequeued a node — let’s call it `u`.
+
+But you’re using `i` as if it's the current node — but it's not declared.
+
+✅ Fix: Let the dequeued node be `u`. Then:
+- Add `u` to result
+- For each neighbor `v` in `listOfEdges[u]`:
+  - `indegreeArray[v]--`
+  - If `indegreeArray[v] == 0`, enqueue `v`
+
+No need to scan the entire `inDegreeArray` every time.
+
+---
+
+### ❌ 3. You said: "foreach item in inDegreeArray if it is == 0 and not exists in HashSet insert the index in queue."
+
+This is **wrong** — and a critical mistake.
+
+Why?
+- You **cannot** scan the entire `inDegreeArray` every time to find zero-in-degree nodes.
+- Because:
+  - A node may have been **already enqueued** or **already processed**
+  - Re-adding it would cause duplication
+- And more importantly: **You already know which nodes might have become ready** — only the **neighbors** of the node you just processed!
+
+👉 So instead of scanning the whole array, just look at the **neighbors** of the current node.
+
+When you reduce their in-degree, **check immediately** if it became zero — and if so, **enqueue it now**.
+
+This is efficient: **O(V + E)**
+
+---
+
+### ✅ Corrected Flow (Intuition)
+
+```pseudo
+result = empty list
+queue = empty queue
+
+// Step 1: Compute in-degree of each node
+for each node u:
+    for each neighbor v in adj[u]:
+        inDegree[v]++
+
+// Step 2: Enqueue all nodes with in-degree 0
+for each node u:
+    if inDegree[u] == 0:
+        queue.Enqueue(u)
+
+// Step 3: Process queue
+while queue is not empty:
+    u = Dequeue()
+
+    Add u to result  ← this is the key: u has no pending dependencies
+
+    for each neighbor v of u:
+        inDegree[v] = inDegree[v] - 1   ← one dependency removed
+        if inDegree[v] == 0:
+            Enqueue(v)  ← now v is ready
+
+// At end: result contains topological order
+```
+
+---
+
+### 🔁 Let’s Simulate on Your Example
+
+Edges:
+- `5 → 0`, `5 → 2`
+- `4 → 0`, `4 → 1`
+- `2 → 3`
+- `3 → 1`
+
+Compute in-degrees:
+- `0`: 2 (`5`, `4`)
+- `1`: 2 (`4`, `3`)
+- `2`: 1 (`5`)
+- `3`: 1 (`2`)
+- `4`: 0
+- `5`: 0
+
+Queue starts with: `4`, `5` (in-degree 0)
+
+---
+
+**Step 1**: Dequeue `5`
+- Add `5` to result → `[5]`
+- Neighbors: `0`, `2`
+  - `inDegree[0]` → 2 → 1
+  - `inDegree[2]` → 1 → 0 → enqueue `2`
+
+Queue: `[4, 2]`
+
+---
+
+**Step 2**: Dequeue `4`
+- Add `4` → `[5, 4]`
+- Neighbors: `0`, `1`
+  - `inDegree[0]` → 1 → 0 → enqueue `0`
+  - `inDegree[1]` → 2 → 1
+
+Queue: `[2, 0]`
+
+---
+
+**Step 3**: Dequeue `2`
+- Add `2` → `[5, 4, 2]`
+- Neighbor: `3`
+  - `inDegree[3]` → 1 → 0 → enqueue `3`
+
+Queue: `[0, 3]`
+
+---
+
+**Step 4**: Dequeue `0`
+- Add `0` → `[5, 4, 2, 0]`
+- No outgoing edges
+
+Queue: `[3]`
+
+---
+
+**Step 5**: Dequeue `3`
+- Add `3` → `[5, 4, 2, 0, 3]`
+- Neighbor: `1`
+  - `inDegree[1]` → 1 → 0 → enqueue `1`
+
+Queue: `[1]`
+
+---
+
+**Step 6**: Dequeue `1`
+- Add `1` → `[5, 4, 2, 0, 3, 1]`
+
+Queue empty → done.
+
+✅ Valid topological order.
+
+(Note: Order depends on which zero-in-degree node you pick first — so multiple answers exist.)
+
+---
+
+### ✅ Summary of Fixes
+
+| Issue | Fix |
+|------|-----|
+| Using `HashSet` for topo order | Use `List<int>` to preserve order |
+| Checking `indegree[i] == 0` with undefined `i` | Use the dequeued node `u` |
+| Scanning entire `inDegreeArray` for zeros | Only check neighbors after reducing in-degree |
+| Re-adding nodes to queue | Only add when `inDegree[v] == 0`, and you’ll never add twice |
+
+---
+
+### 💡 Final Thought
+
+You had the **right engine** — Kahn’s Algorithm — but were missing the **efficient propagation** mechanism.
+
+The key insight:
+> 🔑 **Only the neighbors of the current node can become ready — so only they should be considered for enqueueing.**
+
+You don’t need to scan the whole graph — just react to changes.
+
+Now you’re ready to implement it cleanly.
+
+When you're ready, I can show the C# code — but for now, you’ve got the full intuition.
+
+You’ve earned it. 💡

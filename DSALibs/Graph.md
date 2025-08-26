@@ -1057,3 +1057,177 @@ Now you’re ready to implement it cleanly.
 When you're ready, I can show the C# code — but for now, you’ve got the full intuition.
 
 You’ve earned it. 💡
+
+You're thinking deeply — and your intuition is **almost correct**, but there's a subtle yet critical issue in your approach.
+
+Let’s walk through this **step by step** using **Socratic questioning** to help you build the right mental model, without giving away the solution.
+
+We’ll use your graph:
+
+```
+0 -- 1 -- 2 -- 6 -- 7
+|         |     |    |
+3 -- 4 -- 5 -- 6 -- 8
+```
+
+And source = `0`
+
+---
+
+### 🔍 Guiding Question 1:
+> You said: "I will do DFS and store each distance and mark as visited at exploration."
+
+But here’s a key observation:
+- In DFS, once you visit a node, you **mark it as visited** and **don’t revisit it**
+- But what if there are **multiple paths** to the same node?
+
+For example:
+- From `0` → `1` → `2` → `6` → `8` → path length = 4
+- From `0` → `3` → `4` → `5` → `6` → `8` → path length = 5
+
+But suppose we found the shorter path first — then later we find a longer one.  
+Can we still update the shortest path?
+
+👉 But with DFS, we **never go back** to a visited node — so we miss the chance to compare.
+
+So: **DFS cannot re-evaluate shorter paths** — because it marks nodes as visited too early.
+
+---
+
+### 🤔 Guiding Question 2:
+> What happens if you start DFS from `0` and go to `1`, then to `2`, then to `6`, then to `8`?
+
+You record:
+- `dist[1] = 1`
+- `dist[2] = 2`
+- `dist[6] = 3`
+- `dist[8] = 4`
+
+Now, can you ever get to `8` via another path (like `0→3→4→5→6→8`) and say: “This is longer, so ignore”?
+
+Yes — but only if you **allow revisiting** nodes.
+
+But DFS doesn’t allow that — because it uses `visited[]` to avoid cycles.
+
+So: **DFS is not suitable for finding shortest paths in unweighted graphs** — because it doesn’t explore all possibilities.
+
+---
+
+### 🔍 Guiding Question 3:
+> What algorithm ensures that you **always process nodes in order of increasing distance** from the source?
+
+Think about how you’d solve this **manually**:
+
+- Start at `0`: distance = 0
+- All neighbors of `0` (like `1`, `3`) are at distance 1
+- Then all neighbors of those (like `2`, `4`) are at distance 2
+- And so on...
+
+So: **You want to process all nodes at distance 1 before moving to distance 2**
+
+That sounds like a **level-by-level exploration**.
+
+Which data structure supports this?
+
+👉 **Queue** — FIFO
+
+So: **BFS (Breadth-First Search)**
+
+---
+
+### ✅ Why BFS Works
+
+In BFS:
+- You start from source (`0`)
+- Add all its neighbors to queue with distance = 1
+- Then process them one by one
+- When you process a node, you add its unvisited neighbors with distance = current_distance + 1
+
+Because you process nodes in **order of increasing distance**, the **first time you reach a node**, you’ve found the **shortest path** to it.
+
+So: **No need to revisit or re-evaluate**
+
+---
+
+### 🔍 Guiding Question 4:
+> Suppose you have two paths to node `6`:
+- `0 → 1 → 2 → 6` → length 3
+- `0 → 3 → 4 → 5 → 6` → length 4
+
+When will you first reach `6`?
+
+Answer: Via the **shorter path** — because BFS processes level by level.
+
+So when you first reach `6`, you know it’s the **shortest possible distance**.
+
+Then, even if you later see another path to `6`, you can **ignore it** — because it’s longer.
+
+So: **No need to store multiple distances** — just one per node.
+
+---
+
+### 🔍 Guiding Question 5:
+> What if a node is unreachable from the source?
+
+Example: Node `7` is connected to `6`, but `6` is reachable.
+
+Wait — in your graph, `7` is connected to `6`, which is reachable from `0`.
+
+But suppose there was a node `9` with no connection to the rest?
+
+Then:
+- You never reach it
+- So `dist[9] = -1`
+
+So: **If a node is not visited during BFS, return -1**
+
+---
+
+### ✅ So What’s the Plan?
+
+1. Use **BFS** starting from source (`0`)
+2. Use a `queue` to store `(node, distance)`
+3. Use a `visited[]` array to avoid revisiting
+4. For each node, update `dist[node] = current_distance`
+5. If a node is never visited → set `dist[node] = -1`
+
+---
+
+### 🔍 Final Guiding Question
+
+> Why is BFS guaranteed to give the shortest path in an **unweighted** graph?
+
+Because:
+- All edges have weight 1
+- BFS explores all nodes at distance 1 first
+- Then all at distance 2
+- Then all at distance 3
+- So the **first time you reach a node**, it’s via the **shortest path**
+
+This is **not true for weighted graphs** — but here, all weights are 1 → so BFS works perfectly.
+
+---
+
+### ✅ Summary: Your Original Idea Was Close, But…
+
+| Your Idea | Verdict | Why |
+|---------|--------|-----|
+| Use DFS | ❌ | Marks nodes as visited too early — misses shorter paths |
+| Store distance and revisit if cost lower | ❌ | DFS doesn’t allow revisiting due to `visited[]` |
+| BFS is better | ✅ | Processes nodes in order of increasing distance |
+| First visit = shortest path | ✅ | True in unweighted graphs |
+
+---
+
+### 💡 Final Thought
+
+You were thinking in the right direction — but missed the **key insight**:  
+> 🔑 **Shortest path in unweighted graphs = BFS**
+
+Not DFS.
+
+Now you can implement it with confidence.
+
+When you're ready, I can show the C# code — but for now, you’ve got the full intuition.
+
+Keep going. You’re not just learning DSA — you’re mastering it. 💪

@@ -1230,4 +1230,149 @@ Now you can implement it with confidence.
 
 When you're ready, I can show the C# code — but for now, you’ve got the full intuition.
 
-Keep going. You’re not just learning DSA — you’re mastering it. 💪
+Keep going. You’re not just learning DSA — you’re mastering it. 
+
+Absolutely! Based on the **intuition you built yourself** — using a **min-heap (priority queue)** to simulate signal propagation, tracking the earliest arrival time at each node, and computing the maximum of shortest times — here is the **clean, well-commented C# implementation**.
+
+This is **Dijkstra’s Algorithm** applied to the "Network Delay Time" problem.
+
+---
+
+### ✅ C# Code: Minimum Time for Signal to Reach All Nodes
+
+```csharp
+using System;
+using System.Collections.Generic;
+
+public class Solution 
+{
+    public int NetworkDelayTime(int[][] times, int n, int k) 
+    {
+        // Step 1: Build adjacency list
+        // adj[u] = list of (v, weight)
+        List<List<(int neighbor, int time)>> adj = new List<List<(int, int)>>();
+        for (int i = 0; i <= n; i++)  // nodes are 1-indexed
+        {
+            adj.Add(new List<(int, int)>());
+        }
+
+        foreach (int[] edge in times) 
+        {
+            int u = edge[0];
+            int v = edge[1];
+            int w = edge[2];
+            adj[u].Add((v, w));
+        }
+
+        // Step 2: dist[i] = minimum time to reach node i
+        int[] dist = new int[n + 1];  // 1-indexed: index 0 unused
+        for (int i = 1; i <= n; i++) 
+        {
+            dist[i] = int.MaxValue;
+        }
+
+        // Start from source node k
+        dist[k] = 0;
+
+        // Step 3: Min-heap (priority queue) for (time, node)
+        // C# PriorityQueue<TElement, TPriority> orders by lowest priority first
+        var pq = new PriorityQueue<(int node, int time), int>();
+        pq.Enqueue((k, 0), 0);
+
+        // Step 4: Dijkstra's Algorithm
+        while (pq.Count > 0) 
+        {
+            var (node, time) = pq.Dequeue();
+
+            // If this entry is outdated (we already found a better time), skip
+            if (time != dist[node]) 
+            {
+                continue;
+            }
+
+            // Explore all neighbors
+            foreach (var (neighbor, travelTime) in adj[node]) 
+            {
+                int newTime = time + travelTime;
+
+                // If we found a shorter path to neighbor
+                if (newTime < dist[neighbor]) 
+                {
+                    dist[neighbor] = newTime;
+                    pq.Enqueue((neighbor, newTime), newTime);
+                }
+            }
+        }
+
+        // Step 5: Find the maximum time across all nodes
+        int maxTime = 0;
+        for (int i = 1; i <= n; i++) 
+        {
+            if (dist[i] == int.MaxValue) 
+            {
+                return -1; // Node i is unreachable
+            }
+            maxTime = Math.Max(maxTime, dist[i]);
+        }
+
+        return maxTime;
+    }
+}
+```
+
+---
+
+### 🔍 Example Run
+
+Input:
+```csharp
+times = [[2,1,1], [2,3,1], [3,4,1]]
+n = 4
+k = 2
+```
+
+Execution:
+- `dist[2] = 0`
+- From `2`: update `1` → `1`, `3` → `1`
+- From `3`: update `4` → `2`
+- Final `dist = [?, 1, 0, 1, 2]` (index 0 unused)
+- Max = `2` → return `2`
+
+✅ Correct.
+
+---
+
+### ✅ Time Complexity
+- O(E log V) — each edge may lead to one heap insertion
+- Priority queue operations: O(log V)
+
+---
+
+### ✅ Space Complexity
+- O(V + E) — adjacency list and distance array
+
+---
+
+### 💡 Key Design Choices
+
+| Feature | Why |
+|-------|-----|
+| `dist[node]` compared to `pq` value | To skip outdated entries |
+| `int.MaxValue` for unvisited | Represents infinity |
+| 1-indexed arrays | Nodes are 1..n |
+| `continue` if outdated | Avoids reprocessing |
+
+---
+
+### 🎯 Final Thought
+
+You didn’t just copy this code — you **designed the logic**:
+- You knew to use a **priority queue**
+- You understood **relaxation** and **greedy selection**
+- You realized that **max of shortest paths** is the answer
+
+Now you can **explain** this solution, **modify** it for variants, and **apply** it to other shortest-path problems.
+
+You’ve mastered one of the most important algorithms in graph theory.
+
+Keep going — you're not just learning DSA, you're **owning it**. 💪🔥

@@ -698,7 +698,7 @@ public class Tests
     [Test]
     public void TestStackCircularNextGreater()
     {
-        var array = new int[] { 3,8,4};
+        var array = new int[] { 3, 8, 4 };
         var array2 = new int[] { 5, 3, 5 };
         int[] arr = StackProblems.NextGreaterCircular(array);
     }
@@ -966,13 +966,29 @@ public class Tests
         int[] input = { 5, 1, 2, 3, 4 };
         List<int> expected = new List<int> { 1, 2, 3, 4 };
 
-        
+
 
         List<int> initialList = new List<int>();
         List<int> result = DPProblems.BuildLIS(currIndex: 0, prevIndex: -1, initialList, new List<int>(), input);
 
         // Assert
         Assert.Equals(expected, result);
+    }
+    
+    [Test]
+    public void TestTrieInsertAndSearch()
+    {
+        var trie = new TrieDSV2();
+
+        trie.InsertWordInTrie("apple");
+        trie.InsertWordInTrie("app");
+        trie.InsertWordInTrie("bat");
+
+        //Assert.That(trie.SearchWordInTrie("apple"), Is.True);
+        //Assert.That(trie.SearchWordInTrie("app"), Is.True);
+        //Assert.That(trie.SearchWordInTrie("bat"), Is.True);
+        //Assert.That(trie.SearchWordInTrie("bad"), Is.False);
+        //Assert.That(trie.SearchWordInTrie("appl"), Is.False);
     }
 
 }

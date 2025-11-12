@@ -126,6 +126,24 @@ namespace DSALibs
             return (true, Math.Max(leftHeight, rightHeight) + 1);
         }
 
+
+        private bool CheckIfHeightBalanceNaive(TreeNode node)
+        {
+            if (node == null)
+            {
+                return true;
+            }
+            var leftHeight = GetHeightOfBinaryTree(node.Left);
+            var rightHeight = GetHeightOfBinaryTree(node.Right);
+
+            if (Math.Abs(leftHeight - rightHeight) > 1)
+            {
+                return false;
+            }
+
+            return CheckIfHeightBalanceNaive(node.Left) && CheckIfHeightBalanceNaive(node.Right);
+        }
+
         
     }
     

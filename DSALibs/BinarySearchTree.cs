@@ -1,3 +1,5 @@
+
+
 namespace DSALibs
 {
     public class BSTNode
@@ -36,6 +38,47 @@ namespace DSALibs
                 node.RightNode = InsertIntoBSTRecursion(node.RightNode, value);
             }
 
+            return node;
+        }
+
+        public void DeleteNode(int nodeValue)
+        {
+            Root = DeleteNodeRec(Root, nodeValue);
+        }
+
+        private BSTNode DeleteNodeRec(BSTNode node, int nodeValue)
+        {
+            if(node == null)
+            {
+                return node;
+            }
+
+            if(node.NodeValue > nodeValue)
+            {
+                node.LeftNode = DeleteNodeRec(node.LeftNode, nodeValue);
+            }
+            else if (node.NodeValue < nodeValue)
+            {
+                node.RightNode = DeleteNodeRec(node.RightNode, nodeValue);
+            }
+            else if(node.NodeValue == nodeValue)
+            {
+                if(node.LeftNode is null) return node.RightNode;
+                if(node.RightNode is null) return node.LeftNode;
+
+                var successor = findMin(node.RightNode); //inorder successor
+                node.NodeValue = successor.NodeValue;
+                node.RightNode = DeleteNodeRec(node.RightNode, successor.NodeValue);
+            }
+            return node;
+        }
+
+        private BSTNode findMin(BSTNode node)
+        {
+            while(node.LeftNode!=null)
+            {
+                node = node.LeftNode;
+            }
             return node;
         }
     }

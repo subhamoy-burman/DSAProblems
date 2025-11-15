@@ -82,6 +82,8 @@ namespace DSALibs
             return node;
         }
 
-        //Find Kth largest or smalles
+        //Find Kth largest or smallest
+
+        //Is BT a BST
     }
 }

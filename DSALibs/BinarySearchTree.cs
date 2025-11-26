@@ -1,5 +1,6 @@
 
 
+
 namespace DSALibs
 {
     public class BSTNode
@@ -7,6 +8,11 @@ namespace DSALibs
         public int NodeValue { get; set; }
         public BSTNode? RightNode { get; set; }
         public BSTNode? LeftNode { get; set; }
+
+        public BSTNode()
+        {
+            
+        }
 
         public BSTNode(int value)
         {
@@ -85,5 +91,46 @@ namespace DSALibs
         //Find Kth largest or smallest
 
         //Is BT a BST
+
+
+        // Build BST from Preorder
+        public BSTNode BuildBSTFromPreorder(int[] preOrderArray)
+        {
+            BSTNode bstNode = new BSTNode();
+            recursiveBuildBST(bstNode, preOrderArray, 0, preOrderArray.Length - 1);
+            return bstNode;
+
+        }
+
+        private void recursiveBuildBST(BSTNode bst, int[] preOrderArray, int start, int end)
+        {
+            if(start>end)
+            {
+                return;
+            }
+
+            bst.NodeValue = preOrderArray[start];
+            int i = 0;
+
+            for(i = start + 1; i<= end; i++)
+            {
+                if(preOrderArray[i]> preOrderArray[start])
+                {
+                    break;
+                }
+            }
+
+            if(start+1 <= i-1)
+            {
+                bst.LeftNode = new BSTNode();
+                recursiveBuildBST(bst.LeftNode, preOrderArray, start+1, i-1);
+            }
+
+            if(end >= i)
+            {
+                bst.RightNode = new BSTNode();
+                recursiveBuildBST(bst.RightNode, preOrderArray, i, end);
+            }
+        }
     }
 }

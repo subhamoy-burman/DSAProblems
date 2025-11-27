@@ -55,7 +55,8 @@ namespace DSALibs
 
         public int GetDiameterOfBinaryTree(TreeNode root)
         {
-            return GetDiameterMax(0, root.Left) + GetDiameterMax(0, root.Right);
+            return 0;
+            //return GetDiameterMax(0, root.Left) + GetDiameterMax(0, root.Right);
         }
 
         private int GetHeightOfBinaryTree(TreeNode node)

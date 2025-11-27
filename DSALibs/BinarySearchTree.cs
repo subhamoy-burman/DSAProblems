@@ -88,6 +88,15 @@ namespace DSALibs
             return node;
         }
 
+        private BSTNode findMax(BSTNode node)
+        {
+            while(node.RightNode!=null)
+            {
+                node = node.RightNode;
+            }
+            return node;
+        }
+
         //Find Kth largest or smallest
 
         //Is BT a BST
@@ -130,6 +139,47 @@ namespace DSALibs
             {
                 bst.RightNode = new BSTNode();
                 recursiveBuildBST(bst.RightNode, preOrderArray, i, end);
+            }
+        }
+
+        public Tuple<int,int> FindInorderSuccessorPredecessor(BSTNode bSTNode, int targetKey)
+        {
+            int inorderSuccessor = int.MaxValue;
+            int inorderPredecessor = int.MinValue;
+
+            recursiveFindInorderSuccessorPredecessor(bSTNode, ref inorderPredecessor, ref inorderSuccessor, targetKey);
+
+            return new Tuple<int, int>(inorderPredecessor, inorderSuccessor);
+        }
+
+        private void recursiveFindInorderSuccessorPredecessor(BSTNode bSTNode, ref int inorderPredecessor, 
+        ref int inorderSuccessor, int target)
+        {
+            if(bSTNode is null) return;
+
+            if (target ==  bSTNode.NodeValue)
+            {
+                if(bSTNode.LeftNode!=null)
+                {
+                    inorderPredecessor = findMax(bSTNode.LeftNode).NodeValue;
+                }
+                if(bSTNode.RightNode != null)
+                {
+                    inorderSuccessor = findMin(bSTNode.RightNode).NodeValue;
+                }
+                return;
+            }
+            else if(target>bSTNode.NodeValue)
+            {
+                inorderPredecessor = Math.Max(inorderPredecessor, bSTNode.NodeValue);
+                if(bSTNode.RightNode!=null)
+                recursiveFindInorderSuccessorPredecessor(bSTNode.RightNode, ref inorderPredecessor, ref inorderSuccessor, target);
+            }
+            else if(target<bSTNode.NodeValue)
+            {
+                inorderSuccessor = Math.Min(inorderSuccessor, bSTNode.NodeValue);
+                if(bSTNode.LeftNode != null)
+                recursiveFindInorderSuccessorPredecessor(bSTNode.LeftNode, ref inorderPredecessor, ref inorderSuccessor, target);
             }
         }
     }

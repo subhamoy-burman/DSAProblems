@@ -24,3 +24,5 @@ Write-Host "[5/5] Testing GitHub SSH authentication..." -ForegroundColor Yellow
 ssh -T git@github.com
 
 Write-Host "`nGit SSH setup complete for this repository!" -ForegroundColor Green
+
+#How to run: in terminal: .\setup-git-ssh.ps1

@@ -1,5 +1,6 @@
 ﻿using System;
 using System.Collections.Generic;
+using System.Data;
 using System.Diagnostics;
 using System.Linq;
 using System.Text;
@@ -238,5 +239,19 @@ namespace DSALibs
             }
         }
 
+        public static int MaxProfitSellingFeeBasedStockBottomUp(int[] stockPrices, int fee)
+        {
+            int[,] dp = new int[stockPrices.Length, 2];
+            dp[0,0] = 0;
+            dp[0,1] = -stockPrices[0];
+
+            for(int i=1;i<stockPrices.Length;i++)
+            {
+                dp[i,0] = Math.Max(dp[i-1,0], dp[i-1,1] + stockPrices[i] - fee);
+                dp[i,1] = Math.Max(dp[i-1,1], dp[i-1,0] - stockPrices[i]);
+            }
+
+            return dp[stockPrices.Length-1, 0];
+        }
     }
 }

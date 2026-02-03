@@ -241,17 +241,78 @@ namespace DSALibs
 
         public static int MaxProfitSellingFeeBasedStockBottomUp(int[] stockPrices, int fee)
         {
-            int[,] dp = new int[stockPrices.Length, 2];
-            dp[0,0] = 0;
-            dp[0,1] = -stockPrices[0];
+            if (stockPrices.Length == 0)
+                return 0;
 
-            for(int i=1;i<stockPrices.Length;i++)
+            Debug.WriteLine("=== Bottom-Up DP: Stock Trading with Transaction Fee ===");
+            Debug.WriteLine($"Prices: [{string.Join(", ", stockPrices)}]");
+            Debug.WriteLine($"Transaction Fee: {fee}");
+            Debug.WriteLine("=========================================================\n");
+
+            int n = stockPrices.Length;
+            int[,] dp = new int[n, 2];
+            
+            // Base case: Day 0
+            dp[0, 0] = 0;
+            dp[0, 1] = -stockPrices[0];
+            
+            Debug.WriteLine("┌─────────────────────────────────────────────────────────────────┐");
+            Debug.WriteLine("│ DP Table Legend:                                                │");
+            Debug.WriteLine("│ dp[i][0] = Max profit at day i ready to BUY (no stock held)    │");
+            Debug.WriteLine("│ dp[i][1] = Max profit at day i ready to SELL (stock held)      │");
+            Debug.WriteLine("└─────────────────────────────────────────────────────────────────┘\n");
+
+            Debug.WriteLine($"BASE CASE (Day 0, Price: {stockPrices[0]}):");
+            Debug.WriteLine($"  dp[0][0] = 0           (No action taken)");
+            Debug.WriteLine($"  dp[0][1] = -{stockPrices[0]}         (Bought stock at {stockPrices[0]})");
+            Debug.WriteLine($"  Table: [{dp[0, 0]:D2}][{dp[0, 1]:D3}]\n");
+            Debug.WriteLine("─────────────────────────────────────────────────────────────────\n");
+
+            // Build up from day 1 to day n-1
+            for (int i = 1; i < n; i++)
             {
-                dp[i,0] = Math.Max(dp[i-1,0], dp[i-1,1] + stockPrices[i] - fee);
-                dp[i,1] = Math.Max(dp[i-1,1], dp[i-1,0] - stockPrices[i]);
+                Debug.WriteLine($"DAY {i} | Price: {stockPrices[i]}");
+                Debug.WriteLine("───────────────────────────────────────────────────────");
+                
+                // State 0: Ready to BUY (no stock held)
+                int skipBuy = dp[i - 1, 0];
+                int sellToday = dp[i - 1, 1] + stockPrices[i] - fee;
+                dp[i, 0] = Math.Max(skipBuy, sellToday);
+                
+                Debug.WriteLine($"  State [0] - Ready to BUY (no stock):");
+                Debug.WriteLine($"    Option A: Skip (stay ready to buy)     = dp[{i-1}][0] = {skipBuy}");
+                Debug.WriteLine($"    Option B: SELL today                   = dp[{i-1}][1] + {stockPrices[i]} - {fee} = {dp[i - 1, 1]} + {stockPrices[i]} - {fee} = {sellToday}");
+                Debug.WriteLine($"    ✓ BEST: dp[{i}][0] = Max({skipBuy}, {sellToday}) = {dp[i, 0]}");
+                
+                // State 1: Ready to SELL (stock held)
+                int holdStock = dp[i - 1, 1];
+                int buyToday = dp[i - 1, 0] - stockPrices[i];
+                dp[i, 1] = Math.Max(holdStock, buyToday);
+                
+                Debug.WriteLine($"\n  State [1] - Ready to SELL (holding stock):");
+                Debug.WriteLine($"    Option A: HOLD (keep stock)            = dp[{i-1}][1] = {holdStock}");
+                Debug.WriteLine($"    Option B: BUY today                    = dp[{i-1}][0] - {stockPrices[i]} = {dp[i - 1, 0]} - {stockPrices[i]} = {buyToday}");
+                Debug.WriteLine($"    ✓ BEST: dp[{i}][1] = Max({holdStock}, {buyToday}) = {dp[i, 1]}");
+                
+                // Show current DP table row
+                Debug.WriteLine($"\n  📊 DP Table Row {i}: [{dp[i, 0]:D2}][{dp[i, 1]:D3}]");
+                Debug.WriteLine("");
             }
 
-            return dp[stockPrices.Length-1, 0];
+            Debug.WriteLine("═════════════════════════════════════════════════════════════════");
+            Debug.WriteLine("FINAL DP TABLE:");
+            Debug.WriteLine("─────────────────────────────────────────────────────────────────");
+            Debug.WriteLine("Day | Price |  [0] No Stock  | [1] Holding Stock");
+            Debug.WriteLine("─────────────────────────────────────────────────────────────────");
+            for (int i = 0; i < n; i++)
+            {
+                Debug.WriteLine($" {i,2} |  {stockPrices[i],3}  |      {dp[i, 0],3}       |       {dp[i, 1],4}");
+            }
+            Debug.WriteLine("─────────────────────────────────────────────────────────────────");
+            Debug.WriteLine($"\n✓ FINAL ANSWER: dp[{n-1}][0] = {dp[n - 1, 0]}");
+            Debug.WriteLine("  (Maximum profit when we end with no stock held)\n");
+
+            return dp[n - 1, 0];
         }
     }
 }

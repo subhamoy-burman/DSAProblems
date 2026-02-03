@@ -1094,4 +1094,50 @@ public void TestMaxProfitSellingFeeBasedStock()
     Assert.That(DPProblems.MaxProfitSellingFeeBasedStock(prices5, fee5), Is.EqualTo(expected5));
 }
 
+    [Test]
+public void TestMaxProfitSellingFeeBasedStockBottomUp()
+{
+    // Test case 1: Simple example to visualize DP transitions
+    int[] prices1 = { 1, 3, 2, 8, 4, 9 };
+    int fee1 = 2;
+    int expected1 = 8; 
+    Assert.That(DPProblems.MaxProfitSellingFeeBasedStockBottomUp(prices1, fee1), Is.EqualTo(expected1));
+
+    // Test case 2: No profit possible
+    int[] prices2 = { 5, 4, 3, 2, 1 };
+    int fee2 = 1;
+    int expected2 = 0; 
+    Assert.That(DPProblems.MaxProfitSellingFeeBasedStockBottomUp(prices2, fee2), Is.EqualTo(expected2));
+
+    // Test case 3: Single transaction
+    int[] prices3 = { 1, 5 };
+    int fee3 = 1;
+    int expected3 = 3; 
+    Assert.That(DPProblems.MaxProfitSellingFeeBasedStockBottomUp(prices3, fee3), Is.EqualTo(expected3));
+
+    // Test case 4: Cannot afford fee
+    int[] prices4 = { 1, 2, 3 };
+    int fee4 = 5;
+    int expected4 = 0; 
+    Assert.That(DPProblems.MaxProfitSellingFeeBasedStockBottomUp(prices4, fee4), Is.EqualTo(expected4));
+
+    // Test case 5: Multiple transactions
+    int[] prices5 = { 1, 4, 6, 2, 8, 1, 2, 2, 6, 5, 6 };
+    int fee5 = 2;
+    int expected5 = 9; 
+    Assert.That(DPProblems.MaxProfitSellingFeeBasedStockBottomUp(prices5, fee5), Is.EqualTo(expected5));
+}
+
+    [Test]
+public void TestMaxProfitBottomUpVisualization()
+{
+    // Small example perfect for learning and visualization
+    int[] prices = { 1, 3, 7, 5, 10, 3 };
+    int fee = 2;
+    int expected = 7; // Best strategy: Buy at 1, sell at 10, profit = 10 - 1 - 2 = 7
+                      // Alternative (same result): Buy@1, Sell@7 (profit 4) + Buy@5, Sell@10 (profit 3) = 7
+    int result = DPProblems.MaxProfitSellingFeeBasedStockBottomUp(prices, fee);
+    Assert.That(result, Is.EqualTo(expected));
+}
+
 }

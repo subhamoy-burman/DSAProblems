@@ -991,4 +991,107 @@ public class Tests
         //Assert.That(trie.SearchWordInTrie("appl"), Is.False);
     }
 
+    [Test]
+    public void TestBSTInsert()
+    {
+        var bst = new BinarySearchTree();
+        bst.InsertIntoBST(5);
+        bst.InsertIntoBST(3);
+        bst.InsertIntoBST(7);
+        bst.InsertIntoBST(2);
+        bst.InsertIntoBST(4);
+
+        Assert.That(bst.Root.NodeValue, Is.EqualTo(5));
+        Assert.That(bst.Root.LeftNode.NodeValue, Is.EqualTo(3));
+        Assert.That(bst.Root.RightNode.NodeValue, Is.EqualTo(7));
+    }
+
+    [Test]
+    public void TestBSTFindInorderSuccessorPredecessor_TargetExists()
+    {
+        var bst = new BinarySearchTree();
+        bst.InsertIntoBST(5);
+        bst.InsertIntoBST(3);
+        bst.InsertIntoBST(7);
+        bst.InsertIntoBST(1);
+        bst.InsertIntoBST(4);
+        bst.InsertIntoBST(6);
+        bst.InsertIntoBST(9);
+
+        var result = bst.FindInorderSuccessorPredecessor(bst.Root, 4);
+
+        Assert.That(result.Item1, Is.EqualTo(3)); // Predecessor
+        Assert.That(result.Item2, Is.EqualTo(5)); // Successor
+    }
+
+    [Test]
+    public void TestBSTFindInorderSuccessorPredecessor_TargetIsRoot()
+    {
+        var bst = new BinarySearchTree();
+        bst.InsertIntoBST(5);
+        bst.InsertIntoBST(3);
+        bst.InsertIntoBST(7);
+        bst.InsertIntoBST(1);
+        bst.InsertIntoBST(4);
+        bst.InsertIntoBST(6);
+        bst.InsertIntoBST(9);
+
+        var result = bst.FindInorderSuccessorPredecessor(bst.Root, 5);
+
+        Assert.That(result.Item1, Is.EqualTo(4)); // Predecessor
+        Assert.That(result.Item2, Is.EqualTo(6)); // Successor
+    }
+
+    [Test]
+    public void TestBSTBuildFromPreorder()
+    {
+        var bst = new BinarySearchTree();
+        int[] preorder = { 10, 5, 1, 7, 40, 50 };
+
+        var root = bst.BuildBSTFromPreorder(preorder);
+
+        Assert.That(root.NodeValue, Is.EqualTo(10));
+        Assert.That(root.LeftNode.NodeValue, Is.EqualTo(5));
+        Assert.That(root.RightNode.NodeValue, Is.EqualTo(40));
+        Assert.That(root.LeftNode.LeftNode.NodeValue, Is.EqualTo(1));
+        Assert.That(root.LeftNode.RightNode.NodeValue, Is.EqualTo(7));
+        Assert.That(root.RightNode.RightNode.NodeValue, Is.EqualTo(50));
+    }
+
+    [Test]
+public void TestMaxProfitSellingFeeBasedStock()
+{
+    // Test case 1: Simple buy-sell with fee
+    int[] prices1 = { 1, 3, 2, 8, 4, 9 };
+    int fee1 = 2;
+    int expected1 = 8; // Buy at 1, sell at 8, profit = 8 - 1 - 2 = 5
+                       // OR Buy at 4, sell at 9, profit = 9 - 4 - 2 = 3
+                       // Total max = 5 + 3 = 8
+    Assert.That(DPProblems.MaxProfitSellingFeeBasedStock(prices1, fee1), Is.EqualTo(expected1));
+
+    // Test case 2: No profit possible
+    int[] prices2 = { 5, 4, 3, 2, 1 };
+    int fee2 = 1;
+    int expected2 = 0; // Prices only decrease, no profitable transactions
+    Assert.That(DPProblems.MaxProfitSellingFeeBasedStock(prices2, fee2), Is.EqualTo(expected2));
+
+    // Test case 3: Single transaction
+    int[] prices3 = { 1, 5 };
+    int fee3 = 1;
+    int expected3 = 3; // Buy at 1, sell at 5, profit = 5 - 1 - 1 = 3
+    Assert.That(DPProblems.MaxProfitSellingFeeBasedStock(prices3, fee3), Is.EqualTo(expected3));
+
+    // Test case 4: Cannot afford fee
+    int[] prices4 = { 1, 2, 3 };
+    int fee4 = 5;
+    int expected4 = 0; // Fee is too high, no profitable transaction
+    Assert.That(DPProblems.MaxProfitSellingFeeBasedStock(prices4, fee4), Is.EqualTo(expected4));
+
+    // Test case 5: Multiple transactions
+    int[] prices5 = { 1, 4, 6, 2, 8, 1, 2, 2, 6, 5, 6 };
+    int fee5 = 2;
+    int expected5 = 9; // Multiple buy-sell pairs optimized
+    Assert.That(DPProblems.MaxProfitSellingFeeBasedStock(prices5, fee5), Is.EqualTo(expected5));
+}
+
 }

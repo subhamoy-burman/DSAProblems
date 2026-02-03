@@ -1,5 +1,6 @@
 ﻿using System;
 using System.Collections.Generic;
+using System.Diagnostics;
 using System.Linq;
 using System.Text;
 using System.Threading.Tasks;
@@ -171,6 +172,70 @@ namespace DSALibs
             // Choose better of the two options
             List<int> betterOption = pick.Count > dontPick.Count ? pick : dontPick;
             return betterOption;
+        }
+
+        public static int MaxProfitSellingFeeBasedStock(int[] stockPrices, int fee)
+        {
+            Debug.WriteLine("=== Stock Trading with Transaction Fee ===");
+            Debug.WriteLine($"Prices: [{string.Join(", ", stockPrices)}]");
+            Debug.WriteLine($"Transaction Fee: {fee}");
+            Debug.WriteLine("==========================================\n");
+            
+            int result = RecMaxProfitSellingFeeBasedStock(0, true, stockPrices, fee, 0);
+            
+            Debug.WriteLine($"\n=== Final Maximum Profit: {result} ===\n");
+            return result;
+        }
+
+        private static int RecMaxProfitSellingFeeBasedStock(int index, bool isBuyFlag, int[] stockPrices, int fee, int depth)
+        {
+            string indent = new string(' ', depth * 2);
+            string state = isBuyFlag ? "BUY" : "SELL";
+            
+            Debug.WriteLine($"{indent}┌─ Day {index} | State: {state} | Price: {(index < stockPrices.Length ? stockPrices[index].ToString() : "N/A")}");
+            
+            if(index >= stockPrices.Length)
+            {
+                Debug.WriteLine($"{indent}└─ Base case reached → Return 0\n");
+                return 0;
+            }
+
+            if(isBuyFlag)
+            {
+                Debug.WriteLine($"{indent}│  Evaluating BUY decisions:");
+                Debug.WriteLine($"{indent}│  → Option 1: BUY at {stockPrices[index]} (cost: -{stockPrices[index]})");
+                
+                var pickingToBuy = - stockPrices[index] + RecMaxProfitSellingFeeBasedStock(index + 1, false, stockPrices, fee, depth + 1);
+                
+                Debug.WriteLine($"{indent}│  → Option 2: SKIP buying");
+                var skippingToBuy = RecMaxProfitSellingFeeBasedStock(index + 1, true, stockPrices, fee, depth + 1);
+
+                var maxProfit = Math.Max(pickingToBuy, skippingToBuy);
+                string decision = pickingToBuy > skippingToBuy ? $"BUY at {stockPrices[index]}" : "SKIP";
+                
+                Debug.WriteLine($"{indent}│  PickBuy: {pickingToBuy} vs SkipBuy: {skippingToBuy}");
+                Debug.WriteLine($"{indent}└─ Decision: {decision} → Profit: {maxProfit}\n");
+                
+                return maxProfit;
+            }
+            else
+            {
+                Debug.WriteLine($"{indent}│  Evaluating SELL decisions:");
+                Debug.WriteLine($"{indent}│  → Option 1: SELL at {stockPrices[index]} (gain: {stockPrices[index]} - fee: {fee})");
+                
+                var pickingToSale = stockPrices[index] + RecMaxProfitSellingFeeBasedStock(index + 1, true, stockPrices, fee, depth + 1) - fee;
+                
+                Debug.WriteLine($"{indent}│  → Option 2: SKIP selling (hold position)");
+                var skippingToSale = RecMaxProfitSellingFeeBasedStock(index + 1, false, stockPrices, fee, depth + 1);
+
+                var maxProfit = Math.Max(pickingToSale, skippingToSale);
+                string decision = pickingToSale > skippingToSale ? $"SELL at {stockPrices[index]}" : "HOLD";
+                
+                Debug.WriteLine($"{indent}│  PickSell: {pickingToSale} vs SkipSell: {skippingToSale}");
+                Debug.WriteLine($"{indent}└─ Decision: {decision} → Profit: {maxProfit}\n");
+                
+                return maxProfit;
+            }
         }
 
     }

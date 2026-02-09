@@ -1140,4 +1140,14 @@ public void TestMaxProfitBottomUpVisualization()
     Assert.That(result, Is.EqualTo(expected));
 }
 
+[Test]
+public void TestLongestIncreaingSubsequenceVisualization()
+{
+    // Small example perfect for learning and visualization
+    int[] arr = {1, 3, 2, 4};
+    int expectedLisLength = 3;
+    int result = DPProblems.LongestIncreaingSubsequence(arr);
+    Assert.That(expectedLisLength, Is.EqualTo(result));
+}
+
 }

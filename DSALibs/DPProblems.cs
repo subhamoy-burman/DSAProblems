@@ -314,5 +314,62 @@ namespace DSALibs
 
             return dp[n - 1, 0];
         }
+    
+        public static int LongestIncreaingSubsequence(int[] arr)
+        {
+            Debug.WriteLine("=== Longest Increasing Subsequence (Recursive) ===");
+            Debug.WriteLine($"Array: [{string.Join(", ", arr)}]");
+            Debug.WriteLine("==================================================\n");
+            
+            int result = FuncLongestIncreaingSubsequence(0, arr, -1, 0);
+            
+            Debug.WriteLine($"\n=== Final LIS Length: {result} ===\n");
+            return result;
+        }
+
+        private static int FuncLongestIncreaingSubsequence(int index, int[] arr, int lastElement, int depth)
+        {
+            string indent = new string(' ', depth * 2);
+            string lastElementStr = lastElement == -1 ? "NONE" : lastElement.ToString();
+            
+            Debug.WriteLine($"{indent}┌─ Index {index} | LastElement: {lastElementStr} | Current: {(index < arr.Length ? arr[index].ToString() : "N/A")}");
+            
+            if(index >= arr.Length)
+            {
+                Debug.WriteLine($"{indent}└─ Base case: End of array → Return 0\n");
+                return 0;
+            }
+
+            if(arr[index] > lastElement)
+            {
+                Debug.WriteLine($"{indent}│  {arr[index]} > {lastElementStr} → Can PICK or DON'T PICK");
+                Debug.WriteLine($"{indent}│  → Option 1: PICK {arr[index]} (add 1 to length)");
+                
+                var pick = 1 + FuncLongestIncreaingSubsequence(index + 1, arr, arr[index], depth + 1);
+                
+                Debug.WriteLine($"{indent}│  → Option 2: DON'T PICK {arr[index]} (skip this element)");
+                var dontPick = FuncLongestIncreaingSubsequence(index + 1, arr, lastElement, depth + 1);
+
+                var maxLength = Math.Max(pick, dontPick);
+                string decision = pick > dontPick ? $"PICK {arr[index]}" : $"SKIP {arr[index]}";
+                
+                Debug.WriteLine($"{indent}│  Pick: {pick} vs DontPick: {dontPick}");
+                Debug.WriteLine($"{indent}└─ Decision: {decision} → Length: {maxLength}\n");
+                
+                return maxLength;
+            }
+            else
+            {
+                Debug.WriteLine($"{indent}│  {arr[index]} <= {lastElementStr} → Cannot pick (would break increasing order)");
+                Debug.WriteLine($"{indent}│  → Only option: SKIP {arr[index]}");
+                
+                var result = FuncLongestIncreaingSubsequence(index + 1, arr, lastElement, depth + 1);
+                
+                Debug.WriteLine($"{indent}└─ Forced SKIP → Length: {result}\n");
+                
+                return result;
+            }
+            
+        }
     }
 }

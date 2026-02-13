@@ -371,5 +371,31 @@ namespace DSALibs
             }
             
         }
+    
+        public static List<int> LongestDivisibleSubset(int[] arr)
+        {
+            List<List<int>> result = new List<List<int>>();
+            List<int> subSet = new List<int>();
+            FuncLongestDivisibleSubset(arr, 0, result, subSet);
+            return result.OrderByDescending(x => x.Count).First();
+        }
+
+        private static void FuncLongestDivisibleSubset(int[] arr, int index, List<List<int>> result, List<int> subset)
+        {
+            if(index >= arr.Length)
+            {
+                result.Add([.. subset]);
+                return;
+            }
+
+            if(subset.Count == 0 || arr[index] % subset.Last() == 0)
+            {  
+                subset.Add(arr[index]);
+                FuncLongestDivisibleSubset(arr, index + 1, result, subset);
+                subset.RemoveAt(subset.Count - 1);
+            }
+            FuncLongestDivisibleSubset(arr, index + 1, result, subset);
+            
+        }
     }
 }
